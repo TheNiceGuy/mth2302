@@ -1,0 +1,36 @@
+\documentclass[11pt]{article}
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{tikz}
+\usepackage{standalone}
+
+\usetikzlibrary{babel}
+
+\begin{document}
+\begin{tikzpicture}[scale=0.7]
+\def\n{3}
+\draw[dashed] (0,1) -- (\n,\n+1);
+
+% draw all the nodes
+\foreach\x in {0,...,2} {
+    \foreach\y in {0,...,4} {
+        \draw[fill] (\x,\y) circle (2pt);
+    }
+}
+
+\draw (0,0) -- (1,0) -- (1,4) -- (2,4);
+\draw[dotted] (1,2) -- (3,2) -- (3,3);
+
+\foreach\y in {0,...,4} {
+    \path[fill=gray] (3,\y) circle (2pt);
+}
+
+% name the node of interest
+\node[above right] at (0 ,0 ) {$A$};
+\node[below left]  at (\n,\n) {$B$};
+\node[left] at (1,2) {$X$};
+
+\end{tikzpicture}
+\end{document}
+

@@ -1,0 +1,33 @@
+\documentclass[11pt]{article}
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{tikz}
+\usepackage{standalone}
+
+\usetikzlibrary{babel}
+
+\begin{document}
+\begin{tikzpicture}[y=5mm]
+\def\S{0}
+\def\E{6}
+
+\def\A{2}
+\def\B{5}
+
+\draw[->]   (\S,0) -- (\E,0) node[right] {$x$};
+\draw[fill] (\S,1) -- (\A,1) circle (1pt) node[above] {$a$};
+\draw[fill] (\S,2) -- (\B,2) circle (1pt) node[above] {$b$};
+\draw[fill] (\A,3) -- (\B,3) circle (1pt) node[above] {$b$};
+
+\draw[fill=white] (\A,3) circle (1pt) node[above] {$a$};
+
+\def\space{0.2}
+\node at (\S-\space,0) {$S$};
+\node at (\S-\space,1) {$A$};
+\node at (\S-\space,2) {$B$};
+\node at (\S-\space,3) {$C$};
+
+\end{tikzpicture}
+\end{document}
+

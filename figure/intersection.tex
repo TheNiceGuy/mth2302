@@ -1,0 +1,30 @@
+\documentclass[11pt]{article}
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{tikz}
+\usepackage{standalone}
+\usepackage{contour}
+
+\usetikzlibrary{patterns}
+\usetikzlibrary{babel}
+
+\begin{document}
+\contourlength{1.5pt}
+
+\begin{tikzpicture}
+\draw (0,0) -- (3,0) -- (3,2) -- (0,2) -- cycle;
+\draw (1,1) coordinate (A) circle (8mm);
+\draw (2,1) coordinate (B) circle (8mm);
+
+\begin{scope}
+    \clip (A) circle (8mm);
+    \path[fill,pattern=north west lines]
+          (B) circle (8mm);
+\end{scope}
+
+\node at (A) {\contour{white}{$A$}};
+\node at (B) {\contour{white}{$B$}};
+\node at (0.2,0.2) {\contour{white}{$S$}};
+\end{tikzpicture}
+\end{document}

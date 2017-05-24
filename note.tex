@@ -1,0 +1,1127 @@
+\documentclass[11pt]{article}
+\usepackage[francais]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{standalone}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{geometry}
+\usepackage{siunitx}
+\usepackage{gphys}
+\usepackage{thmtools}
+\usepackage{mdframed}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{contour}
+\usepackage{scrextend}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{nicefrac}
+\usepackage{pgfplots}
+
+\usetikzlibrary{babel}
+\usetikzlibrary{calc}
+\usetikzlibrary{patterns}
+\usetikzlibrary{decorations.pathreplacing}
+
+%%%%%%%%%%%%%%%%%%
+% Configurations %
+%%%%%%%%%%%%%%%%%%
+
+\geometry{
+	top=34mm,
+	bottom=34mm
+}
+
+%%%%%%%%%%
+% Macros %
+%%%%%%%%%%
+
+\input{eq}
+
+\newcommand\card{%
+	\ensuremath{%
+		\mathrm{card}\,%
+	}%
+}%
+
+\newcommand\comb[2]{%
+	\ensuremath{%
+		\mathcal{C}_{#2}^{#1}%
+	}%
+}%
+
+\newcommand\perm[2]{%
+	\ensuremath{%
+		\mathcal{P}_{#2}^{#1}%
+	}%
+}%
+
+\renewcommand\P{%
+	\ensuremath{%
+		\mathbb{P}
+	}%
+}%
+
+\newtheorem{axiome}{Axiome}
+\newtheorem{theoreme}{Théoreme}[section]
+
+\declaretheoremstyle[
+	notefont=\bfseries,
+	notebraces={}{},
+	bodyfont=\normalfont,
+	postheadspace=0.5em,
+	numbered=no,
+]{basicstyle}
+\declaretheorem[name=Définition,style=basicstyle]{definition}
+
+\newmdtheoremenv[
+	linecolor=black,
+	backgroundcolor=gray!40,
+	ntheorem
+]{exemple}{Exemple}[section]
+
+%%%%%%%%%%%%%
+% Documents %
+%%%%%%%%%%%%%
+
+\begin{document}
+\tableofcontents
+\pagebreak
+
+\section{Élèments de probabilités}
+\begin{definition}
+	Une expérience est \textit{aléatoire} si un observateur peut la répéter
+	dans les mêmes conditions, mais sans pouvoir en prédire le résultat.
+\end{definition}
+
+\begin{definition}
+	Un \textit{espace échantilion} est un ensemble $S$ des résultats possibles.
+\end{definition}
+
+Un espace d'échantilion peut être \textit{qualitatif} ou \textit{quantitatif},
+ainsi que \textit{discret}, \textit{continu} ou \textit{mixte}. Il peut aussi
+être \textit{dénombrable} ou \textit{non-dénombrable}.
+
+\begin{definition}
+	Un \textit{évènement} $A$ est un sous-ensemble de $S$ d'intêret à
+	l'observateur.
+\end{definition}
+
+\begin{definition}
+	Un \textit{évènement élémentaire} $A$ est un résultat particulier,
+	c'est-à-dire, un élèment de $S$.
+\end{definition}
+
+La différence entre les deux dernières définitions est que la $\card(A)=1$ pour
+un évènement élémentaire tandis que $\card(A)\geq 1$ pour un évènement.
+
+\begin{exemple}
+	On observe le résultat du lancer de deux pièces de monnaie. On note $P$
+	comme un lancer pile et $F$ comme un lancer face. L'ensemble est donc
+	\begin{equation*}
+		S=\left\{PP, FF, PF, FP\right\}
+	\end{equation*}
+	avec chaque résultat ayant \SI{25}{\percent} d'arriver. L'ensemble $S$ est
+	qualitatif, soit pile ou face, et discret.
+\end{exemple}
+
+\begin{exemple}
+	On observer la somme obtenue lors du lancer de deux dés à 6 faces.
+	L'ensemble de résultat possible est
+	\begin{equation*}
+		S=\left\{2,3,4,5,6,7,8,9,10,11,12\right\}.
+	\end{equation*}
+	Il est quantitatif et discret.
+\end{exemple}
+
+\begin{exemple}
+	On compte le nombre de lancers d'une pièce pour obtenir une première fois
+	un pile. L'espace échantilion est
+	\begin{equation*}
+		S=\left\{1,2,3,4,5,\dots\right\},
+	\end{equation*}
+	car il est possible qu'une grande quantité de lancer est effectuée avant
+	d'obtenir un pile. L'ensemble $S$ est quantitatif, discret et
+	infini dénombrable.
+\end{exemple}
+
+\pagebreak
+\begin{exemple}
+	On mesure le temps d'attente à l'arrêt d'autobus. L'espace échantilion est
+	\begin{equation*}
+		S=\left[0,\infty\right[.
+	\end{equation*}
+	L'ensemble $S$ est quantitatif, continu et infini non-dénombrable.
+\end{exemple}
+
+\begin{exemple}
+	On mesure le temps d'attente à l'arrêt d'autobus ainsi que le nombre de
+	personnes en file à l'arrivée de l'autobus. L'espace échantilion est
+	\begin{equation*}
+		S=T\times U,
+	\end{equation*}
+	avec
+	\begin{equation*}
+		T=\left[0,\infty\right[
+	\end{equation*}
+	et
+	\begin{equation*}
+		U=\left\{1,2,3,4,5,\dots\right\}.
+	\end{equation*}
+	L'ensemble $S$ est quantitatif et mixte. Un exemple d'évènement élèmentaire
+	peut être un couple tel que $\left(\SI{4.25}{\second}, 4\right)$.
+\end{exemple}
+
+\subsection{Lien entre l'expérience aléatoire et son modèle}
+\begin{definition}
+	La \textit{fréquence relative} $f_A$ d'un évènement $A$ est le rapport
+	entre le nombre d'observations $n_A$ de l'évèmenent et le nombre $n$ de
+	répétition de l'expérience, c'est-à-dire
+	\begin{equation*}
+		f_A=\frac{n_A}{n}.
+	\end{equation*}
+	La limite lorsque l'expérience est répétée infiniment est la probabilité de
+	l'évènement $A$, dénotée
+	\begin{equation*}
+		P(A)=\lim_{n\rightarrow\infty}f_A.
+	\end{equation*}
+\end{definition}
+
+\subsection{Opérations sur les ensembles}
+Soit deux ensembles $A$ et $B$ tel que $A,B\subset S$. La figure
+\ref{fig:venn_intersection} montre une intersection tandis que la figure
+\ref{fig:venn_union} montre une union entre $A$ et $B$. La figure
+\ref{fig:venn_complement} montre le complémenet de $A$ et la figure
+\ref{fig:venn_exclusion} montre l'exclusion de deux ensembles.
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[H]{0.21\textwidth}
+		\centering
+		\input{figure/intersection}
+		\caption{$A\cap B$}
+		\label{fig:venn_intersection}
+	\end{subfigure}
+	~
+	\begin{subfigure}[H]{0.21\textwidth}
+		\centering
+		\input{figure/union}
+		\caption{$A\cup B$}
+		\label{fig:venn_union}
+	\end{subfigure}
+	~
+	\begin{subfigure}[H]{0.21\textwidth}
+		\centering
+		\input{figure/complement}
+		\caption{$A^c$}
+		\label{fig:venn_complement}
+	\end{subfigure}
+	~
+	\begin{subfigure}[H]{0.21\textwidth}
+		\centering
+		\input{figure/combinaison}
+		\caption{$\left(A\cup B\right)\setminus\left(A\cap B\right)$}
+		\label{fig:venn_exclusion}
+	\end{subfigure}
+	\caption{Opérations d'ensembles démontrées sur des diagrammes de Venn}
+\end{figure}
+
+\subsection{Axiomes fondamentales de la probabilité}
+\begin{axiome}
+	La probabilité d'un évèment $A$ est plus grand ou égal à 0, c'est-à-dire
+	\begin{equation*}
+		P(A)\geq 0,
+	\end{equation*}
+	pour tout $A\in S$.
+\end{axiome}
+
+\begin{axiome}
+	La probabilité de l'espace d'échantilion $S$ est 1, c'est-à-dire
+	\begin{equation*}
+		P\left(S\right)=1.
+	\end{equation*}
+\end{axiome}
+
+\begin{axiome}
+	La probabilité d'un évènement $A$ ou d'un évènement $B$ est équivalent à la
+	somme de leur probabilité, c'est-à-dire
+	\begin{equation*}
+		P(A\cup B)=P(A)+P(B),
+	\end{equation*}
+	si $A\cup B=\emptyset$.
+
+	En général, 
+	\begin{equation*}
+		P\left(\bigcup_{k=1}^\infty A_k\right)=\sum_{k=1}^\infty P\left(A_k\right),
+	\end{equation*}
+	si $A_i\cup A_j=\emptyset$, $\forall i,j$.
+\end{axiome}
+
+\begin{theoreme}
+	$P(A^c)=1-P(A)$.
+\end{theoreme}
+
+\begin{proof}
+	On sait que $A\cup A^c=S$ et $A\cap A^c=\emptyset$. Hors,
+	$P(A\cup A^c)=P(S)\Leftrightarrow P(A)+P(A^c)=1$, car
+	$A\cup A^c=\emptyset$.
+	En réarrangeant, on obtient que $P(A^c)=1-P(A).$
+\end{proof}
+
+\begin{theoreme}
+	$P(A)\leq 1$.
+\end{theoreme}
+
+\begin{proof}
+	On sait que $P(A^c)\geq 0$ et $P(A^c)=1-P(A)$. En réarrangeant, on
+	obtient que $P(A)\leq 1$.
+\end{proof}
+
+\begin{theoreme}
+	$P(\emptyset)=0$.
+\end{theoreme}
+
+\begin{proof}
+	On sait que $S^c=\emptyset$. Par conséquent, $P(\emptyset)=1-P(S)=1-1=0$.
+\end{proof}
+
+\begin{theoreme}
+	$A\subset B\Rightarrow P(A)\leq P(B)$.
+\end{theoreme}
+
+\begin{proof}
+	La différence entre $A$ et $B$ est $A^c\cap B$ de sorte qu'on peut écrire
+	$B=A\cup(A^c\cap B)$. Par conséquent, $P(B)=P(A)+P(A^c\cap B)
+	\Leftrightarrow P(B)-P(A)=P(A^c\cap B)\geq 0$, car
+	$A\cup(A^c\cap B)=\emptyset$. En réarrangeant, on obtient $P(A)\leq P(B)$.
+\end{proof}
+
+\begin{theoreme}
+	$P(A\cup B)=P(A)+P(B)-P(A\cap B)$.
+\end{theoreme}
+
+\subsection{Principe d'équiprobabilité}
+\subsubsection{Ensemble fini}
+On suppose que $S$ est fini, soit $S=\left\{e_1,e_2,\dots,e_n\right\}$. On dit
+que les résultats d'une expérience aléatoire sont \textit{équiprobables} si
+\begin{equation*}
+	P(e_1)=P(e_2)=\cdots=P(e_n)=\frac{1}{n}.
+\end{equation*}
+Dans ce cas, on a que la probabilité d'un évènement $A\subset S$ est
+\begin{equation*}
+	P(A)=\frac{n_A}{n},
+\end{equation*}
+où $n_A$ est le nombre d'élément dans $A$ et $n$ celui dans $S$.
+
+\subsubsection{Ensemble infini dénombrable}
+On suppose que $S$ est infini dénombrable, alors l'équiprobabilité est
+impossible. Si la probabilité d'un évènement élémentaire est $P(e_i)=\epsilon$,
+on obtient que $P(S)=P(e_1)+P(e_2)+\cdots=\infty$, Ce qui est en contradiction
+avec les axiomes. D'une manière similaire, si $P(e_i)=0$, alors $P(S)=0$, ce
+qui est aussi en contradiction avec les axiomes.
+
+\subsubsection{Ensemble infini non-dénombrable}
+On suppose que $S=[a,b]$ est infini non-dénombrable. Soit un évènement
+$A=[c,d]\subset S$. La probabilité de l'évènement est
+\begin{equation*}
+	P(A)=\frac{l_A}{l}=\frac{d-c}{b-a},
+\end{equation*}
+où $l_A$ est la longueur de $A$ et $l$ la longueur de $S$. Par conséquent, la
+probabilité d'un évènement élémentaire $e\in S$ est
+\begin{equation*}
+	P(e)=0,
+\end{equation*}
+car $l_A=0$.
+
+\begin{exemple}
+	On calcule la somme de deux dés lancés. Quelle est la probabilité d'obtenir
+	chaque somme possible?
+	
+	L'espace échantilion est $S=L\times L$, où $L=\left\{1,2,3,4,5,6\right\}$
+	est le résultat possible d'un dé. On peut écrire
+	$S=\left\{(1,1),(1,2),\dots,(6,6)\right\}$. On suppose qu'il y a
+	équiprobabilité de sorte que la probabilité d'obtenir un évènement
+	élémentaire est $\nicefrac{1}{36}$.
+
+	Hors, certaines des sommes sont dupliquées de sorte que la probabilité
+	d'obtenir une somme particulière est donnée par la table suivante.
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{r|ccccccccccc}
+			$\phantom{P(}A\phantom{)}$ &
+			$2$ & $3$ & $4$ & $5$ & $6$ & $7$ & $8$ & $9$ & $10$ & $11$ & $12$\\
+			$P(A)$ &
+			$\frac{1}{36}$ & $\frac{2}{36}$ & $\frac{3}{36}$ & $\frac{4}{36}$ &
+			$\frac{5}{36}$ & $\frac{6}{36}$ & $\frac{5}{36}$ & $\frac{4}{36}$ &
+			$\frac{3}{36}$ & $\frac{2}{36}$ & $\frac{1}{36}$\\
+		\end{tabular}
+	\end{table}
+\end{exemple}
+
+\section{Analyse combinatoire}
+\subsection{Diagramme en arbre}
+
+\begin{exemple}
+	On lance un dé, puis une pièce de monnaie. Combien de résultats est-il
+	possible?
+	
+	On peut représenté la situation par l'arbre suivant.
+	\begin{figure}[H]
+		\centering
+		\input{figure/diagramme_arbre.tex}
+	\end{figure}
+	Par le principe de multiplication, il y a $6\cdot 2=12$ possibilités.
+\end{exemple}
+
+\subsection{Permutations}
+\begin{definition}
+	Une \textit{permutation} correspond à un choix de $k$ objets parmi $n$
+	objets distincts. Le choix se fait sans remise et dans un ordre spécifique.
+\end{definition}
+
+La table \ref{tb:permutation} résume le principe d'une permutation à l'aide
+d'une pige d'objet. À chaque pige, la quantité d'objets diminue de 1.
+
+\begin{table}[H]
+	\centering
+	\caption{Pige d'objets}
+	\begin{tabular}{r|cccc}
+		\toprule
+		Choix d'objet   &   1 &   2   & $\dots$ & k\\
+		Objets restants & $n$ & $n-1$ & $\dots$ & $n-(n-k)$\\
+		\bottomrule
+	\end{tabular}
+	\label{tb:permutation}
+\end{table}
+
+À l'aide du principe de multiplication, il y a $n\cdot(n-1)\cdots(n-k+1)$
+combinaisons. On dénote le nombre de permutations sans remise de $n$ éléments
+par
+\begin{equation*}
+	\perm{k}{n}=\frac{n!}{(n-k)!}.
+\end{equation*}
+Lorsqu'il y a remise, le nombre de permutations de $n$ éléments est $n^k$.
+
+\begin{exemple}
+	On dispose de 10 composantes dont 4 défectueuses. On pige 3 composantes au
+	hasard et sans remise. Quelle est la probabilité d'obtenir uniquement des
+	composantes non défectueuses?
+
+	On suppose qu'il y a équiprobabilité du choix des 3 composantes. La
+	probabilité d'obtenir 3 composantes non défecteuses $F$ est
+	\begin{equation*}
+		P(F)
+		=\frac{6\cdot 5\cdot 4}{10\cdot 9\cdot 8}
+		=\frac{\perm{3}{6}}{\perm{3}{10}}
+		=\frac{1}{6}.
+	\end{equation*}
+\end{exemple}
+
+\subsection{Combinaisons}
+\begin{definition}
+	Une \textit{combinaison} correspond au choix de $k$ objets parmis $n$
+	objets distincts. Le choix se fait sans remise et sans ordre spécifique.
+\end{definition}
+
+Soit $C_k^n$ le nombre de combinaisons. Le nombre de permutations est égal au
+nombre de combinaisons multiplié par le nombre d'arrangement possible $k!$,
+c'est-à-dire 
+\begin{equation*}
+	\perm{k}{n}=\comb{k}{n}\cdot k!,
+\end{equation*}
+et en réarrangeant, on obtient
+\begin{equation*}
+	\comb{k}{n}={{n}\choose{k}}=\frac{n!}{k!(n-k)!}.
+\end{equation*}
+
+\begin{exemple}
+	Combien de codes de deux lettres peut-on former à partir du mot
+	\texttt{OUI}?
+	
+	Avec ordre, il y a $\perm{2}{3}=6$ permutations et sans ordre, il y a
+	$\comb{2}{3}=3$ combinaisons.
+\end{exemple}
+
+\begin{exemple}
+	Quel est la probabilité de gagner le gros lot à la $6/49$?
+	
+	Sans ordre, il y a 1 seul cas favorable et $\comb{6}{49}$ cas possibles.
+	Par conséquent, la probabilité de gagner $G$ est
+	\begin{equation*}
+		P(G)=\frac{1}{\comb{6}{49}}=\frac{1}{\SI{13983816}{}}.
+	\end{equation*}
+	Avec ordre, il y a $6!$ cas favorables et $\perm{6}{49}$ cas possibles de
+	sorte que la probabilité est
+	\begin{equation*}
+		P(G)=\frac{6!}{\perm{6}{49}}=\frac{720}{\SI{10068347520}{}}.
+	\end{equation*}
+\end{exemple}
+
+\subsubsection{Triangle de Pascal}
+Une combinaison peut se représenter avec le triangle de Pascal comme le montre
+la figure \ref{fig:pascal}.
+
+\begin{figure}[H]
+	\centering
+	\input{figure/pascal}
+	\caption{représentation du triangle de Pascal}
+	\label{fig:pascal}
+\end{figure}
+
+\begin{theoreme}
+	$\comb{k}{n}=\comb{k-1}{n-1}+\comb{k}{n-1}$
+\end{theoreme}
+
+\begin{proof}
+	La démonstration est triviale et est laissée au lecteur.
+\end{proof}
+
+\subsubsection{Binôme de Newton}
+La combinaison est souvent appliquée dans le cas de la puissance d'un binôme
+tel que
+\begin{equation*}
+	\left(a+b\right)^n
+	=\sum_{k=0}^n\comb{k}{n}\cdot a^k\cdot b^{n-k}
+	=\sum_{k=0}^n{{k}\choose{n}}\cdot a^k\cdot b^{n-k},
+\end{equation*}
+mais elle est plus souvent utilisée avec la deuxième notation.
+
+\subsection{Permutation d'objets semblables}
+\begin{exemple}
+	Combien y a-t-il d'ordres possibles des lettres <<ppfff>>?
+
+	Soit 5 cases distinctes représentant l'ordre d'une pige dans les lettres.
+	Il faut choisir les cases où mettre les <<p>>, soit
+	\begin{equation*}
+		\comb{2}{5}=\frac{5!}{2!3!}=10
+	\end{equation*}
+	ordres possibles.
+	
+	Si on échange un <<p>> et un <<f>> dans une séquence $A$, on obtient une
+	séquence $B$ différente de $A$. Si on échange un <<p>> avec une autre <<p>>
+	dans une séquence $A$, on retrouve la même séquence $A$.
+
+	En analysant la formule, le facteur $5!$ représente le nombre d'ordres si
+	toutes les lettres étaient différentes. Le facteur $2!$ représente les
+	<<p>> s'ils étaient différents et le facteur $3!$ représente le nombres des
+	<<f>> s'ils étaient différents.
+\end{exemple}
+
+En général, avec $n$ objets objets comprenant $n_1$ objets de classes $1$,
+$n_2$ objets de classe $2$, $\dots$, $n_k$ objets à la classe $k$, on a
+\begin{equation*}
+	\frac{n!}{n_1!n_2!\cdots n_k!}
+\end{equation*}
+ordres possibles.
+
+\begin{exemple}\label{ex:network}
+	Soit le graphe $n\times n$ suivant.
+	\begin{figure}[H]
+		\vspace{-3mm}
+		\centering
+		\input{figure/network}
+		\vspace{-3mm}
+	\end{figure}
+
+	Combien de chemins existe entre $A$ et $B$ suivant, s'il est seulement
+	permis d'aller vers la droite ou vert le haut?
+\end{exemple}
+\addtocounter{exemple}{-1}
+\begin{exemple}[suite]
+	On suppose que tous les chemins possibles sont équiprobables. Peu importe
+	le chemin, il faut avancer $n-1$ vers la droite et $n-1$ vers le haut pour
+	un total de $2n-2$ mouvement.
+	
+	Il suffit de calculer le nombre de permutations de ces mouvements sachant
+	qu'il y des objets semblables. Le nombre chemins est
+	\begin{equation*}
+		\frac{\left(2n-2\right)!}{\left(n-1\right)!\left(n-1\right)!},
+	\end{equation*}
+	ce qui est équivalent à $\comb{n-1}{2n-2}$.
+\end{exemple}
+
+
+\subsection{Équivalence}
+\begin{exemple}\label{ex:network_broken}
+	Soit le graphe $n\times n$ suivant.
+	\begin{figure}[H]
+		\vspace{-3mm}
+		\centering
+		\input{figure/network_broken}
+		\vspace{-3mm}
+	\end{figure}
+
+	Quel est la probabilité qu'un chemin choisi au hasard, allant seulement
+	vers la droite ou le haut, ne traverse pas les noeuds au-dessus de la
+	diagonale entre $A$ et $B$?
+
+	Les <<bons>> chemins ne passent pas par la ligne critique en pointillée et
+	les <<mauvais>> chemins passent par la ligne critique. La probabilité d'un
+	bon chemin $B$ peut s'écrire en fonction de son complément, soit
+	\begin{equation*}
+		P(B)=1-P(M)=1-\frac{n_m}{C_{n-1}^{2n-2}},
+	\end{equation*}
+	où $M$ est un mauvais chemin et $n_m$ est le nombre de mauvais chemins.
+
+	Soit un mauvais chemin $M$. On définit le point $X$ comme étant le premier
+	point au-dessus de la diagonale que $M$ atteint. On applique une
+	transformation mirroir au chemin suivant $X$ comme la prochaine figure.
+
+	\noindent
+	\begin{minipage}{0.5\textwidth}
+		\begin{figure}[H]
+			\centering
+			\input{figure/network_bad}
+		\end{figure}
+	\end{minipage}%
+	\begin{minipage}{0.5\textwidth}
+		\begin{figure}[H]
+			\centering
+			\input{figure/network_transformed}
+		\end{figure}
+	\end{minipage}
+\end{exemple}
+\addtocounter{exemple}{-1}
+\begin{exemple}[suite]
+	Il s'avère que tous les mauvais chemins dans le graphe $n\times n$
+	correspond à un chemin unique dans le graphe $(n-1)\times(n+1)$.
+	C'est-à-dire la transformation est bijective.
+	
+	Par conséquent, le problème est équivalent à trouver le nombre de chemins
+	dans un graphe $(n-1)\times(n+1)$. D'une manière similaire à l'exemple
+	\ref{ex:network}, ce nombre de chemins est donné par
+	\begin{equation*}
+		\frac{(2n-2)!}{(n-2)!n!},
+	\end{equation*}
+	ce qui est équivalent à $\comb{2n-2}{n-2}$.
+
+	Par conséquent, la probabilité d'avoir un bon chemin au hasard est
+	\begin{equation*}
+		P(B)
+		=1-\frac{\comb{n-2}{2n-2}}{\comb{n-1}{2n-2}}
+		=\frac{1}{n}.
+	\end{equation*}
+\end{exemple}
+
+\subsection{Réccurence}
+\begin{exemple}
+	Il est possible de résoudre le problème à l'exemple \ref{ex:network_broken}
+	à l'aide de la réccursion.
+	
+	En effet, le nombre de <<bons>> chemins $b_{i,j}$ à partir d'un noeud est
+	la somme des <<bons>> chemins des noeuds à droite et en haut, c'est-à-dire
+	\begin{equation*}
+		b_{i,j}=b_{i-1,j}+b_{i,j-1},
+	\end{equation*}
+	où $i$ est le nombre de noeuds restants vers la droite et $j$ la nombre de
+	noeuds restants vers le haut.
+
+	On sait que $b_{0,0}=1$, car il ne reste plus de noeud à parcourir fois
+	rendu à $B$. Aussi, $b_{0,j}=1$, car il est seulement possible de se rendre
+	à $B$ en allant vers le haut. Sur la diagonale, on a $b_{i,i}=b_{i-1,j}$,
+	car on ne peut pas aller vers le haut. Par conséquent, on obtient le
+	système d'équations à reccurence suivant,
+	\begin{equation*}
+		b_{i,j}=\left\{
+			\begin{matrix}
+				0,                 &\text{si}&i=0,j=0\\
+				1,                 &\text{si}&i=0\\
+				b_{i-1,j},         &\text{si}&i=j\\
+				b_{i-1,j}+b_{i,j-1}&\text{sinon}
+			\end{matrix}
+		\right.
+	\end{equation*}
+
+	Pour une grille $4\times 4$, on peut calculer le nombre de <<bons>> chemins
+	en développant la récurrence afin d'obtenir $b_{3,3}=5$ chemins.
+\end{exemple}
+
+\section{Probabilité conditionnelles}
+\begin{definition}
+	Une \textit{probabilité conditionnelle} est la probabilité qu'un évènement
+	$A$ se réalise, si $B$ s'est réalisé.
+\end{definition}
+
+Mathématiquement, on dénote une probabilité conditionnelle avec
+\begin{equation*}
+	P(A|B)=\frac{P(A\cap B)}{P(B)}.
+\end{equation*}
+où $A$ et $B$ sont des évènements.
+
+\begin{exemple}
+	Soit le lancement d'un dé avec les évènements $A=\left\{5,6\right\}$ et
+	$B=\left\{2,4,6\right\}$, alors $P(A)=\nicefrac{1}{3}$ et 
+	\begin{equation*}
+		P(A|B)=\frac{P(\left\{6\right\})}{P(B)}=\frac{1}{3}.
+	\end{equation*}
+
+	Si $A=\left\{6\right\}$, alors $P(A)=\nicefrac{1}{6}$ et
+	\begin{equation*}
+		P(A|B)=\frac{P(\left\{6\right\})}{P(B)}=\frac{1}{3}.
+	\end{equation*}
+\end{exemple}
+
+\subsection{Propriétés}
+\begin{theoreme}
+	$P(A\cap B)=P(A|B)\cdot P(B)$.
+\end{theoreme}
+
+\begin{theoreme}
+	$P(A|B)=P(B|A)=0$, si $A\cap B=\emptyset$.
+\end{theoreme}
+
+\begin{theoreme}
+	$P(A|B)\neq P(B|A)$, en général.
+\end{theoreme}
+
+\begin{theoreme}
+	$P(A|S)=P(A)$, $A\in S$.
+\end{theoreme}
+
+Le dernier théorème résulte que toutes probabilités peut s'exprimer sous la
+forme d'une probabilité conditionnelle.
+
+\begin{exemple}
+	On pige sans remise 3 composantes non défecteuses parmis 10 composantes, donc 4 sont
+	défecteuses. Soit $A_i$ le $i^\text{e}$ composante non défecteuses.
+	\begin{equation*}
+		P(A_1\cap A_2\cap A_3)=P(A_3|A_1\cap A_2)P(A_2|A_1)P(A_1)
+		=\frac{4}{8}\cdot\frac{5}{9}\cdot\frac{6}{10}
+	\end{equation*}
+\end{exemple}
+
+\subsection{Probabilités totales}
+\begin{definition}
+	Les évènements $B_1,B_2,\dots,B_n$ forment une \textit{partition} si les
+	évènements $B_i\cap B_j=\emptyset$, $\forall i\neq j$, et
+	$B_1\cup B_2\cup\cdots\cup B_n=S$.
+\end{definition}
+
+Avec une partition, on a la règle de probabilités totales, soit
+\begin{equation*}
+	P(A)=\sum_{i=1}^nP(A\cap B_i)=\sum_{i=1}^nP(A|B_i)P(B_i).
+\end{equation*}
+
+\begin{exemple}
+	Soit la partition $B_1$, $B_2$ et $B_3$ représenté dans l'arbre suivant.
+	\begin{figure}[H]
+		\centering
+		\input{figure/partition_arbre}
+	\end{figure}
+
+	À partir de l'arbre, il facile de déterminer les probabilités
+	conditionnelles de $A$ et $A^c$. Par exemple,
+	$P(A|B_1)=\nicefrac{3}{6}\cdot\nicefrac{1}{10}=\nicefrac{1}{30}$ et
+	$P(A^c|B_2)=\nicefrac{2}{6}\cdot\nicefrac{9}{10}=\nicefrac{3}{10}$.
+\end{exemple}
+
+\begin{theoreme}[Règle d'inversion]
+	$P(B|A)=\dfrac{P(A|B)P(B)}{P(A)}$
+\end{theoreme}
+
+\begin{theoreme}[Règles de Bayes]
+	$P(B_j|A)=\dfrac{P(A|B_j)P(B_j)}{\sum_{i=1}^nP(A|B_i)P(B_i)}$, où $B_i$ et
+	$B_j$ sont des partitions.
+\end{theoreme}
+
+\begin{exemple}
+	On dépiste le cancer du poumon dans une clinique. On sait que 
+	\begin{itemize}
+		\item\SI{25}{\percent} des individus sont fumeurs
+		\item\SI{75}{\percent} des individus sont non fumeurs
+		\item\SI{10}{\percent} des fumeurs développent un cancer
+		\item\SI{1 }{\percent} des non fumeurs développent un cancer
+	\end{itemize}
+
+	On détecte un cancer des poumons chez un individu sélectionné au hasard
+	pour dépistage. Quelle est la probabilité que ça soit un fumeur?
+
+	Soit $B$ les fumeurs, $B^c$ les non fumeurs, $A$ la présence de cancer du
+	poumon et $A^c$ son absence. Par conséquent, on cherche $P(B|A)$. Avec les
+	données, on sait que $P(A|B)=\SI{0.10}{}$, $P(A|B^c)=\SI{0.01}{}$,
+	$P(B)=\SI{0.25}{}$ et $P(B^c)=\SI{0.75}{}$, de sorte que le théorème de
+	Bayes nous donne
+	\begin{equation*}
+		P(B|A)=\frac{P(A|B)P(B)}{P(A|B)P(B)+P(A|B^c)P(B^c)}\approx\SI{0.769}{}.
+	\end{equation*}
+\end{exemple}
+
+\subsection{Notion d'indépendance}
+\begin{definition}
+	On dit que les évènements $A$ et $B$ sont \textit{indépendants} si la
+	réalisation d'une n'affecte pas l'autrea.
+\end{definition}
+
+Mathématiquement parlant, des évènements indépendants $A$ et $B$ sont tels que
+$P(A|B)=P(A)$ et $P(B|A)=P(B)$.
+
+\begin{theoreme}
+	$P(A\cap B)=P(A)P(B)\Leftrightarrow P(A|B)=P(A)\wedge P(B|A)=P(B)$
+\end{theoreme}
+
+\begin{theoreme}
+	$P(A\cap B)=P(A)P(B)\Leftrightarrow P(A\cap B^c)=P(A)P(B^c)$.
+\end{theoreme}
+
+\begin{exemple}
+	Soit un système en série ayant $n$ composantes comme à la figure suivante.
+	\begin{figure}[H]
+		\centering
+		\input{figure/series}
+	\end{figure}
+	Un système en série fonction si et seulement si tous ses composantes
+	fonctionnent. Quelle est la probabilité que le système fonctionne si chaque
+	composante a une probabilité de \SI{75}{\percent} de fonctionner?
+
+	Soit l'ensemble échantillion $S=\left\{F,D\right\}$ avec $F$ une composante
+	qui fonctionne et $D$ une composante défectueuse. De plus, on définit
+	$A_i=\left\{F\right\}\in S$ comme étant la composante $i$ qui fonctionne et
+	$A_i^c=\left\{D\right\}\in S$ comme étant la composante $i$ qui est
+	défecteuse.
+
+	On suppose que les composantes fonctionnent et tombent en panne
+	indépendamment les uns des autres. Le système fonctionne si
+	\begin{equation*}
+		A_S=\bigcap_{i=1}^nA_i,
+	\end{equation*}
+	de sorte que
+	\begin{equation*}
+		P(A_S)
+		=P\left(\bigcap_{i=1}^nA_i\right)
+		=\prod_{i=1}^nP(A_i)
+		=\SI{0.75}{}^n.
+	\end{equation*}
+\end{exemple}
+
+\begin{exemple}
+	On génère un point au hasard dans le carré $S=[0,10]\times[0,10]$. On
+	définit $A$ comme ayant l'abscisse du point entre 2 et 4, et $B$ comme
+	ayant l'ordonnée du point entre 3 et 6. Est-ce que $A$ et $B$ sont
+	indépendants?
+	\begin{figure}[H]
+		\centering
+		\input{figure/square}
+	\end{figure}
+\end{exemple}
+\addtocounter{exemple}{-1}
+\begin{exemple}[suite]
+	Puisqu'il y a équiprobabilité continue, alors les probabilités sont données
+	par le rapport entre l'aire de $A$ ou $B$ sur $S$, alors
+	$P(A)=\nicefrac{2}{10}$ et $P(B)=\nicefrac{3}{10}$. De plus,
+	$P(A\cap B)=\nicefrac{6}{10}$. Puisque $P(A\cap B)=P(A)P(B)$, alors les
+	évènements $A$ et $B$ sont indépendants.
+\end{exemple}
+
+\section{Variables Aléatoires}
+\begin{definition}
+	Une \textit{variable aléatoire} correspond à une expérience aléatoire dont
+	les résultats sont quantitatifs.
+\end{definition}
+
+On peut décrire une variable aléatoire par sa
+\begin{itemize}
+	\item fonction de répartition
+	\item fonction de masse (variable aléatoire discrète)
+	\item fonction de densité (variable aléatoire continue)
+\end{itemize}
+
+\begin{exemple}
+	Soit $X$ le nombre de défaults de soudure d'un transistor à 3 pattes. Quel
+	est l'espace échantillion de $X$?
+
+	L'espace échantillion est $S_X=\left\{0,1,2,3\right\}$, alors $X$ est une
+	variable aléatoire discrète.
+\end{exemple}
+
+\begin{exemple}
+	Soit $X$ un nombre réel choisie au hasard dans l'intervalle $[0,2]$. Quel
+	est l'espace échantillion de $X$?
+
+	L'espace échantillion est $S_X=[0,2]$, alors $X$ est une variable aléatoire
+	continue.
+\end{exemple}
+
+\begin{exemple}
+	Soit $X$ le temps d'attente d'un client au guichet automatique. Quel est
+	l'espace d'échantillion de $X$?
+
+	L'espace échantillion est $S_X={0}\cup [0,\infty[$. Il y a une partie
+	discrète et continue, alors $X$ est une variable aléatoire mixte.
+\end{exemple}
+
+\subsection{Fonction de répartition}
+\begin{definition}
+	Un \textit{fonction de répartition} $F_X(x)$ est égal à la probabilité
+	qu'une variable aléatoire $X$ soit plus petite qu'une valeur $x$,
+	c'est-à-dire $F_X(x)=P(X\leq x)$, $\forall x\in\mathbb{R}$.
+\end{definition}
+
+\begin{theoreme}
+	$0\leq F_X(x)\leq 1$.
+\end{theoreme}
+
+\begin{theoreme}
+	$\displaystyle\lim_{X\rightarrow-\infty}F_X(x)=0$.
+\end{theoreme}
+
+\begin{theoreme}
+	$\displaystyle\lim_{X\rightarrow \infty}F_X(x)=1$.
+\end{theoreme}
+
+\begin{theoreme}[non décroissance]
+	$x_0<x_1\Leftrightarrow F_X(x_0)<F_X(x_1)$.
+\end{theoreme}
+
+\begin{theoreme}[continuité à droite]
+	$F_X(x^+)=F_X(x)$.
+\end{theoreme}
+
+Il en résulte que toutes fonctions de répartition $F_X(x)$ sont croissantes,
+mais peuvent contenir des discontinuités. Elles peuvent représenté des
+variables aléatoires discrètes, continues ou mixtes. La figure
+\ref{fig:maxwell} est une exemple de la fonction de répartition d'une
+distribution de Maxwell-Boltzmann pour certains paramètres différents.
+
+\begin{figure}[H]
+	\centering
+	\input{figure/maxwell_boltzmann}
+	\caption{$F_X(x)$ de certaines distributions de Maxwell-Boltzmann}
+	\label{fig:maxwell}
+\end{figure}
+
+\subsection{Fonction de masse}
+\begin{definition}
+	Une \textit{fonction de masse} $P_X(x_k)$ est égal à la probabilité qu'une
+	variable aléatoire $X$ soit égal à une valeur discrète $x_k\in S_X$,
+	c'est-à-dire $P_X(x_k)=P(X=x_k)$ avec
+	$S_X=\left\{x_1,x_2,\dots,x_k|x_1<x_2<\cdots<x_k\right\}$
+\end{definition}
+
+\begin{theoreme}
+	$P_X(x_k)\geq 0$.
+\end{theoreme}
+
+\begin{theoreme}
+	$\displaystyle\sum_{a< x_k\leq b}P_X(x_k)=P(a<X\leq b)$.
+\end{theoreme}
+
+\begin{theoreme}
+	$\displaystyle\sum_{k=1}^\infty P_X(x_k)=1$
+\end{theoreme}
+
+\subsection{Fonction de densité}
+\begin{definition}
+	Une \textit{fonction de densité} $f_X(x)$ est égal à la probabilité de
+	qu'une variable aléatoire $X$ soit autour d'une valeur $x$,
+	c'est-à-dire
+	\begin{equation*}
+		f_X(x)=\lim_{\epsilon\rightarrow 0}\frac{1}{\epsilon}
+		P\left(x-\frac{\epsilon}{2}\leq X\leq x+\frac{\epsilon}{2}\right),
+	\end{equation*}
+	où $\epsilon$ est positif.
+\end{definition}
+
+\begin{theoreme}
+	$f_X(x)\geq 0$
+\end{theoreme}
+
+\begin{theoreme}
+	$\displaystyle\int_{-\infty}^\infty f_X(x)\d{x}=1$
+\end{theoreme}
+
+\subsection{Règles de calcul fondamentale}
+\begin{theoreme}\label{th:calc_fond}
+	$P(a<X\leq b)=F_X(b)-F_X(a)$
+\end{theoreme}
+
+\begin{proof}
+	Soit les ensembles $A=\left\{X\leq a\right\}$, $B=\left\{X\leq b\right\}$
+	et $C=\left\{a< X\leq b\right\}$, avec $a<b$, comme à la figure
+	\ref{fig:droite_num}.
+	\begin{figure}[H]
+		\centering
+		\input{figure/droite_numerique}
+		\caption{représentation sur une droite numérique}
+		\label{fig:droite_num}
+	\end{figure}
+	
+	On sait que $A\cap C=\emptyset$ et $A\cup C=B$. Par conséquent, 
+	$P(B)=P(A)+P(C)\Leftrightarrow P(C)=P(B)-P(A)=F_X(b)-F_X(a)$.
+\end{proof}
+
+\begin{theoreme}
+	$P(X=x)=F_X(x)-F_X(x^-)$.
+\end{theoreme}
+
+\begin{proof}
+	Soit $a=x-\epsilon$ et $b=x$, où $\epsilon$ est positif. Selon le théorème
+	\ref{th:calc_fond}, on a
+	\begin{equation*}
+		P(x-\epsilon<X\leq x)=F_X(x)-F_X(x-\epsilon).
+	\end{equation*}
+	En prenant la limite lorsque $\epsilon\rightarrow 0$, on obtient
+	\begin{equation*}
+		\lim_{\epsilon\rightarrow 0}P(x-\epsilon<X\leq x)
+		=F_X(x)-\lim_{\epsilon\rightarrow 0}F_X(x-\epsilon).
+	\end{equation*}
+	Avec $F_X(x^-)=\lim_{\epsilon\rightarrow 0}F_X(x-\epsilon)$ et
+	$(x-\epsilon<X\leq x)\equiv (X=x)$ lorsque $\epsilon\rightarrow 0$, on
+	obtient
+	\begin{equation*}
+		P(X=x)=F_X(x)-F_X(x^-).
+	\end{equation*}
+\end{proof}
+
+\begin{theoreme}
+	$f_X(x)=\dfrac{\d{}}{\d{x}}F_X(x)$.
+\end{theoreme}
+
+\begin{theoreme}
+	$F_X(x)=\displaystyle\int_{-\infty}^xf_X(t)\d{t}$.
+\end{theoreme}
+
+\begin{theoreme}\label{th:masse_repartition}
+	$F_X(x)=\displaystyle\sum_{x_k\leq x}P_X(x_k)$.
+\end{theoreme}
+
+\begin{theoreme}
+	$P_X(x_k)=\left\{
+		\begin{matrix}
+			F_X(x_1), & k=1\\
+			F_X(x_k)-F_X(x_{k-1}), & k\neq 1\\
+		\end{matrix}
+	\right.$.
+\end{theoreme}
+
+\begin{exemple}
+	Soit $X$ le nombre de défaults de soudure d'un transistor à 3 pattes. La
+	fonction de masse de $X$ est donnée par
+	\begin{equation*}
+		P_X(k)=\left\{
+			\begin{matrix}
+				\SI{0.7}{}, & k=0\\
+				\SI{0.1}{}, & k=1\\
+				\SI{0.1}{}, & k=2\\
+				\SI{0.1}{}, & k=3\\
+			\end{matrix}
+		\right.
+	\end{equation*}
+	Quelle est la fonction de répartition de $P_X(k)$?
+
+	On applique le théorème \ref{th:masse_repartition} pour obtenir la
+	fonction de répartition. Lorsque $x<0$, alors $F_X(x)=0$. Lorsque
+	$0\leq x<1$, alors $F_X(x)=\SI{0.7}{}$. Lorsque $1\leq x<2$, alors
+	$F_X(x)=\SI{0.8}{}$. En continuant, on obtient
+	\begin{equation*}
+		F_X(k)=\left\{
+			\begin{matrix}
+				\SI{0.0}{}, & \phantom{0\;\leq}x<0\\
+				\SI{0.7}{}, & 0\leq x<1\\
+				\SI{0.8}{}, & 1\leq x<2\\
+				\SI{0.9}{}, & 2\leq x<3\\
+				\SI{1.0}{}, & 3\leq x\phantom{<0\;}\\
+			\end{matrix}
+		\right.
+	\end{equation*}
+\end{exemple}
+
+\begin{exemple}
+	Soit $X$ un nombrbe réel choisie au hasard dans l'intervalle $[0,2]$.
+	Quelle est la fonction de répartition de $X$?
+
+	On sait que $F_X(x)=P(X\leq x)=\nicefrac{x}{2}$ lorsque $0\leq x\leq 2$,
+	$F_X(x)=0$ si $x<0$ et $F_X(x)=1$ si $x>2$. On obtient donc la fonction de
+	répartition
+	\begin{equation*}
+		F_X(k)=\left\{
+			\begin{matrix}
+				0,            & \phantom{0\;\leq}x<0\\
+				\dfrac{x}{2}, & 0\leq x\leq 2\\
+				1,            & 2\leq x\phantom{\leq 0\;}\\
+			\end{matrix}
+		\right.
+	\end{equation*}
+\end{exemple}
+
+\begin{exemple}
+	Soit $X$ le temps d'attente d'un client au guichet automatique. On suppose
+	que \SI{10}{\percent} des visites sont sans attente. Quel est la fonction
+	de répartition?
+	
+	La variable aléatoire est mixte. On sait que $F_X(0)=\nicefrac{1}{10}$ et
+	que $F_X(x)=0$ si $x<0$. La fonction de répartition est
+	\begin{equation*}
+		F_X(k)=\left\{
+			\begin{matrix}
+				0, & x < 0\\
+				\dfrac{x+1}{x+10}, & x \geq 0\\
+			\end{matrix}
+		\right.
+	\end{equation*}
+	Le graphique suivant montre la fonction de répartition $F_X(x)$.
+	\begin{figure}[H]
+		\centering
+		\input{figure/fonction_repartition}
+	\end{figure}
+\end{exemple}
+
+\subsection{Fonctions conditionnelles}
+\begin{definition}
+	Une \textit{fonction conditionnelle} $F_X(x|A)$ est la probabilité qu'une
+	variable aléatoire $X$ soit inférieure à $x$ sachant un évènement $A$.
+\end{definition}
+
+
+\begin{equation*}
+	F_X(x|A)=P(X\leq x|A)=\frac{P(\left\{X\leq x\right\}\cap A)}{P(A)}
+\end{equation*}
+
+\begin{equation*}
+	P_X(x_k|A)=P(X=x_k|A)=\frac{P(\left\{X=x_k\right\}\cap A)}{P(A)}=
+	\left\{
+		\begin{matrix}
+			\dfrac{P_X(x_k)}{P(A)}, & x_k\in A\\
+			0, & x_k\notin A\\
+		\end{matrix}
+	\right.
+\end{equation*}
+
+\begin{equation*}
+	f_X(x|A)=\frac{\d{}}{\d{x}}F_X(x|A)
+\end{equation*}
+
+\subsection{Médiane et quantile}
+\begin{definition}
+	La médiane d'une variable aléatoire $X$ continue est le nombre réel
+	$x_{1/2}$ tel que $F_X(x_{1/2})=\nicefrac{1}{2}$.
+\end{definition}
+
+\begin{definition}
+	Le \textit{quantile} d'ordre $p$ d'une variable aléatoire $X$ continue est
+	le nombre réel $x_p$ tel que $F_X(x_p)=p$.
+\end{definition}
+
+\begin{exemple}
+	Dans une certaine population, la taille $X$ d'un adulte choisi au hasard
+	possède la fonction de répartition 
+	\begin{equation*}
+		F_X(x)=\left\{
+			\begin{matrix}
+				0,        & \phantom{1.2\leq\;}x<1.2\\
+				1.5x-1.8, & 1.2\leq x<1.7\\
+				0.5x-0.1, & 1.7\leq x<2.2\\
+				1,        & 2.2\leq x\phantom{<2.2\;}\\
+			\end{matrix}
+		\right.
+	\end{equation*}
+	Calculer la médiane et le quantile d'ordre 95.
+
+	Puisque $F_X(1.7)=0.75$, alors le quantile d'ordre 95 est dans la tranche
+	$1.7\leq x<2.2$. Il suffit de résoudre $0.95=0.5x_{0.95}-0.1$ et on obtient
+	que $x_{0.95}=2.1$.
+\end{exemple}
+
+\end{document}
+

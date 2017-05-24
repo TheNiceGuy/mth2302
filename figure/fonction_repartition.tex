@@ -1,0 +1,29 @@
+\documentclass[11pt]{article}
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{standalone}
+
+\usetikzlibrary{babel}
+
+\begin{document}
+\def\E{100}
+
+\begin{tikzpicture}[scale=0.8]
+    \begin{axis}[xlabel=$x$,
+                 ylabel=$F_X(x)$,
+                 xmin=-10,
+                 xmax=\E,
+                 ymin=-0.1,
+                 ymax=1]
+        \addplot[domain=0:\E]{(x+1)/(x+10)};
+        \addplot[domain=-10:0-1pt]{0};
+        \draw[fill] (axis cs:0,0.1) circle (2pt);
+        \draw       (axis cs:0,0.0) circle (2pt);
+    \end{axis}
+\end{tikzpicture}
+\end{document}
+
+

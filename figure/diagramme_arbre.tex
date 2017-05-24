@@ -1,0 +1,50 @@
+\documentclass[11pt]{article}
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{tikz}
+\usepackage{standalone}
+
+\usetikzlibrary{babel}
+
+\begin{document}
+\begin{tikzpicture}[
+    level distance=8mm,
+    L1/.style ={sibling distance=4em},
+    L2/.style ={sibling distance=2em}]
+\draw[fill] circle (1pt);
+\node[inner sep=0mm] {}
+    child[L1] {
+        node {1}
+            child[L2] {node {P}}
+            child[L2] {node {F}}
+    }
+    child[L1] {
+        node {2}
+            child[L2] {node {P}}
+            child[L2] {node {F}}
+    }
+    child[L1] {
+        node {3}
+            child[L2] {node {P}}
+            child[L2] {node {F}}
+    }
+    child[L1] {
+        node {4}
+            child[L2] {node {P}}
+            child[L2] {node {F}}
+    }
+    child[L1] {
+        node {5}
+            child[L2] {node {P}}
+            child[L2] {node {F}}
+    }
+    child[L1] {
+        node {6}
+            child[L2] {node {P}}
+            child[L2] {node {F}}
+    }
+    ;
+\end{tikzpicture}
+\end{document}
+

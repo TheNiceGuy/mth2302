@@ -1,0 +1,35 @@
+\documentclass[11pt]{article}
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{tikz}
+\usepackage{standalone}
+
+\usetikzlibrary{babel}
+
+\begin{document}
+\begin{tikzpicture}[
+    level distance=12mm,
+    L1/.style ={sibling distance=12em},
+    L2/.style ={sibling distance=6em}]
+\draw[fill] circle (1pt);
+\node[inner sep=0mm] {}
+    child[L1] {
+        node {$B_1$ $\left(\frac{3}{6}\right)$}
+            child[L2] {node {$A$ $\left(\frac{1}{10}\right)$}}
+            child[L2] {node {$A^c$ $\left(\frac{9}{10}\right)$}}
+    }
+    child[L1] {
+        node {$B_2$ $\left(\frac{2}{6}\right)$}
+            child[L2] {node {$A$ $\left(\frac{1}{10}\right)$}}
+            child[L2] {node {$A^c$ $\left(\frac{9}{10}\right)$}}
+    }
+    child[L1] {
+        node {$B_3$ $\left(\frac{1}{6}\right)$}
+            child[L2] {node {$A$ $\left(\frac{1}{10}\right)$}}
+            child[L2] {node {$A^c$ $\left(\frac{9}{10}\right)$}}
+    }
+    ;
+\end{tikzpicture}
+\end{document}
+
