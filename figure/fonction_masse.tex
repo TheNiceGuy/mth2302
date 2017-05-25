@@ -1,0 +1,66 @@
+\documentclass[11pt]{article}
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{standalone}
+
+\usetikzlibrary{babel}
+\usetikzlibrary{calc}
+
+\begin{document}
+% control the number of points
+\def\E{30}
+
+\begin{tikzpicture}[scale=0.8]
+    % the list containing the generated values
+    \gdef\n{}
+    
+    % the sum of all generated values
+    \def\s{0.0}
+    
+    \foreach\i in {2,...,\E}{
+        % generate a value between 0 and 1
+        \pgfmathparse{(0.5+rand*0.5)}
+        \edef\c{\pgfmathresult}
+        
+        % add it to the sum
+        \pgfmathparse{\s+\c}
+        \xdef\s{\pgfmathresult}
+        
+        % add it to the list
+        \xdef\n{\n\c,}
+    }
+    
+    \begin{axis}[xlabel=$x$,
+                 ylabel=$P_X(x)$,
+                 xmin=0,
+                 xmax=\E,
+                 scaled ticks=false,
+                 tick label style={/pgf/number format/fixed},
+                 width=10cm,
+                 height=5cm]
+        % add the horizontal line defining P(x)=0 for non-integers
+        \addplot[domain=0:\E]{0};
+        
+        \pgfmathparse{\E-2}
+        \pgfplotsforeachungrouped\i in {0,...,\pgfmathresult}{
+            % divide the random value by the sum so the sum of all the new values is 1
+            \pgfmathparse{{\n}[\i]*(1/\s)}
+            \edef\v{\pgfmathresult}
+
+            % PGF hack to force macro expansion of the vertical lines
+            \edef\temp{\noexpand\draw[fill] (axis cs:\i+1,0) -- (axis cs:\i+1,\v);}
+            \temp
+            
+            % PGF hack to force macro expansion of the points
+            \edef\temp{\noexpand\addplot[mark=*] coordinates {(\i+1,\v)};}
+            \temp
+        }
+    \end{axis}
+            
+\end{tikzpicture}
+\end{document}
+
+

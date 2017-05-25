@@ -24,6 +24,7 @@
 \usetikzlibrary{calc}
 \usetikzlibrary{patterns}
 \usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{decorations.markings}
 
 %%%%%%%%%%%%%%%%%%
 % Configurations %
@@ -886,8 +887,8 @@ distribution de Maxwell-Boltzmann pour certains paramètres différents.
 
 \begin{figure}[H]
 	\centering
-	\input{figure/maxwell_boltzmann}
 	\caption{$F_X(x)$ de certaines distributions de Maxwell-Boltzmann}
+	\input{figure/maxwell_boltzmann}
 	\label{fig:maxwell}
 \end{figure}
 
@@ -910,6 +911,17 @@ distribution de Maxwell-Boltzmann pour certains paramètres différents.
 \begin{theoreme}
 	$\displaystyle\sum_{k=1}^\infty P_X(x_k)=1$
 \end{theoreme}
+
+Une fonction de masse est nulle en tout point sauf aux valeurs discrètes
+possibles. De plus, la somme de toutes les valeurs discrètes donne 1. La figure
+\ref{fig:fonction_masse} montre un exemple d'une fonction de masse.
+
+\begin{figure}[H]
+	\centering
+	\caption{exemple d'une fonction de masse}
+	\input{figure/fonction_masse}
+	\label{fig:fonction_masse}
+\end{figure}
 
 \subsection{Fonction de densité}
 \begin{definition}
@@ -974,16 +986,22 @@ distribution de Maxwell-Boltzmann pour certains paramètres différents.
 	\end{equation*}
 \end{proof}
 
+\subsection{Liens entre les différentes fonctions}
+Toutes variables aléatoires peuvent être décrites par une fonction de
+répartition. Lorsque la variable aléatoire est continue, alors elle peut aussi
+être décrite pas une fonction de densité de probabilité. Si la variable
+aléatoire est discrète, alors elle peut être décrite pas une fonction de masse.
+
 \begin{theoreme}
-	$f_X(x)=\dfrac{\d{}}{\d{x}}F_X(x)$.
+	$f_X(x)=\dfrac{\d{}}{\d{x}}F_X(x)$ si $X$ est continue.
 \end{theoreme}
 
 \begin{theoreme}
-	$F_X(x)=\displaystyle\int_{-\infty}^xf_X(t)\d{t}$.
+	$F_X(x)=\displaystyle\int_{-\infty}^xf_X(t)\d{t}$ si $X$ est continue.
 \end{theoreme}
 
 \begin{theoreme}\label{th:masse_repartition}
-	$F_X(x)=\displaystyle\sum_{x_k\leq x}P_X(x_k)$.
+	$F_X(x)=\displaystyle\sum_{x_k\leq x}P_X(x_k)$ si $X$ est discrète.
 \end{theoreme}
 
 \begin{theoreme}
@@ -1017,14 +1035,33 @@ distribution de Maxwell-Boltzmann pour certains paramètres différents.
 	\begin{equation*}
 		F_X(k)=\left\{
 			\begin{matrix}
-				\SI{0.0}{}, & \phantom{0\;\leq}x<0\\
-				\SI{0.7}{}, & 0\leq x<1\\
-				\SI{0.8}{}, & 1\leq x<2\\
-				\SI{0.9}{}, & 2\leq x<3\\
-				\SI{1.0}{}, & 3\leq x\phantom{<0\;}\\
+				\SI{0.0}{}, & \phantom{0\;\leq}k<0\\
+				\SI{0.7}{}, & 0\leq k<1\\
+				\SI{0.8}{}, & 1\leq k<2\\
+				\SI{0.9}{}, & 2\leq k<3\\
+				\SI{1.0}{}, & 3\leq k\phantom{<0\;}\\
 			\end{matrix}
 		\right.
 	\end{equation*}
+\end{exemple}\pagebreak
+\addtocounter{exemple}{-1}
+\begin{exemple}[suite]
+	Les fonctions de masse et de répartition sont montrées dans les figures
+	suivantes.
+
+	\noindent
+	\begin{minipage}{0.5\textwidth}
+		\begin{figure}[H]
+			\centering
+			\input{figure/transistor_PX}
+		\end{figure}
+	\end{minipage}%
+	\begin{minipage}{0.5\textwidth}
+		\begin{figure}[H]
+			\centering
+			\input{figure/transistor_FX}
+		\end{figure}
+	\end{minipage}
 \end{exemple}
 
 \begin{exemple}
@@ -1067,30 +1104,33 @@ distribution de Maxwell-Boltzmann pour certains paramètres différents.
 	\end{figure}
 \end{exemple}
 
-\subsection{Fonctions conditionnelles}
+\subsection{Fonction conditionnelle}
 \begin{definition}
-	Une \textit{fonction conditionnelle} $F_X(x|A)$ est la probabilité qu'une
-	variable aléatoire $X$ soit inférieure à $x$ sachant un évènement $A$.
+	Une \textit{fonction conditionnelle} est la probabilité qu'une variable
+	aléatoire $X$ prenne une valeur plus petit ou égal à  $x$ sachant un
+	évènement $A$.
 \end{definition}
 
+\begin{theoreme}
+	$F_X(x|A)=\dfrac{P(\left\{X\leq x\right\}\cap A)}{P(A)}$.
+\end{theoreme}
 
-\begin{equation*}
-	F_X(x|A)=P(X\leq x|A)=\frac{P(\left\{X\leq x\right\}\cap A)}{P(A)}
-\end{equation*}
+\begin{theoreme}
+	$f_X(x|A)=\dfrac{\d{}}{\d{x}}F_X(x|A)$ si $X$ est continue.
+\end{theoreme}
 
-\begin{equation*}
-	P_X(x_k|A)=P(X=x_k|A)=\frac{P(\left\{X=x_k\right\}\cap A)}{P(A)}=
+\begin{theoreme}
+	$P_X(x_k|A)=
 	\left\{
 		\begin{matrix}
 			\dfrac{P_X(x_k)}{P(A)}, & x_k\in A\\
 			0, & x_k\notin A\\
 		\end{matrix}
-	\right.
-\end{equation*}
+	\right.$
+	si $X$ est discrète.
+\end{theoreme}
 
-\begin{equation*}
-	f_X(x|A)=\frac{\d{}}{\d{x}}F_X(x|A)
-\end{equation*}
+
 
 \subsection{Médiane et quantile}
 \begin{definition}
