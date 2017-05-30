@@ -61,7 +61,31 @@
 
 \renewcommand\P{%
 	\ensuremath{%
-		\mathrm{P}
+		\mathbb{P}%
+	}%
+}%
+
+\newcommand\e{%
+	\ensuremath{%
+		\mathrm{e}%
+	}%
+}%
+
+\newcommand\bin{%
+	\ensuremath{%
+		\mathcal{B}%
+	}%
+}%
+
+\newcommand\geo{%
+	\ensuremath{%
+		\mathcal{G}%
+	}%
+}%
+
+\newcommand\poi{%
+	\ensuremath{%
+		\mathcal{P}%
 	}%
 }%
 
@@ -1014,6 +1038,29 @@ aléatoire est discrète, alors elle peut être décrite pas une fonction de mas
 \end{theoreme}
 
 \begin{exemple}
+	Soit $X$ le temps d'attente d'un client au guichet automatique. On suppose
+	que \SI{10}{\percent} des visites sont sans attente. Quel est la fonction
+	de répartition?
+	
+	La variable aléatoire est mixte. On sait que $F_X(0)=\nicefrac{1}{10}$ et
+	que $F_X(x)=0$ si $x<0$. La fonction de répartition est
+	\begin{equation*}
+		F_X(k)=\left\{
+			\begin{matrix}
+				0, & x < 0\\
+				\dfrac{x+1}{x+10}, & x \geq 0\\
+			\end{matrix}
+		\right.
+	\end{equation*}
+	Le graphique suivant montre la fonction de répartition $F_X(x)$.
+	\begin{figure}[H]
+		\centering
+		\input{figure/fonction_repartition}
+	\end{figure}
+\end{exemple}
+
+\pagebreak
+\begin{exemple}
 	Soit $X$ le nombre de défaults de soudure d'un transistor à 3 pattes. La
 	fonction de masse de $X$ est donnée par
 	\begin{equation*}
@@ -1043,9 +1090,7 @@ aléatoire est discrète, alors elle peut être décrite pas une fonction de mas
 			\end{matrix}
 		\right.
 	\end{equation*}
-\end{exemple}\pagebreak
-\addtocounter{exemple}{-1}
-\begin{exemple}[suite]
+
 	Les fonctions de masse et de répartition sont montrées dans les figures
 	suivantes.
 
@@ -1082,28 +1127,6 @@ aléatoire est discrète, alors elle peut être décrite pas une fonction de mas
 	\end{equation*}
 \end{exemple}
 
-\begin{exemple}
-	Soit $X$ le temps d'attente d'un client au guichet automatique. On suppose
-	que \SI{10}{\percent} des visites sont sans attente. Quel est la fonction
-	de répartition?
-	
-	La variable aléatoire est mixte. On sait que $F_X(0)=\nicefrac{1}{10}$ et
-	que $F_X(x)=0$ si $x<0$. La fonction de répartition est
-	\begin{equation*}
-		F_X(k)=\left\{
-			\begin{matrix}
-				0, & x < 0\\
-				\dfrac{x+1}{x+10}, & x \geq 0\\
-			\end{matrix}
-		\right.
-	\end{equation*}
-	Le graphique suivant montre la fonction de répartition $F_X(x)$.
-	\begin{figure}[H]
-		\centering
-		\input{figure/fonction_repartition}
-	\end{figure}
-\end{exemple}
-
 \subsection{Fonction conditionnelle}
 \begin{definition}
 	Une \textit{fonction conditionnelle} est la probabilité qu'une variable
@@ -1129,8 +1152,6 @@ aléatoire est discrète, alors elle peut être décrite pas une fonction de mas
 	\right.$
 	si $X$ est discrète.
 \end{theoreme}
-
-
 
 \subsection{Médiane et quantile}
 \begin{definition}
@@ -1162,6 +1183,263 @@ aléatoire est discrète, alors elle peut être décrite pas une fonction de mas
 	$1.7\leq x<2.2$. Il suffit de résoudre $0.95=0.5x_{0.95}-0.1$ et on obtient
 	que $x_{0.95}=2.1$.
 \end{exemple}
+
+\subsection{Lois de probabilités discrètes}
+\subsubsection{Loi de Bernoulli}
+Une expérience aléatoire où la variable aléatoire $X$ peut être un
+\textit{succès} ou un \textit{échec} suit une loi de Bernoulli de paramètre
+$p$ dénotée
+\begin{equation*}
+	X\sim\bin(1,p),
+\end{equation*}
+où $p$ est la probabilité de succès. On dénote un succès comme $X=1$ et un
+échec comme $X=0$. Par conséquent, la probabilité d'un succès est $\P(X=1)=p$
+tandis que celle d'un échec est $\P(X=0)=q$ où $q=1-p$.
+
+\begin{theoreme}
+	$P_X(k)=\left\{
+		\begin{matrix}
+			q &\text{si} & k=0\\
+			p &\text{si} & k=1\\		
+		\end{matrix}
+	\right.$.
+\end{theoreme}
+
+\subsubsection{Loi binomiale}
+Une expérience aléatoire où la variable aléatoire $X$ est le nombre de
+\textit{succès} obtenu en $n$ essaie suit une loi binomiale dénotée
+\begin{equation*}
+	X\sim\bin(n,p),
+\end{equation*}
+où $p$ est la probabilité d'un succès individuel. L'espace échantillion est
+$S_X=\left\{0,1,2,\dots,n\right\}$.
+
+\begin{theoreme}
+	$P_X(k)=\comb{k}{n}p^kq^{n-k}$ où $k=0,1,2,3,\dots,n$.
+\end{theoreme}
+
+\begin{proof}
+	Soit $A_i$ le $i$-ème succès et $A_i^c$ le $i$-ème échec dans une
+	expérience aléatoire à $n$ essai. La probabilité d'obtenir $k$ succès est
+	donnée par
+	\begin{equation*}
+		\P\big(
+			\underbrace{A_1\cap A_2\cap\cdots\cap A_k}_\text{$k$ fois}
+			\cap
+			\underbrace{A_{k+1}^c\cap A_{k+1}^c\cap\cdots\cap A_n^c}_
+			\text{$n-k$ fois}
+		\big),
+	\end{equation*}
+	où $k=0,1,2,3,\dots,n$.
+
+	Hors, la probabilité d'un succès est $\P(A_i)=p$ et celle d'un échec est
+	$\P(A_i^c)=q$, où $q=1-p$. Puisque chaque essai est indépendant des autres,
+	la probabilité peut s'écrire
+	\begin{equation*}
+		\underbrace{
+			\P(A_1)\P(A_2)\cdots P(A_k)
+		}_\text{$k$ fois}
+		\cdot
+		\underbrace{
+			\P(A_{k+1}^c)\P(A_{k+2}^c)\cdots P(A_n^c)
+		}_\text{$n-k$ fois}
+		=p^kq^{n-k}.
+	\end{equation*}
+
+	De plus, les succès peuvent être à n'importe quel essai. Par conséquent,
+	il faut choisir $k$ essaies parmis les $n$ essaies de sorte que la
+	probabilité d'obtenir $k$ succès en tout est
+	$P_X(k)=\P(X=k)=\comb{k}{n}p^kq^{n-k}$.
+\end{proof}
+
+\begin{theoreme}
+	$\P(S_X)=1$.
+\end{theoreme}
+
+\begin{proof}
+	Par définition, on a
+	\begin{equation*}
+		\P(S_X)=\sum_{k=0}^n\comb{k}{n}p^kq^{n-k}
+	\end{equation*}
+	Selon le théorème binomial, soit
+	\begin{equation*}
+		(a+b)^n=\sum_{k=0}^n\comb{k}{n}p^kq^{n-k},
+	\end{equation*}
+	et que $q=1-p$, on peut simplifier de sorte à obtenir
+	\begin{equation*}
+		\P(S_X)=(p+q)^k=1^k=1.
+	\end{equation*}
+\end{proof}
+
+\vspace{-5mm}
+\begin{exemple}
+	Vous achetez un billet de 6/49 à chaque semaine depuis vos 18 ans. Quelle
+	est la probabilité de gagner le gros lot au plus tard à votre $98^e$
+	anniversaire?
+	
+	Ce problème se décrit à l'aide d'une loi binomiale, soit
+	\begin{equation*}
+		X\sim\bin\left(n,\frac{1}{\SI{13983816}{}}\right),
+	\end{equation*}
+	où $n$ est le nombre d'essaies et $X$ le nombre de gros lots gagnés.
+	\vspace{-1mm}
+\end{exemple}\pagebreak
+\addtocounter{exemple}{-1}
+\begin{exemple}[suite]
+	Puisqu'on joue chaque semaine de 18 ans à 98 ans, un total de
+	$n=52\cdot(98-18)=4160$ billets sont achetés. La probabilité d'obtenir que
+	des échecs est données par
+	\begin{equation*}
+		\left(1-\frac{1}{\SI{13983816}{}}\right)^{4160}=
+		\left(\frac{\SI{13983815}{}}{\SI{13983816}{}}\right)^{4160},
+	\end{equation*}
+	de sorte que la probabilité d'obtenir au moins 1 billet gagnant est donnée
+	par le complément, soit
+	\begin{equation*}
+		\P(X\geq 1)
+		=1-\left(\frac{\SI{13983815}{}}{\SI{13983816}{}}\right)^{4160}
+		\approx\SI{0.000297}{}.
+	\end{equation*}
+\end{exemple}
+
+\subsubsection{Loi géométrique}
+Une expérience aléatoire où la variable aléatoire $X$ est le nombre d'essais
+requis pour obtenir un premier succès suit une loi géométrique dénotée
+\begin{equation*}
+	X\sim\geo(p),
+\end{equation*}
+où $p$ est la probabilité d'avoir un succès à un essai. L'espace échantillion
+est $S_X=\left\{1,2,\dots\right\}$.
+
+\begin{theoreme}
+	$P_X(k)=q^{k-1}p$.
+\end{theoreme}
+
+\begin{proof}
+	Soit $A_i$ le $i$-ième succès et $A_i^c$ le $i$-ème échec dans un
+	expérience aléatoire où il faut $k$ essai pour obtenir un succès. La
+	probabilité d'obtenir le succès au $k$-ième essai est donnée par
+	\begin{equation*}
+		\P\big(
+			\underbrace{A_1^c\cap A_2^c\cap\cdots\cap A_{k-1}^c}_
+			\text{$k-1$ fois}\cap A_k
+		\big),
+	\end{equation*}
+	où $k=1,2,\dots$
+
+	Hors, la probabilité d'un succès est $\P(A_i)=p$ et celle d'un échec
+	est $\P(A_i^c)=q$, où $q=1-p$. Puisque chaque essai est indépendant des
+	autres, la probabilité peut s'écrire
+	\begin{equation*}
+		P_X(k)=
+		\underbrace{\P(A_1^c)\P(A_2^c)\cdots\P(A_{k-1})}_\text{$k-1$ fois}
+		\cdot\P(A_k)=q^{k-1}p.
+	\end{equation*}
+\end{proof}
+
+\begin{theoreme}\label{th:repartition_geo}
+	$F_X(n)=1-q^n$ où $n=1,2,\dots$
+\end{theoreme}
+
+\begin{proof}
+	Selon une variante du théorème \ref{th:masse_repartition}, on a
+	\begin{equation*}
+		F_X(n)=\sum_{k=1}^nP_X(k)=\sum_{k=1}^nq^{k-1}p=p\sum_{k=1}^nq^{k-1}.
+	\end{equation*}
+	On remarque que la somme est une série géométrique, alors
+	\begin{equation*}
+		\sum_{k=1}^nq^{k-1}=\frac{1-q^n}{1-q}.
+	\end{equation*}
+	Puisque $q=1-p\Leftrightarrow p=1-q$, on obtient
+	\begin{equation*}
+		F_X(n)=(1-q)\frac{1-q^n}{1-q}=1-q^n.
+	\end{equation*}
+\end{proof}
+
+\begin{theoreme}
+	$\P(S_X)=1$.
+\end{theoreme}
+
+\begin{proof}
+	En utilisant à nouveau la série géométrique, on a
+	\begin{equation*}
+		\P(S_X)
+		=\sum_{k=1}^\infty P_X(k)
+		=p\sum_{k=1}^\infty q^{k-1}
+		=p\frac{1}{1-q}
+		=(1-q)\frac{1}{1-q}
+		=1,
+	\end{equation*}
+	puisque $q=1-p\Leftrightarrow p=1-q$.
+\end{proof}
+
+\begin{theoreme}[absence de mémoire]
+	$\P(X>k+j|X>j)=\P(X>k)$ où $k,j\in\mathbb{Z}$.
+\end{theoreme}
+
+\begin{proof}
+	On sait que
+	\begin{equation*}
+		\P(X>k+j|X>j)=\frac{\P(
+			\left\{X>k+j\right\}\cap
+	   		\left\{X>j\right\})}{\P(X>j)}.
+	\end{equation*}
+	Puisque $k\in\mathbb{Z}$, alors $\left\{X>k+j\right\}\cap\left\{X>j\right\}
+	=\left\{X>k+1\right\}$ de sorte que
+	\begin{equation*}
+		\P(X>k+j|X>j)=\frac{\P(X>k+j)}{\P(X>j)}.
+	\end{equation*}
+	Avec le complément du théorème \ref{th:repartition_geo}, on a
+	\begin{equation*}
+		\P(X>k+j|X>j)=\frac{q^{k+j}}{q^{j}}=q^{k}=\P(X>k).
+	\end{equation*}
+\end{proof}
+
+\subsubsection{Loi de Poisson}
+Cette loi est un cas limite de la loi binomiale lorsque $n\rightarrow\infty$.
+On pose $p=\alpha/n$ où $\alpha$ est un nombre positif, de sorte que la 
+probabilité lorsque $n$ est grand devient nulle. On dénote une loi de Poisson
+par
+\begin{equation*}
+	X\sim\poi(\alpha)
+	=\lim_{n\rightarrow\infty}\bin\left(n,\frac{\alpha}{n}\right).
+\end{equation*}
+
+Par conséquent, la probabilité que $X$ prend une valeur proche de $\alpha$ est
+élevée. Puisqu'elle est basée sur une loi binomiale, alors l'espace
+échantillion est $S_X=\left\{0,1,2,\dots\right\}$.
+
+\begin{theoreme}
+	$P_X(k)=\dfrac{\alpha^k}{k!}\e^{-\alpha}$.
+\end{theoreme}
+
+\begin{theoreme}
+	$\P(S_X)=1$.
+\end{theoreme}
+
+\begin{proof}
+	En utilisant le développement en série de la fonction exponentielle, on a
+	\begin{equation*}
+		\P(S_X)
+		=\sum_{k=0}^\infty P_X(k)
+		=\e^{-\alpha}\sum_{k=0}^\infty\frac{\alpha^k}{k!}
+		=\e^{-\alpha}\e^\alpha
+		=1.
+	\end{equation*}
+\end{proof}
+
+\subsection{Approximation par une loi de Poisson}
+Soit une loi binomiale $X\sim\bin(n,p)$. Si $p$ est près de $0$, alors
+$X\approx\poi(np)$. Par conséquent,
+\begin{equation*}
+	\P(X=k)\approx\frac{(np)^k}{k!}\e^{-np}.
+\end{equation*}
+
+En général, l'approximation est bonne si $n\geq 30$ et $p\leq 0.05$. Si $p$
+est proche de 1, alors on considère les échecs au lieu des succès. Dans ce cas,
+\begin{equation*}
+	\P(X=k)\approx\frac{(nq)^{n-k}}{(n-k)!}\e^{-nq}.
+\end{equation*}
 
 \end{document}
 
