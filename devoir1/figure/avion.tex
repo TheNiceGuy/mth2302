@@ -1,0 +1,48 @@
+\documentclass[11pt]{article}
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{standalone}
+\usepackage{tikz}
+
+\begin{document}
+\def\h{15mm}
+\def\w{ 5mm}
+
+\def\T{}\def\M{}\def\B{}
+
+\newcommand\triplet[2]{%
+    \begin{scope}[xshift=#1,yshift=#2]%
+        \draw (-\w/2,-\h/2) -- (-\w/2,\h/2);%
+        \draw ( \w/2,-\h/2) -- ( \w/2,\h/2);%
+        %
+        \foreach\y in {0,1,2,3} {%
+            \draw (-\w/2,\y*\h/3-\h/2) -- (\w/2,\y*\h/3-\h/2);%
+        }%
+        %
+        \node at (0, \h/3) {\T};%
+        \node at (0, 0)    {\M};%
+        \node at (0,-\h/3) {\B};%
+        %
+        \def\T{}\def\M{}\def\B{}%
+    \end{scope}%
+}
+
+\begin{tikzpicture}
+\foreach\x in {1,2,3,4,5} {
+    \triplet{\x cm}{ 1 cm}
+    \triplet{\x cm}{-1 cm}
+    \node at (\x cm, 0) {\x};
+}
+
+\triplet{7 cm}{ 1 cm}
+\triplet{7 cm}{-1 cm}
+\node at (7 cm, 0) {$C$};
+\node at (6 cm, 1 cm) {$\cdots$};
+\node at (6 cm,-1 cm) {$\cdots$};
+    
+\end{tikzpicture}
+\end{document}
+
+
+

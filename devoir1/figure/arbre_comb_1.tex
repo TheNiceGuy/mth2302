@@ -1,0 +1,89 @@
+\documentclass[11pt]{standalone}
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{standalone}
+\usepackage{tikz}
+
+\begin{document}
+\begin{tikzpicture}[
+    scale=0.8,
+    every node/.style={circle,draw},level distance=30pt,
+        level 2/.style={sibling distance=85mm},
+        level 3/.style={sibling distance=35mm},
+        level 4/.style={sibling distance=10mm}]
+\node {0}
+    child {
+        node {1}
+        child {
+            node {1}
+            child {
+                node {1}
+                child {
+                    node[draw=red,text=red] {1}
+                }
+                child {
+                    node {2}
+                }
+            }
+            child {
+                node {2}
+                child {
+                    node {1}
+                }
+                child {
+                    node[draw=red,text=red] {2}
+                }
+                child {
+                    node[draw=red,text=red] {3}
+                }
+            }
+        }
+        child {
+            node {2}
+            child {
+                node {1}
+                child {
+                    node {1}
+                }
+                child {
+                    node[draw=red,text=red] {2}
+                }
+                child {
+                    node[draw=red,text=red] {3}
+                }
+            }
+            child {
+                node {2}
+                child {
+                    node[draw=red,text=red] {1}
+                }
+                child {
+                    node[draw=red,text=red] {2}
+                }
+                child {
+                    node[draw=red,text=red] {3}
+                }
+            }
+            child {
+                node {3}
+                child {
+                    node[draw=red,text=red] {1}
+                }
+                child {
+                    node[draw=red,text=red] {2}
+                }
+                child {
+                    node[draw=red,text=red] {3}
+                }
+                child {
+                    node[draw=red,text=red] {4}
+                }
+            }
+        }
+    };
+\end{tikzpicture}
+\end{document}
+
+
+

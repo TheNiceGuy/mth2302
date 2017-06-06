@@ -1,0 +1,34 @@
+\documentclass[11pt]{article}
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{standalone}
+\usepackage{tikz}
+
+\begin{document}
+\begin{tikzpicture}[
+    scale=0.8,
+    every node/.style={},level distance=40pt,
+    level 1/.style={sibling distance=40mm}]
+\node {$(c,n,s)$}
+    child {
+        node {$(c-1,n-3,s)$}
+    }
+    child {
+        node {$(c-1,n-2,s)$}
+    }
+    child {
+        node {$(c-1,n-2,s)$}
+    }
+    child {
+        node {$(c-1,n-2,s)$}
+    }
+    child {
+        node {$(c-1,n-1,s)$}
+    }
+;
+\end{tikzpicture}
+\end{document}
+
+
+

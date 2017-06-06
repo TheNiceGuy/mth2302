@@ -1,0 +1,80 @@
+\documentclass[11pt]{article}
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{standalone}
+\usepackage{tikz}
+
+\begin{document}
+\def\h{15mm}
+\def\w{ 5mm}
+
+\def\T{}\def\M{}\def\B{}
+
+\newcommand\triplet[2]{%
+    \begin{scope}[xshift=#1,yshift=#2]%
+        \draw (-\w/2,-\h/2) -- (-\w/2,\h/2);%
+        \draw ( \w/2,-\h/2) -- ( \w/2,\h/2);%
+        %
+        \foreach\y in {0,1,2,3} {%
+            \draw (-\w/2,\y*\h/3-\h/2) -- (\w/2,\y*\h/3-\h/2);%
+        }%
+        %
+        \node at (0, \h/3) {\T};%
+        \node at (0, 0)    {\M};%
+        \node at (0,-\h/3) {\B};%
+        %
+        \def\T{}\def\M{}\def\B{}%
+    \end{scope}%
+}
+
+\begin{tikzpicture}
+\begin{scope}
+    \def\T{}\def\M{X}\def\B{}
+    \triplet{0.0cm}{0cm}
+
+    \def\T{X}\def\M{X}\def\B{}
+    \triplet{0.6cm}{0cm}
+    
+    \def\T{P}\def\M{P}\def\B{}
+    \triplet{1.2cm}{0cm}    
+\end{scope}
+
+\begin{scope}[xshift=3cm]
+    \def\T{X}\def\M{X}\def\B{X}
+    \triplet{0.0cm}{0cm}
+
+    \def\T{X}\def\M{X}\def\B{X}
+    \triplet{0.6cm}{0cm}
+    
+    \def\T{P}\def\M{P}\def\B{}
+    \triplet{1.2cm}{0cm}    
+\end{scope}
+
+\begin{scope}[xshift=6cm]
+    \def\T{X}\def\M{X}\def\B{X}
+    \triplet{0.0cm}{0cm}
+
+    \def\T{X}\def\M{X}\def\B{}
+    \triplet{0.6cm}{0cm}
+    
+    \def\T{P}\def\M{P}\def\B{}
+    \triplet{1.2cm}{0cm}    
+\end{scope}
+
+\begin{scope}[xshift=9cm]
+    \def\T{X}\def\M{X}\def\B{X}
+    \triplet{0.0cm}{0cm}
+
+    \def\T{}\def\M{X}\def\B{}
+    \triplet{0.6cm}{0cm}
+    
+    \def\T{P}\def\M{P}\def\B{}
+    \triplet{1.2cm}{0cm}    
+\end{scope}
+
+\end{tikzpicture}
+\end{document}
+
+
+

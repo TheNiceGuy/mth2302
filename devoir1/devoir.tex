@@ -1,0 +1,806 @@
+\documentclass[11pt]{article}
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{standalone}
+\usepackage{geometry}
+\usepackage{gphys}
+\usepackage{siunitx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usepackage{minted}
+\usepackage{relsize}
+\usepackage{nicefrac}
+\usepackage{multicol}
+
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{arrows}
+
+%%%%%%%%%%%%%%%%%%
+% Configurations %
+%%%%%%%%%%%%%%%%%%
+
+\geometry{
+	total={210mm,297mm},
+	left=34mm,
+	right=34mm,
+	top=30mm,
+	bottom=30mm,
+}
+
+\sisetup{locale = FR}
+
+\makeatletter
+\let\@afterindenttrue\@afterindentfalse
+\makeatother
+
+%%%%%%%%%%
+% Macros %
+%%%%%%%%%%
+
+\newcommand\comb{%
+    \ensuremath{%
+        \mathcal{C}%
+    }%
+}
+
+\newcommand\perm{%
+    \ensuremath{%
+        \mathcal{P}%
+    }%
+}
+
+\renewcommand\P{%
+    \ensuremath{%
+        \mathbb{P}%
+    }%
+}
+
+\makeatletter
+\newcommand*{\centerfloat}{%
+    \parindent \z@%
+    \leftskip \z@ \@plus 1fil \@minus \textwidth%
+    \rightskip\leftskip%
+    \parfillskip \z@skip}%
+\makeatother
+
+%%%%%%%%%%%%%
+% Documents %
+%%%%%%%%%%%%%
+
+\begin{document}
+\def\Sigle{MTH2302A}
+\def\Cours{Probabilités et Statistique}
+\def\Devoir{Devoir 1}
+\AjouterAuteur{Gabriel-Andrew}{Pollo-Guilbert}{1837776}
+\AjouterProfesseur{}{Simon}{Demontigny}
+\def\logoscale{1}
+\pagetitre
+
+\section{Deux par deux}
+Dans ce problème, on alloue des sièges à $B$ voyageurs solitaires en
+premier et ensuite à $A$ paires. On s'intérèsse aux cas où les $D$
+paires ne peuvent pas être ensemble.
+
+L'avion est constitué de $C$ rangées contenant chacune 2 sections de
+3 sièges. La figure \ref{fig:avion} représente la répartition des sièges
+dans l'avion.
+\begin{figure}[H]
+    \centering
+    \input{figure/avion}
+    \caption{répartition des sièges dans l'avion}
+    \label{fig:avion}
+\end{figure}
+
+On cherche à placer les voyageurs seuls de manière à ce qu'il reste exactement
+$A-D$ sections pouvant contenir des paires. Pour chaque section, il existe 5
+manières d'empêcher une paire d'être ensemble. La figure \ref{fig:avion_solo}
+montre ces 5 cas.
+
+\begin{figure}[H]
+    \centering
+    \input{figure/avion_solo}
+    \caption{5 cas pouvant empêcher une paire d'être ensemble}
+    \label{fig:avion_solo}
+\end{figure}
+
+Si l'on commence à la première section, on peut choisir une des 5 manières de
+bloquer la formation d'une paire. À la deuxième section, on choisie à nouveau
+une des 5 manières. À la troisième aussi et ainsi de suite. Par contre, il faut
+s'assurer qu'il reste des voyageurs à placer et aussi de laisser $A-D$ sections
+pour les paires.
+
+Pour visualiser le problème, on peut dessiner un arbre pour chaque étape possible.
+Pour chaque feuille, on dénote l'état $(c,n,s)$ où $c$ est le nombre de sections
+manquantes à bloquer, $n$ est le nombre restant de voyageurs seuls et $s$ le nombre
+de sections à laisser. À chaque feuille, il y a une branche possible pour chaque cas
+pouvant bloquer une paire. La figure \ref{fig:avion_arbre_cns} représente une telle
+feuille.
+
+\begin{figure}[H]
+    \centerfloat
+    \input{figure/avion_arbre_cns}
+    \caption{feuille d'un arbre $(c,n,s)$}
+    \label{fig:avion_arbre_cns}
+\end{figure}
+
+En effet, le nombre de sections restantes à bloquer diminue à chauque étape. De plus,
+le nombre restant de voyageurs diminue en fonction du cas pris. On remarque que trois
+branches se répète, c'est-à-dire celles où deux voyageurs sont utilisés pour bloquer
+une paire. Pour chaque feuille, on peut définir une fonction de récurrence comme suit
+\begin{equation*}
+    f(c,n,s)=f(c-1,n-1,s)+3f(c-1,n-2,s)+f(c-1,n-3,s).
+\end{equation*}
+
+Pour définir la fin de la récurrence, il faut regarder un exemple. Soit 5 voyageurs
+qui doivent être placer sur 3 sections afin de permettre une paire libre. La figure
+\ref{fig:avion_paires} montre quelques cas possibles lorsque le paramètre $c=0$ dans
+la récurrence, c'est-à-dire qu'il ne reste plus de sections à bloquer. Les X dénotent
+deux voyageurs seuls tandis que les $P$ la paire qui doit être ensemble.
+
+\begin{figure}[H]
+    \centerfloat
+    \input{figure/avion_paires}
+    \caption{exemples de cas finals}
+    \label{fig:avion_paires}
+\end{figure}
+
+Lorsque $c=0$, il faut finir d'allouer des sièges aux voyageurs restants. On ne peut
+pas leur donner les sièges restants des cas bloquants, car ce sont des possibilités
+calculées à priori par une autre branche. Par conséquent, on peut seulement allouer
+les sièges à coté des paires ensembles.
+
+Dans certains cas, la branche est impossible car il n'y a pas assez de sièges
+disponibles pour les voyageurs ou il y plus de sièges alloués que de voyageurs seuls.
+Ces conditions se remarque si $n<0$ ou $n>s$, car il y a un siège restant pour chaque
+paire ensemble.
+
+Dans certains cas, il ne reste plus de voyageurs sans siège, alors la branche est
+valide. Lorsqu'il y reste des voyageurs et qu'il y a assez de sièges libres à coté
+des paires ensembles, il faut regarder un autre exemple.
+
+Soit 3 voyageurs qui doivent être placés sur 4 sections afin de permettre trois
+paires d'être ensemble. La figure \ref{fig:avion_paires_more} montre des exemples
+respectant ces contraintes, avec R dénotant les voyageurs restants après avoir
+remplie les sections bloquées.
+
+\begin{figure}[H]
+    \centerfloat
+    \input{figure/avion_paires_more}
+    \caption{exemples de cas finals}
+    \label{fig:avion_paires_more}
+\end{figure}
+
+Dans ces cas, il y a 2 voyageurs restants. Ils peuvent être à coté de n'importe
+quelle paire. Par conséquent, il faut choisir 2 paires parmis les 3. De plus, chaque
+voyageur restant peut être à droite ou à gauche de la paire. Par conséquent, le
+nombre de possibilités de d'allouer des sièges aux voyageurs restants est donné
+par $2^2\comb_3^2$.
+
+En général, on peut définir le système d'équations à récurrence suivant,
+\begin{equation*}
+    \left\{
+        \arraycolsep=1.4pt\def\arraystretch{1}
+        \begin{array}{rcl}
+            f(0,0,s)&=&1\\
+            f(0,n,s)&=&\left\{
+                \begin{matrix}
+                    2^n\comb_s^n &\text{ si } 0\leq n\leq s\\
+                    0            &\text{sinon}\\
+                \end{matrix}
+            \right.\\
+            f(c,n,s)&=&f(c-1,n-1,s)+3f(c-1,n-2,s)+f(c-1,n-3,s)
+        \end{array}
+    \right.
+\end{equation*}
+pour calculer le nombre de possibilités à partir de n'importe quelle feuille.
+
+Dans notre cas, il faut placer 12 voyageurs solos afin de laisser 28 paires
+ensembles et 2 paires séparées dans les 18 rangées (36 sections). Il y a donc
+$36-28=8$ sections bloquées. Le nombre de possibilités est donné par $f(8,12,28)$.
+Ceci dit, le calcul prend juste en compte les 8 premières rangées comme étant
+bloquées. Hors, il faut choisir 8 rangées bloquées parmis les 36 disponibles.
+On ajuste le calcul de sorte que le nombre de possibilités est donné par
+$\comb_{36}^8f(8,12,28)$.
+
+Si on ne prend pas compte de la méthode de répartition des sièges, le nombre total
+de possibilités est donné en choisisant 12 sièges parmis les 108 disponibles. Par
+conséquent, la probabilité de $A$, c'est-à-dire d'avoir exactement 2 paires
+séparées, est donnée par
+\begin{equation*}
+    \P(A)
+    =\frac{\comb_{36}^8f(8,12,28)}{\comb_{12}^{108}}
+    =\frac{\SI{8199405016}{}}{\SI{520752510551}{}}
+    \approx\SI{1.574}{\percent}.
+\end{equation*}
+
+À la page suivant ce trouve une implémentation de $f(c,n,s)$ en Haskell. Le temps
+d'exécution est instantané pour les paramètres du problème. De plus, un simulateur
+écrit en C est fournit afin de comparer la réponse du calcul. Il est probablement
+possible d'optimiser le calcul en éliminant les branches impossibles dès qu'elles
+arrivent, mais le calcul fut assez rapide qu'il en n'était pas nécessaire.
+
+\pagebreak
+\newgeometry{left=20mm,right=6mm,top=20mm}
+\inputminted[linenos]{haskell}{avion/src/Main.hs}
+\vspace{1cm}
+\begin{multicols}{2}
+    \inputminted[linenos,fontsize=\footnotesize]{C}{avion/main.c}
+\end{multicols}
+\restoregeometry
+
+
+\pagebreak
+\section{Deux têtes valent mieux qu’une}
+Soit une équipe dont un membre à le numéro le plus élevé $m$. Cela implique qu'il
+y a au moins 1 membre pour chaque numéro positif inférieur à $m$. La prochaine
+personne à ce joindre au groupe peut être inviter par n'importe quelle personne
+ayant un numéro dans $\{0,1,\dots,m\}$. Par conséquent, le nouveau membre
+se vera attribuer un numéro dans $\{1,2,\dots,m+1\}$. La figure \ref{fig:arbre_comb}
+montre les formations possibles d'une équipe à 5 personnes.
+
+\begin{figure}[H]
+    \centering
+    \input{figure/arbre_comb}
+    \caption{formations possibles pour un groupe à 5 personnes}
+    \label{fig:arbre_comb}
+\end{figure}
+
+On remarque que le numéro de la dernière personne est sans importance dans
+le processus. Seulement le plus grand numéro dans l'équipe détermine le nombre
+de choix à une feuille de l'arbre. On peut représenter chaque feuille par un
+couple $(n,m)$ où $n$ est le nombre restant de membre à ajouter et $m$ le numéro
+maximum actuel dans le groupe. La figure \ref{fig:arbre_comb_state} représente
+un arbre en utilisant cette notation pour les feuilles. Les branches sont
+numérotés en fonction du membre inviter à une étape.
+
+\begin{figure}[H]
+    \centering
+    \input{figure/arbre_comb_state}
+    \caption{représentation $(n,m)$ de l'abre de la figure \ref{fig:arbre_comb}}
+    \label{fig:arbre_comb_state}
+\end{figure}
+
+\subsection{Formations possibles}
+En examinant l'arbre de la figure \ref{fig:arbre_comb_state}, on remarque que
+chaque feuille contient $m$ sous-feuilles identiques auxquelles le prochain
+membre obtient un numéro déjà existant dans le groupe. De plus, une feuille a
+aussi toujours une sous-feuille où le prochain membre obtient un numéro supérieur
+à ceux dans tout le groupe. La figure \ref{fig:arbre_feuille} résume n'importe
+quelle feuille $(n,m)$.
+
+\begin{figure}[H]
+    \centering
+    \input{figure/arbre_feuille}
+    \caption{possibilités du prochain numéro à une feuille $(n,m)$}
+    \label{fig:arbre_feuille}
+\end{figure}
+
+Pour chaque feuille, on définie une fonction récursive $f_1$ nous donnant le
+nombre de formations possibles sous celle-ci tel que
+\begin{equation*}
+    f_1(n,m)=f_1(n-1,m+1)+mf_1(n-1,m).
+\end{equation*}
+
+La récursion termine lorsqu'il ne reste plus personne à ajouter, soit
+\begin{equation*}
+    f_1(0,m)=1,
+\end{equation*}
+et elle commence par le fondateur ayant le numéro 0, c'est-à-dire
+\begin{equation*}
+    f_1(n,0)=f_1(n-1,1),
+\end{equation*}
+car il ne peut qu'inviter une personne en lui attribuant le numéro 1. Par
+conséquent, le système d'équations suivant calcule le nombre de formations
+possibles, soit
+\begin{equation}\label{eq:f1}
+    \arraycolsep=1.4pt\def\arraystretch{1}
+    \left\{
+        \begin{array}{lcl}
+            f_1(n,m)&=&f_1(n-1,m+1)+mf_1(n-1,m)\\
+            f_1(n,0)&=&f_1(n-1,1)\\
+            f_1(0,m)&=&1\\
+        \end{array}
+    \right.
+\end{equation}
+
+\subsection{Formations possibles ayant exactement $F$ numéro 1}
+On s'intéresse au nombre de formations ayant exactement $F$ personnes
+invitées par le fondateur. La figure \ref{fig:arbre_comb_1} montre
+les formations d'une équipe contenant 5 membres et exactement 3
+personnes invitées par le fondateur. Les feuilles en rouge dénote
+une formation ne respectant pas cette condition.
+
+\begin{figure}[H]
+    \centering
+    \input{figure/arbre_comb_1}
+    \caption{formations de 5 membres contenant exactement 3 numéro 1}
+    \label{fig:arbre_comb_1}
+\end{figure}
+
+Pour calculer le nombre de formations possibles, on utilise une
+récursion similaire à celle présentée en \eqref{eq:f1}. Par contre, il
+faut ajouter un nouveau paramètre à chaque feuille de l'arbre. On dénote
+chaque feuille $(n,m,c)$ où $c$ est le compte actuel de personnes invitées
+par le fondateur. La figure \ref{fig:arbre_comb_1_state} représente un
+arbre utilisant cette notation.
+
+\begin{figure}[H]
+    \centerfloat
+    \input{figure/arbre_comb_1_state}
+    \caption{représentation $(n,m,c)$ de l'abre de la figure \ref{fig:arbre_comb_1}}
+    \label{fig:arbre_comb_1_state}
+\end{figure}
+
+En examinant l'arbre de la figure \ref{fig:arbre_comb_1_state}, on remarque
+qu'il est très similaire à celui de la figure \ref{fig:arbre_comb_state}. La
+seule différence est que $c$ est incrémenter une fois par feuille, c'est-à-dire
+lorsque le fondateur invite une personne. La figure \ref{fig:arbre_feuille_1}
+représente n'importe quelle feuille $(n,m,c)$.
+
+\begin{figure}[H]
+    \centering
+    \input{figure/arbre_feuille_1}
+    \caption{possibilités du prochain numéro à une feuille $(n,m,c)$}
+    \label{fig:arbre_feuille_1}
+\end{figure}
+
+Pour chaque feuille, on définie une fonction récursive $f_2$ nous donnant le
+nombre de formations possibles sous celle-ci tel que
+\begin{equation*}
+    f_2(n,m,c)=f_2(n-1,m,c+1)+f_2(n-1,m+1,c)+(m-1)f_2(n-1,m,c)
+\end{equation*}
+
+La récursion termine lorsqu'il ne reste plus personne à ajouter et elle est
+est valide si $c=F$, soit
+\begin{equation*}
+    f_2(0,m,F)=1,
+\end{equation*}
+sinon
+\begin{equation*}
+    f_2(0,m,c)=0,
+\end{equation*}
+et elle commence par le fondateur ayant le numéro 0, c'est-à-dire
+\begin{equation*}
+    f_2(n,0,c)=f_2(n-1,1,1),
+\end{equation*}
+car il ne peut qu'inviter une personne en lui attribuant le numéro 1. Par
+conséquent, le système d'équations suivant calcule le nombre de formations 
+possibles, soit
+\begin{equation}\label{eq:f2}
+    \arraycolsep=1.4pt\def\arraystretch{1}
+    \left\{
+        \begin{array}{lcl}
+            f_2(n,m,c)&=&f_2(n-1,m,c+1)+f_2(n-1,m+1,c)+(m-1)f_2(n-1,m,c)\\
+            f_2(n,0,c)&=&f_2(n-1,1,1)\\
+            f_2(0,m,c)&=&0\\
+            f_2(0,m,F)&=&1\\
+        \end{array}
+    \right.
+\end{equation}
+
+\subsection{Formations possibles d'aucun numéro supérieur à $G$}
+Pour trouver les formations ne contenant pas de numéro supérieur à $G$,
+il suffit de les filtrer à la fin du calcul. Étant que l'on suit déjà
+le plus grand numéro dans la représentation $(n,m)$, il suffit de
+redéfinir la fin de la récursion par
+\begin{equation*}
+    f_3(0,m)=\left\{
+        \begin{matrix}
+            1&\text{si}&m\leq G\\
+            0&\text{si}&m>    G\\
+        \end{matrix}
+    \right.,
+\end{equation*}
+de sorte à obtenir la fonction $f_3$ définie par le système d'équations
+\begin{equation}\label{eq:f3}
+    \arraycolsep=1.4pt\def\arraystretch{1}
+    \left\{
+        \begin{array}{lcl}
+            f_3(n,m)&=&f_3(n-1,m+1)+mf_3(n-1,m)\\
+            f_3(n,0)&=&f_3(n-1,1)\\
+            f_3(0,m)&=&\left\{
+                \begin{matrix}
+                    1&\text{si}&m\leq G\\
+                    0&\text{si}&m>    G\\
+                \end{matrix}
+            \right.,\\
+        \end{array}
+    \right.
+\end{equation}
+
+La figure \ref{fig:arbre_comb_s} montre le cas d'une équipe de 5 personnes
+ne pouvant pas contenir des numéros supérieurs à 2.
+
+\begin{figure}[H]
+    \centering
+    \input{figure/arbre_comb_s}
+    \caption{formations ne contenant pas des numéros supérieurs à 2}
+    \label{fig:arbre_comb_s}
+\end{figure}
+
+\subsection{Formations avec les deux contraintes}
+En utilisant la même logique qu'au paravant, il suffit d'ajouter la condition
+établie en \eqref{eq:f3} dans \eqref{eq:f2} afin d'obtenir la fonction $f_5$
+définie par le système d'équations
+\begin{equation}\label{eq:f2}
+    \arraycolsep=1.4pt\def\arraystretch{1}
+    \left\{
+        \begin{array}{lcl}
+            f_4(n,m,c)&=&f_4(n-1,m,c+1)+f_4(n-1,m+1,c)+(m-1)f_4(n-1,m,c)\\
+            f_4(n,0,c)&=&f_4(n-1,1,1)\\
+            f_4(0,m,c)&=&0\\
+            f_4(0,m,F)&=&\left\{
+                \begin{matrix}
+                    1&\text{si}&m\leq G\\
+                    0&\text{si}&m>    G\\
+                \end{matrix}
+            \right.,\\
+        \end{array}
+    \right.
+\end{equation}
+
+\subsection{Solution}
+Soit des groupes de $E=17$ personnes et les événements
+\begin{table}[H]
+    \centering
+    \begin{tabular}{l}
+        A: le fondateur a invité exactement $F=3$ personnes\\
+        B: il n'y a aucun numéro supérieur à $G=7$\\
+    \end{tabular}
+\end{table}
+
+Il y a un total de $f_1(16,0)$ formations possibles. Parmis celles-ci, il y a
+$f_2(16,0,0)$ formations dont le fondateur a invité 3 personnes. Finalement, il
+y a $f_3(16,0)$ formations dans lequel il n'y a aucun numéro supérieur à 7.
+\footnote{On utilise $n=16$ au lieu de $n=E=17$, car le fondateur est compté
+parmis les membres de l'équipe dès le départ}
+
+La probabilité qu'une équipe formée contient 3 membres invités par le fondateur est
+\begin{equation*}
+    \mathbb{P}(A)
+    =\frac{f_2(16,0,0)}{f_1(16,0)}
+    =\frac{\SI{2902665885}{}}{\SI{10480142147}{}}
+\end{equation*}
+et celle qu'il n'y ait aucune numéro supérieur à 7 est
+\begin{equation*}
+    \mathbb{P}(B)
+    =\frac{f_3(16,0)}{f_1(16,0)}
+    =\frac{\SI{7291973067}{}}{\SI{10480142147}{}}.
+\end{equation*}
+
+La probabilité qu'on ne retrouve aucun étudiant avec un numéro supérieure à 7
+sachant que le fondateur a invité exactement 3 personnes est donnée par
+\begin{equation*}
+    \mathbb{P}(B|A)
+    =\frac{\mathbb{P}(A\cap B)}{\mathbb{P}(A)},
+\end{equation*}
+où la probabilité d'avoir les deux contraintes est donné par
+\begin{equation*}
+    \mathbb{P}(A\cap B)
+    =\frac{f_4(16,0,0)}{f_1(16,0)}
+    =\frac{\SI{2060946720}{}}{\SI{10480142147}{}},
+\end{equation*}
+de sorte à obtenir
+\begin{equation*}
+    \mathbb{P}(B|A)
+    =\frac{\SI{2060946720}{}}{\SI{2902665885}{}}
+    \approx\SI{0.71}{\percent}.
+\end{equation*}
+
+La prochaine page contient le listage du code ayant effectué les calculs de
+$f_1$, $f_2$, $f_3$ et $f_4$ en Haskell. Le temps d'exécution fut pratiquement
+instantanné pour les paramètres de ce problème.
+
+\pagebreak
+\inputminted[linenos]{haskell}{groupe/src/Main.hs}
+
+\pagebreak
+\section{Au confluent de deux rivières}
+Soit les événements
+\begin{table}[H]
+    \centering
+    \begin{tabular}{l}
+        A: la zone 1 n'est pas inondée\\
+        B: la zone 2 n'est pas inondée\\
+        C: la zone 3 n'est pas inondée\\
+        D: au moins une zone est inondée\\
+    \end{tabular}
+\end{table}
+
+On peut définir la probabilité d'avoir au moins une zone inondée avec
+son complément, c'est-à-dire qu'il n'y ait aucune zone d'inondée, soit
+\begin{equation*}
+    \mathbb{P}(D)=1-\mathbb{P}(D^c)=1-\mathbb{P}(A\cap B\cap C).
+\end{equation*}
+
+Hors, la probabilité que la zone 3 ne soit pas inondée est équivalente
+à la probabilité que son niveau d'eau $h_T$ soit inférieure à $H$, soit
+\begin{equation}\label{eq:int_ft}
+    \mathbb{P}(C)=\mathbb{P}(h_T\leq H)=F_T(H)=\int_{-\infty}^Hf_T(t)\d{t},
+\end{equation}
+où $F_T$ est la fonction de répartition de $h_T(h)$ et $f_T(h)$ sa fonction
+de densité de probabilité. De plus, le niveau d'eau à la zone 3 dépend
+du niveau d'eau $h_1$ à la zone 1, $h_2$ à la zone 2 et d'une valeur
+$h_3$ selon
+\begin{equation*}
+    h_T=Mh_1+Nh_2+h_3.
+\end{equation*}
+
+Les valeurs $h_1$, $h_2$ et $h_3$ sont des variables aléatoires uniformes
+telles que $h_1\in\mathbb{D}_1=[I,J]$, $h_2\in\mathbb{D}_2=[K,L]$ et
+$h_3\in\mathbb{D}_3=[O,P]$. On peut définir
+\begin{equation*}\label{eq:h345}
+    h_T=h_4+h_5+h_3,
+\end{equation*}
+où $h_4$ et $h_5$ sont aussi des variables aléatoires uniformes telles que
+$h_4\in\mathbb{D}_4=[M\cdot I,M\cdot J]$ et $h_5\in\mathbb{D}_5=
+[N\cdot K,N\cdot L]$.
+
+On cherche la fonction de densité de probabilité $f_T(h)$. On suppose que
+$h_T=h$, $h_4=x$ et $h_5=y$. L'équation \eqref{eq:h345} est valide si est
+seulement si $h_3=h_T-x-y$. La probabilité d'avoir $h_T=h$ est équivalente
+à la probabilité d'avoir ces trois conditions, c'est-à-dire
+\begin{equation*}
+    \mathbb{P}(h_T=h)=
+    \mathbb{P}(
+        \left\{h_4=x\right\}\cap
+        \left\{h_5=y\right\}\cap
+        \left\{h_3=h-x-y\right\}).
+\end{equation*}
+Puisque les variables $h_3$, $h_4$ et $h_5$ prennent des valeurs 
+indépendamments l'un de l'autre, il en résulte qu'on peut écrire
+\begin{equation}\label{eq:hth}
+    \begin{split}
+        \mathbb{P}(h_T=h)&=
+        \mathbb{P}(h_4=x)
+        \mathbb{P}(h_5=y)
+        \mathbb{P}(h_3=h-x-y)\\&=
+        f_4(x)f_5(y)f_3(h-x-y),
+    \end{split}
+\end{equation}
+où $f_3(h)$, $f_4(h)$ et $f_5(h)$ sont respectivement les fonctions de
+densité de probabiltié de $h_3$, $h_4$ et $h_5$ définies par
+\begin{equation*}
+    f_3(h)=\left\{
+        \begin{matrix}
+            \nicefrac{1}{(P-O)}&\text{si } h\in\mathbb{D}_3\\
+            0                  &\text{sinon}\\
+        \end{matrix}
+    \right.,
+\end{equation*}
+\begin{equation*}
+    f_4(h)=\left\{
+        \begin{matrix}
+            \nicefrac{1}{M(J-I)}&\text{si } h\in\mathbb{D}_4\\
+            0                   &\text{sinon}\\
+        \end{matrix}
+    \right.
+\end{equation*}
+et
+\begin{equation*}
+    f_5(h)=\left\{
+        \begin{matrix}
+            \nicefrac{1}{N(L-K)}&\text{si } h\in\mathbb{D}_5\\
+            0                   &\text{sinon}\\
+        \end{matrix}
+    \right..
+\end{equation*}
+
+Hors, l'équation \eqref{eq:hth} est valide pour tout $x,y\in\mathbb{R}$ de
+sorte que la probabilité d'obtenir $h_T=h$ est la somme
+\begin{equation*}
+    \mathbb{P}(h_T=h)=\sum_{\forall x}\sum_{\forall y}f_4(x)f_5(y)f_3(h-x-y),
+\end{equation*}
+ou plus mathématiquement correcte sous la forme d'intégrale,
+\begin{equation*}
+    \mathbb{P}(h_T=h)=
+    \int_{-\infty}^\infty\int_{-\infty}^\infty
+        f_4(x)f_5(y)f_3(h-x-y)\d{x}\d{y},
+\end{equation*}
+car $x$ et $y$ sont continues.
+
+On sait que $f_4(x)=0$ si $x\in\notin\mathbb{D}_4$ et $f_5(y)=0$ si
+$y\in\notin\mathbb{D}_5$ de sorte qu'on peut écrire
+\begin{equation*}
+    \begin{split}
+        \mathbb{P}(h_T=h)&=
+        \int_{\mathbb{D}_5}\int_{\mathbb{D}_4}
+            f_4(x)f_5(y)f_3(h-x-y)\d{x}\d{y}\\&=
+        \int_{\mathbb{D}_5}\int_{\mathbb{D}_4}
+            \left(\frac{1}{M(J-I)}\right)
+            \left(\frac{1}{N(L-K)}\right)
+            f_3(h-x-y)\d{x}\d{y}\\&=
+        \left(\frac{1}{M(J-I)}\right)
+        \left(\frac{1}{N(L-K)}\right)
+        \int_{\mathbb{D}_5}\int_{\mathbb{D}_4}
+            f_3(h-x-y)\d{x}\d{y}.
+    \end{split}
+\end{equation*}
+
+Même avec les paramètres biens définis, il est difficile d'intégrer cette
+fonction en raison de la définition par partie de $f_3$. Une intégration
+numérique est idéale. La figure \ref{fig:graphique_ft} montre le graphique
+de $f_T$ calculée numériquement.
+
+\begin{figure}[H]
+    \def\prefixf{}
+    \centering
+    \input{figure/graphique_ft}
+    \caption{graphique de $f_T(h)$ avec les paramètres du problème}
+    \label{fig:graphique_ft}
+\end{figure}
+
+L'aire sous sa courbe fut aussi approximée jusqu'à une précision de
+\SI{1.000000}{}, confirmant validité de la démarche. De plus, on remarque
+$f_T(h)=0$ lorsque $h_3$, $h_4$ et $h_5$ sont inférieurs à leur valeur
+minimum ou lorsqu'ils sont supérieurs à leur maximum.
+
+Par définition, $f_T(h)=\mathbb{P}(h_t=h)$ de sorte qu'il est maintenant
+possible d'évaluer $F_T(h)$ avec \eqref{eq:int_ft}, c'est-à-dire la
+probabilité que la zone 3 ne soit pas inondée. Hors, on cherche la
+probabilité que les trois zones ne sont pas inondées.
+
+Par conséquent, la hauteur de la rivière à chaque zone ne doit pas
+dépasser $H$, c'est-à-dire $h_1\in\mathbb{H}_1=[I,H]$,
+$h_2\in\mathbb{H}_1=[K,H]$ et $h_T\leq H$. On obtient ainsi que
+$h_4\in\mathbb{H}_1=[M\cdot I,M\cdot H]$ et $h_4\in\mathbb{H}_1=
+[N\cdot K,N\cdot H]$ de sorte que la probabilité que $h_T=h$ et que
+les deux autres zones ne sont pas inondées peut se calculer avec 
+\begin{gather*}\mathclap{
+    \mathbb{P}(
+        \left\{h_T=h\right\}\cap
+        \left\{h_1\leq H\right\}\cap
+        \left\{h_2\leq H\right\})=
+    \left(\frac{1}{M(J-I)}\right)
+    \left(\frac{1}{N(L-K)}\right)
+    \int_{\mathbb{H}_5}\int_{\mathbb{H}_4}
+        f_3(h-x-y)\d{x}\d{y}.}
+\end{gather*}
+
+En d'autres termes, la dernière équation calcule la probabilité que
+$h_T=h$ tout en ignorant les cas où les deux autres rivières sont inondées.
+On s'intérèsse lorsque $h_T\leq H$. En intégrant, on obtient
+\begin{equation*}
+    \mathbb{P}(A\cap B\cap C)=
+    \left(\frac{1}{M(J-I)}\right)
+    \left(\frac{1}{N(L-K)}\right)
+    \int_{-\infty}^H
+    \int_{\mathbb{H}_5}\int_{\mathbb{H}_4}
+        f_3(h-x-y)\d{x}\d{y}\d{h}.
+\end{equation*}
+
+On peut facilement calculer les valeurs possibles de $h_T$ en utilisant
+les cas minimums et maximus de $h_4$, $h_5$ et $h_3$ de sorte que
+\begin{equation*}
+    \mathbb{P}(A\cap B\cap C)=
+    \left(\frac{1}{M(J-I)}\right)
+    \left(\frac{1}{N(L-K)}\right)
+    \int_{h_\text{min}}^H\int_{\mathbb{H}_5}\int_{\mathbb{H}_4}
+        f_3(h-x-y)\d{x}\d{y}\d{h},
+\end{equation*}
+où $h_\text{min}=M\cdot I+N\cdot K+O$.
+
+Par intégration numérique, on obtient que $\mathbb{P}(A\cap B\cap C)\approx
+\SI{0.432835}{}$ de sorte que la probabilité qu'au moins une zone soit
+inondée est $1-0.432835\approx\SI{57}{\percent}$. La prochaine page contient
+le code effectuant le calcul ainsi qu'une simulation numérique du problème.
+Les deux résultats semblent être en accord ensemble.
+
+\pagebreak
+\newgeometry{left=25mm,right=12mm,top=20mm}
+\begin{multicols}{2}
+    \inputminted[linenos,fontsize=\footnotesize]{C}{integrate/main.c}
+\end{multicols}
+\restoregeometry
+
+\section{Chasse à l'agent double}
+Pour chaque personne dans l'équipe, on définie des événements pour chaque
+classe possible, soit
+\begin{table}[H]
+    \centering
+    \begin{tabular}{l}
+        $A$: la personne est une recrue\\
+        $B$: la personne est un agent régulier\\
+        $C$: la personne est un agent senior\\
+    \end{tabular}
+\end{table}\noindent
+avec
+$\P(A)=\nicefrac{20}{67}$,
+$\P(B)=\nicefrac{22}{67}$ et
+$\P(C)=\nicefrac{25}{67}$,
+les probabilités qu'une personne fasse partie d'un groupe.
+
+Dans les 67 agents, il y a un agent double. Soit l'événement
+\begin{table}[H]
+    \centering
+    \begin{tabular}{l}
+        $D$: la personne est l'agent double\\
+    \end{tabular}
+\end{table}\noindent
+de sorte que $\P(D)=\nicefrac{1}{67}$. Le directeur estime que
+$\P(A|D)=0.51$,
+$\P(B|D)=0.32$ et
+$\P(C|D)=0.17$.
+
+Pour l'interrogation, on définie les événements
+\begin{table}[H]
+    \centering
+    \begin{tabular}{l}
+        $I$: la personne est interrogée\\
+        $T$: l'interrogation révèle un agent double\\
+        $L$: l'interrogation révèle un agent loyal\\
+    \end{tabular}
+\end{table}\noindent
+avec $\P(T^c)\neq\P(L)$, car on peut voir ces événements comme deux
+tests à part à l'intérieur de l'interrogation. Les probabilités
+d'identifier correctement les agents sont données par
+$\P(D|T\cap I\cap A)=0.96$,
+$\P(D|T\cap I\cap B)=0.48$ et
+$\P(D|T\cap I\cap C)=0.24$,
+tandis que celles d'identifier correctement un agent lotal sont
+$\P(D^c|L\cap I\cap A)=0.84$,
+$\P(D^c|L\cap I\cap B)=0.92$ et
+$\P(D^c|L\cap I\cap C)=0.96$.
+
+On sait que l'interrogation a révélée un seul agent double dans parmi
+les 20 recrues. La probabilité que l'interrogation en révèle qu'un seul
+agent parmi ceux-ci est donnée par
+\begin{equation*}
+    \P\left[
+        (L_1\cap I_1\cap A_1)\cap
+        (L_2\cap I_2\cap A_2)\cap\cdots\cap
+        (L_{17}\cap I_{17}\cap A_{17})\cap
+        (T_{18}\cap I_{18}\cap A_{18})
+    \right],
+\end{equation*}
+où les indices dénotes un agent interrogé. Puisqu'il sont tous interrogés
+indépendaments, on a
+\begin{equation*}
+    \P(L_1\cap I_1\cap A_1)
+    \P(L_2\cap I_2\cap A_2)\cdots
+    \P(L_{17}\cap I_{17}\cap A_{17})
+    \P(T_{18}\cap I_{18}\cap A_{18}),
+\end{equation*}
+ou encore
+\begin{equation*}
+    \P(Z_A)=
+    \P(L_i\cap I_i\cap A_i)^{17}
+    \P(T_i\cap I_i\cap A_i),
+\end{equation*}
+où $Z_A$ est l'événement tel que l'interrogatoire a révélé un agent double
+parmi les recrues. Par le même raisonement, on a aussi
+\begin{equation*}
+    \P(Z_B)=
+    \P(L_i\cap I_i\cap B_i)^{19}
+    \P(T_i\cap I_i\cap B_i)
+\end{equation*}
+et
+\begin{equation*}
+    \P(Z_B)=
+    \P(L_i\cap I_i\cap C_i)^{21}
+    \P(T_i\cap I_i\cap C_i),
+\end{equation*}
+pour les agents réguliers et seniors.
+
+On cherche les probabilités que soit la recrue, soir l'agent régulier ou
+l'agent senior soit l'agent double. Par conséquent, on cherche $\P(D|Z_A)$,
+$\P(D|Z_B)$ et $\P(D|Z_C)$. Dans le cas où aucun de ces agents n'est le vrai
+agent double, il faut calculer le complément des trois cas, soit $1-\P(D|Z_A)-
+\P(D|Z_B)-\P(D|Z_C)$.
+
+\pagebreak
+\section*{Annexe}
+\begin{table}[H]
+    \centering
+	\caption{table des valeurs}
+    \input{figure/map}
+\end{table}
+\end{document}
+
+

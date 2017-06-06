@@ -1,0 +1,31 @@
+\documentclass[11pt]{standalone}
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{standalone}
+\usepackage{tikz}
+\usepackage{relsize}
+
+\usetikzlibrary{decorations.pathreplacing}
+
+\begin{document}
+\begin{tikzpicture}[
+    every node/.style={scale=0.8,font=\relsize{0.5}},
+    level distance=30pt,
+    level 1/.style={sibling distance=25mm}]
+\tikzset{branche/.style={inner sep=1,outer sep=1,fill=white}}
+    
+\node {$(n,m,c)$}
+    child {node     {$(n-1,m,c+1)$}}
+    child {node (S) {$(n-1,m,c)$}}
+    child {node     {$\cdots$}}
+    child {node (E) {$(n-1,m,c)$}}
+    child {node     {$(n-1,m+1,c)$}};
+\draw[decorate,decoration={brace,amplitude=10pt,raise=5pt}]
+    (E.east) -- (S.west)
+    node[midway,yshift=-1cm] {$(m-1)$ fois};
+\end{tikzpicture}
+\end{document}
+
+
+

@@ -1,0 +1,115 @@
+\documentclass[11pt]{standalone}
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{standalone}
+\usepackage{tikz}
+\usepackage{relsize}
+
+\begin{document}
+\begin{tikzpicture}[
+    every node/.style={scale=0.8,font=\relsize{0.5}},
+    level distance=30pt,
+    level 2/.style={sibling distance=93mm},
+    level 3/.style={sibling distance=39mm},
+    level 4/.style={sibling distance=11mm}]
+\tikzset{branche/.style={inner sep=1,outer sep=1,fill=white}}
+    
+\node {$(4,0,0)$}
+    child {
+        node {$(3,1,1)$}
+        child {
+            node {$(2,1,2)$} 
+            child {
+                node {$(1,1,3)$}
+                child {
+                    node[text=red] {$(0,1,4)$}
+                    edge from parent node[branche] {\small 1}
+                }
+                child {
+                    node {$(0,2,3)$}
+                    edge from parent node[branche] {\small 2}
+                }
+                edge from parent node[branche] {\small 1}
+            }
+            child {
+                node {$(1,2,2)$}
+                child {
+                    node {$(0,2,3)$}
+                    edge from parent node[branche] {\small 1}
+                }
+                child {
+                    node[text=red] {$(0,2,2)$}
+                    edge from parent node[branche] {\small 2}
+                }
+                child {
+                    node[text=red] {$(0,3,2)$}
+                    edge from parent node[branche] {\small 3}
+                }
+                edge from parent node[branche] {\small 2}
+            }
+            edge from parent node[branche] {\small 1}
+        }
+        child {
+            node {$(2,2,1)$}
+            child {
+                node {$(1,2,2)$}
+                child {
+                    node {$(0,2,3)$}
+                    edge from parent node[branche] {\small 1}
+                }
+                child {
+                    node[text=red] {$(0,2,2)$}
+                    edge from parent node[branche] {\small 2}
+                }
+                child {
+                    node[text=red] {$(0,3,2)$}
+                    edge from parent node[branche] {\small 3}
+                }
+                edge from parent node[branche] {\small 1}
+            }
+            child {
+                node {$(1,2,1)$}
+                child {
+                    node[text=red] {$(0,2,2)$}
+                    edge from parent node[branche] {\small 1}
+                }
+                child {
+                    node[text=red] {$(0,2,1)$}
+                    edge from parent node[branche] {\small 2}
+                }
+                child {
+                    node[text=red] {$(0,3,1)$}
+                    edge from parent node[branche] {\small 3}
+                }
+                edge from parent node[branche] {\small 2}
+            }
+            child {
+                node {$(1,3,1)$}
+                child {
+                    node[text=red] {$(0,3,2)$}
+                    edge from parent node[branche] {\small 1}
+                }
+                child {
+                    node[text=red] {$(0,3,1)$}
+                    edge from parent node[branche] {\small 2}
+                }
+                child {
+                    node[text=red] {$(0,3,1)$}
+                    edge from parent node[branche] {\small 3}
+                }
+                child {
+                    node[text=red] {$(0,4,1)$}
+                    edge from parent node[branche] {\small 4}
+                }
+                edge from parent node[branche] {\small 3}
+            }
+            edge from parent node[branche] {\small 2}
+        }
+        edge from parent node[branche] {\small 1}
+    };
+\end{tikzpicture}
+\end{document}
+
+
+

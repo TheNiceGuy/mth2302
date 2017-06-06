@@ -1,0 +1,80 @@
+\documentclass[11pt]{article}
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{standalone}
+\usepackage{tikz}
+
+\usetikzlibrary{decorations.pathreplacing}
+
+\begin{document}
+\def\h{15mm}
+\def\w{ 5mm}
+
+\def\T{}\def\M{}\def\B{}
+
+\newcommand\triplet[2]{%
+    \begin{scope}[xshift=#1,yshift=#2]%
+        \draw (-\w/2,-\h/2) -- (-\w/2,\h/2);%
+        \draw ( \w/2,-\h/2) -- ( \w/2,\h/2);%
+        %
+        \foreach\y in {0,1,2,3} {%
+            \draw (-\w/2,\y*\h/3-\h/2) -- (\w/2,\y*\h/3-\h/2);%
+        }%
+        %
+        \node at (0, \h/3) {\T};%
+        \node at (0, 0)    {\M};%
+        \node at (0,-\h/3) {\B};%
+        %
+        \def\T{}\def\M{}\def\B{}%
+    \end{scope}%
+}
+
+\newcommand\freespace[2]{%
+    \begin{scope}[xshift=#1,yshift=#2]%
+        \draw (-\w/2,-\w/2) -- ( \w/2,-\w/2)%
+           -- ( \w/2, \w/2) -- (-\w/2, \w/2)%
+           -- cycle;%
+        %
+        \node at (0, 0) {\M};%
+    \end{scope}%
+}
+
+\tikzstyle{brace}=[decorate,decoration={brace,amplitude=10pt,mirror,raise=7pt},yshift=0pt]
+
+\begin{tikzpicture}
+\begin{scope}
+    \def\M{L}
+    \foreach\x in {0,1} {
+        \freespace{\x cm}{0 cm}
+    }
+    \node at (2 cm, 0 cm) {$\cdots$};
+    \freespace{3 cm}{0 cm}
+    \draw[brace] (-0.5,0) -- (3.5,0) node[midway,yshift=-1cm] {$A-D$};
+\end{scope}
+
+\begin{scope}[xshift=4.1cm]
+    \def\T{L}\def\M{}\def\B{L}
+    \foreach\x in {0,1} {
+        \triplet{\x cm}{0 cm}
+    }
+    \node at (2 cm, 0 cm) {$\cdots$};
+    \triplet{3 cm}{0 cm}
+    \draw[brace] (-0.5,-0.5) -- (3.5,-0.5) node[midway,yshift=-1cm] {$x$};
+\end{scope}
+
+\begin{scope}[xshift=8.2cm]
+    \def\T{}\def\M{L}\def\B{}
+    \foreach\x in {0,1} {
+        \triplet{\x cm}{0 cm}
+    }
+    \node at (2 cm, 0 cm) {$\cdots$};
+    \triplet{3 cm}{0 cm}
+    \draw[brace] (-0.5,-0.5) -- (3.5,-0.5) node[midway,yshift=-1cm] {$y$};
+\end{scope}
+
+\end{tikzpicture}
+\end{document}
+
+
+

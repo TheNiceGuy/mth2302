@@ -1,0 +1,29 @@
+\documentclass[11pt]{article}
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{standalone}
+\usepackage{tikz}
+\usepackage{pgfplots}
+
+\def\prefixf{../}
+
+\begin{document}
+\begin{tikzpicture}[scale=0.9,trim axis left]
+    \begin{axis}[
+        xlabel=$h$,
+        ylabel=$f_T(h)$,
+        scaled ticks=false,
+        tick label style={/pgf/number format/fixed},
+        xmin=2,xmax=4,
+        width=9cm,
+        height=5cm]
+    \addplot[black] table 
+        [x=h,y=f,col sep=comma,mark=none]
+        {\prefixf integrate/data.csv};
+    \end{axis}
+\end{tikzpicture}
+\end{document}
+
+
+
