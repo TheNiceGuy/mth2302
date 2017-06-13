@@ -85,7 +85,49 @@
 
 \newcommand\poi{%
 	\ensuremath{%
-		\mathcal{P}%
+		\mathrm{Poi}%
+	}%
+}%
+
+\newcommand\uni{%
+	\ensuremath{%
+		\mathcal{U}%
+	}%
+}%
+
+\newcommand\Exp{%
+	\ensuremath{%
+		\mathrm{Exp}%
+	}%
+}%
+
+\newcommand\Gam{%
+	\ensuremath{%
+		\mathrm{Gam}%
+	}%
+}%
+
+\newcommand\Norm{%
+	\ensuremath{%
+		\mathcal{N}%
+	}%
+}%
+
+\newcommand\Esp{%
+	\ensuremath{%
+		\mathrm{E}%
+	}%
+}%
+
+\newcommand\Var{%
+	\ensuremath{%
+		\mathrm{Var}%
+	}%
+}%
+
+\newcommand\Std{%
+	\ensuremath{%
+		\mathrm{Std}%
 	}%
 }%
 
@@ -1428,7 +1470,7 @@ Par conséquent, la probabilité que $X$ prend une valeur proche de $\alpha$ est
 	\end{equation*}
 \end{proof}
 
-\subsection{Approximation par une loi de Poisson}
+\subsubsection{Approximation par une loi de Poisson}
 Soit une loi binomiale $X\sim\bin(n,p)$. Si $p$ est près de $0$, alors
 $X\approx\poi(np)$. Par conséquent,
 \begin{equation*}
@@ -1441,5 +1483,632 @@ est proche de 1, alors on considère les échecs au lieu des succès. Dans ce ca
 	\P(X=k)\approx\frac{(nq)^{n-k}}{(n-k)!}\e^{-nq}.
 \end{equation*}
 
+\subsection{Loi des probabilités continues}
+\subsubsection{Loi uniforme (continue)}
+Une expérience aléatoire où la variable aléatoire $X$ est le choix d'un nombre
+réel dans un intervalle $[a,b]$ suit une loi uniforme dénotée
+\begin{equation*}
+	X\sim\uni([a,b]),
+\end{equation*}
+où l'ensemble échantillion est $S_X=[a,b]$.
+
+\begin{theoreme}
+	$f_X(x)=\left\{
+		\begin{matrix}
+			\dfrac{1}{b-a} &\text{si } a\leq x\leq b\\
+			0              &\text{sinon}
+		\end{matrix}
+	\right..
+	$
+\end{theoreme}
+
+\begin{theoreme}
+	$F_X(x)=\left\{
+		\begin{matrix}
+			0                &\text{si}& \;\phantom{a\leq}x<a\\
+			\dfrac{x-a}{b-a} &\text{si}& a\leq x\leq b\\
+			1                &\text{si}& b<x\phantom{\leq b}\;\\
+		\end{matrix}
+	\right.$.
+\end{theoreme}
+
+\subsubsection{Loi exponentielle}
+Une expérience aléatoire où la variable aléatoire $X$ suit la loi exponentielle
+dénotée
+\begin{equation*}
+	X\sim\Exp(\lambda),
+\end{equation*}
+où $\lambda>0$, a l'espace échantillion $S_X=[0,\infty[$.
+
+\begin{theoreme}
+	$f_X(x)=\left\{
+		\begin{matrix}
+			\lambda\e^{-\lambda x} &\text{si}& x\geq 0\\
+			0                      &\text{si}& x\leq 0\\
+		\end{matrix}
+	\right.$.
+\end{theoreme}
+
+\begin{theoreme}
+	$F_X(x)=\left\{
+		\begin{matrix}
+			1         -\e^{-\lambda x}      &\text{si}& x\geq 0\\
+			0\phantom{-\e^{-\lambda x}}\;\; &\text{si}& x\leq 0\\
+		\end{matrix}
+	\right.$.
+\end{theoreme}
+
+\begin{theoreme}[absence de mémoire]
+	$\P(X>s+t|X>t)=\P(X>t)$ où $s,t\in[0,\infty[$.
+\end{theoreme}
+
+\subsubsection{Loi gamma}
+Une expérience aléatoire où la variable aléatoire $X$ suit la loi gamma dénotée
+\begin{equation*}
+	X\sim\Gam(\alpha,\lambda),
+\end{equation*}
+où $\alpha>0$ et $\lambda>0$, a l'espace échantillion $S_X=[0,\infty[$.
+
+\begin{theoreme}
+	$f_X(x)
+	=\dfrac{(\lambda x)^{\alpha-1}\lambda\e^{-\lambda x}}{\Gamma(\alpha)}$.
+\end{theoreme}
+
+\begin{theoreme}
+	$F_X(x)=1-\displaystyle\sum_{k=0}^{n-1}
+		\dfrac{(\lambda x)^k\e^{-\lambda x}}{k!}$
+	si $\alpha=n=1,2,3,\dots$
+\end{theoreme}
+
+\begin{theoreme}
+	$\P(S_X)=1$.
+\end{theoreme}
+
+\begin{proof}
+	Il suffit d'intégrer la fonction de densité de probabilité, soit
+	\begin{equation*}
+		\int_0^\infty
+			\frac{(\lambda x)^{\alpha-1}\lambda\e^{-\lambda x}}{\Gamma(\alpha)}
+		\d{x}=\frac{1}{\Gamma(\alpha)}\int_0^\infty
+			(\lambda x)^{\alpha-1}\lambda\e^{-\lambda x}\d{x},
+	\end{equation*}
+	et en posant $y=\lambda x$, on obtient
+	\begin{equation*}
+		\frac{1}{\Gamma(\alpha)}\int_0^\infty y^{\alpha-1}\e^{-y}\d{y}
+		=\frac{1}{\Gamma(\alpha)}\Gamma{(\alpha)}=1.
+	\end{equation*}
+\end{proof}
+
+\subsubsection{Loi normale}
+On modèle souvent les erreurs d'observation et l'addition des résultats de
+plusieurs expérience aléatoires d'une variable aléatoire $X$ par une loi
+normale dénotée
+\begin{equation*}
+	X\sim\Norm(\mu,\sigma^2),
+\end{equation*}
+où $\mu\in\mathbb{R}$ est la moyenne et $\sigma^2>0$ la variance. On appel
+aussi $sigma$ comme l'écart-type. L'espace échantillion est $S_X=\mathbb{R}$.
+
+\begin{theoreme}
+	$f_X(x)=\dfrac{1}{\sqrt{2\pi\sigma^2}}\exp\left(
+		{-\dfrac{1}{2\sigma^2}(x-\mu)^2}
+	\right)$.
+\end{theoreme}
+
+\begin{theoreme}
+	$F_X(x)=\displaystyle\int_{-\infty}^{\frac{x-\mu}{\sigma}}
+		\dfrac{1}{\sqrt{2\pi}}\exp\left(-\dfrac{z^2}{2}\right)\d{z}$
+	où $z=\dfrac{t-\mu}{\sigma}$.
+\end{theoreme}
+
+\begin{exemple}
+	On suppose que $X\sim\Norm(6,4)$. On utilise la normale centrée réduite
+	pour calculer
+	\begin{equation*}
+		\P(X\leq 11)
+		=\Phi\left(\frac{11-6}{2}\right)
+		=\Phi(2.5)
+		\approx\SI{0.9938}{}
+	\end{equation*}
+	et
+	\begin{equation*}
+		\P(X> 7)
+		=1-\Phi\left(\frac{7-6}{2}\right)
+		=1-\Phi(0.5)
+		\approx1-\SI{0.9938}{}
+		=\SI{0.3085}{}.
+	\end{equation*}
+\end{exemple}
+
+\begin{theoreme}
+	$\displaystyle\int_{-\infty}^\infty
+	\frac{1}{\sqrt{2\pi}}\e^{-x^2/2}\d{x}=1$
+\end{theoreme}
+
+\begin{proof}
+	Soit
+	\begin{equation*}
+		I=\int_{-\infty}^\infty\frac{1}{\sqrt{2\pi}}\e^{-x^2/2}\d{x}
+	\end{equation*}
+	et
+	\begin{equation*}
+		I^2=
+			\int_{-\infty}^\infty\frac{1}{\sqrt{2\pi}}\e^{-x^2/2}\d{x}
+			\int_{-\infty}^\infty\frac{1}{\sqrt{2\pi}}\e^{-y^2/2}\d{y}.
+	\end{equation*}
+
+	Ensuite,
+	\begin{equation*}
+		I^2=\frac{1}{2\pi}\int_{-\infty}^\infty\int_{-\infty}^\infty
+			\e^{-(x^2+y^2)/2}\d{x}\d{y}.
+	\end{equation*}
+
+	En utilisant les coordonnées polaires, on a
+	\begin{equation*}
+		I^2=\frac{1}{2\pi}\int_0^{2\pi}\int_0^\infty
+			\e^{-r^2/2}r\d{r}\d{\theta},
+	\end{equation*}
+	de sorte qu'en posant posant $u=r^2$, on peut obtenir
+	\begin{equation*}
+		I^2=-\frac{1}{2\pi}\int_0^{2\pi}
+			\e^{-r^2/2}\bigg\rvert_0^\infty\d{\theta}=
+		-\frac{1}{2\pi}\int_0^{2\pi}\d{\theta}=1
+	\end{equation*}
+	de sorte que $I=1$.
+\end{proof}
+
+\subsection{Fonction d'une variable aléatoire}
+\begin{exemple}
+	On suppose que $X$ est la valeur d'ampliture d'un signal an temps $t$. Le
+	signal numérisé peut s'écrire
+	\begin{equation*}
+		Y=\mathrm{signe}(X)\cdot\Delta\cdot\mathrm{part}\left(
+			\frac{|X|}{\Delta}+\frac{1}{2}
+		\right),
+	\end{equation*}
+	où $\Delta$ est le pas de quantification.
+\end{exemple}
+
+\subsubsection{$X$ et $Y$ sont des variables aléatoires discrètes}
+%
+% diagramme du mapping entre X -> Y selon Y(X)
+%
+\begin{exemple}
+	Soit $X\sim\bin(2,\nicefrac{1}{4})$ et $Y=(X-1)^2$. Quelle est la fonction
+	de masse de $Y$?
+
+	On sait que $\P(Y=0)=\P(X=1)$ et $\P(Y=1)=\P(X=0)+\P(X=2)$. On sait que
+	$\P(X=0)=\nicefrac{9}{16}$, $\P(X=1)=\nicefrac{6}{16}$ et $\P(X=0)=
+	\nicefrac{1}{16}$ de sorte que $\P(Y=0)=\nicefrac{6}{16}$ et
+	$\P(Y=1)=\nicefrac{10}{16}$.
+\end{exemple}
+
+\subsubsection{$X$ et $Y$ sont des variables aléatoires discrète et continue}
+\begin{exemple}
+	Soit $X\sim\Norm(0,1)$ et
+	\begin{equation*}
+		Y=\left\{
+			\begin{matrix}
+				-1&\text{si}&\phantom{-\nicefrac{1}{2}\leq}X<-\nicefrac{1}{2}\\
+				 0&\text{si}&-\nicefrac{1}{2}\leq X<\nicefrac{1}{2}\\
+				 1&\text{si}&\nicefrac{1}{2}\leq X\\
+			\end{matrix}
+		\right..
+	\end{equation*}
+	Quelle est la probabilité que $Y=1$?
+
+	On cherche $\P(X\leq-\nicefrac{1}{2})=\Phi(-\nicefrac{1}{2})=
+	\Phi(\nicefrac{1}{2})\approx\SI{0.3085}{}$. De plus, $\P(-\nicefrac{1}{2}
+	\leq X\leq\nicefrac{1}{2})=\Phi(\nicefrac{1}{2})-\Phi(-\nicefrac{1}{2})
+	\approx\SI{0.3830}{}$. Finalement, $\P(X<-\nicefrac{1}{2})\approx
+	\SI{0.3085}{}$.
+\end{exemple}
+
+\subsubsection{$X$ et $Y$ sont de svariables aléatoires continues}
+% P(Y<=y)=P(X^2<=y)=P(-sqrt(y)<=X<=sqrt(y)=F_X(sqrt(Y)-F_X(-sqrt(Y))
+\begin{exemple}
+	Soit $X\sim\uni(-1,2)$ et $Y=X^2$. Quelle est la fonction de répartition de
+	$Y$?
+\end{exemple}
+
+\subsection{Espérance mathématique}
+\begin{definition}
+	Une \textit{espérance} d'une variable aléatoire $X$, dénotée $\Esp(X)$, est
+	la somme des valeur possibles de $X$ pondérées par leur probabilité.
+\end{definition}
+
+\begin{theoreme}
+	$\Esp(X)=\displaystyle\sum_{k=1}^\infty x_kP_X(x_k)$ si $X$ est discrète.
+\end{theoreme}
+
+\begin{theoreme}
+	$\Esp(X)=\displaystyle\int_{-\infty}^\infty xf_X(x)\d{x}$ si $X$ est
+	continue.
+\end{theoreme}
+
+\begin{exemple}
+	Quelle est l'espérance d'un lancer d'un dé?
+
+	On calcule l'espérance d'une variable discrète, soit
+	\begin{equation*}
+		\Esp(X)=
+			1\cdot\frac{1}{6}+
+			2\cdot\frac{1}{6}+
+			3\cdot\frac{1}{6}+
+			4\cdot\frac{1}{6}+
+			5\cdot\frac{1}{6}+
+			6\cdot\frac{1}{6}
+		=3.5.
+	\end{equation*}
+\end{exemple}
+
+\begin{exemple}
+	Soit $X\sim\poi(\alpha)$. Quelle est l'espérance de $X$?
+
+	Par définition, on calcule l'espérance avec
+	\begin{equation*}
+		\Esp(X)
+		=\sum_{k=0}^\infty k\cdot P_X(k)
+		=\sum_{k=0}^\infty k\cdot\frac{\e^{-\alpha}\alpha^k}{k!}
+		=\sum_{k=1}^\infty k\cdot\frac{\e^{-\alpha}\alpha^k}{k!},
+	\end{equation*}
+	car le premier terme à $k=0$ est nul. Par conséquent,
+	\begin{equation*}
+		\Esp(X)
+		=\sum_{k=1}^\infty\frac{\e^{-\alpha}\alpha^k}{(k-1)!}
+		=\e^{-\alpha}\sum_{k=1}^\infty\frac{\alpha^k}{(k-1)!}
+		=\e^{-\alpha}\sum_{i=0}^\infty\frac{\alpha^{i+1}}{i!}
+		=\e^{-\alpha}\alpha\sum_{i=0}^\infty\frac{\alpha^i}{i!}.
+	\end{equation*}
+	Hors, la somme est le développement en séries de la fonction exponentielle,
+	alors
+	\begin{equation*}
+		\Esp(X)
+		=\e^{-\alpha}\alpha\e^{\alpha}
+		=\alpha.
+	\end{equation*}
+\end{exemple}
+
+\begin{exemple}
+	Soit $X\sim\Exp(\lambda)$. Quelle est l'espérance de $X$?
+
+	Par définition, on calcule l'espérance avec
+	\begin{equation*}
+		\Esp(X)
+		=\int_{-\infty}^\infty xf_X(x)\d{x}
+		=\int_0^\infty x\lambda\e^{-\lambda x}\d{x}.
+	\end{equation*}
+	En posant $u=x$ et $\d{v}=\lambda\e^{-\lambda x}\d{x}$, on obtient
+	\begin{equation*}
+		\Esp(X)
+		=-x\e^{-\lambda x}\bigg\rvert_0^\infty
+		+\int_0^\infty\e^{-\lambda x}\d{x}
+		=\frac{1}{\lambda}\int_0^\infty\lambda\e^{-\lambda x}\d{x}
+		=\frac{1}{\lambda},
+	\end{equation*}
+	car l'aire sous la fonction de densité de probabilités est égal à 1.
+\end{exemple}
+
+Soit $Y=g(X)$, où $X$ et $Y$ sont des variables aléatoires et $g$ une
+tranformation. Si $X$ et $Y$ discrètes, alors
+\begin{equation*}
+	\Esp(Y)=\Esp(g(X))=\sum_{k=1}^\infty g(x_k)P_X(x_k),
+\end{equation*}
+et si $X$ et $Y$ sont continues, alors
+\begin{equation*}
+	\Esp(Y)=\Esp(g(X))=\int_{-\infty}^\infty g(x)f_X(x)\d{x}.
+\end{equation*}
+
+\begin{theoreme}
+	$\Esp(c)=c$, où $c$ est une constante.
+\end{theoreme}
+
+\begin{theoreme}
+	$\Esp(aX+b)=a\Esp(X)+b$, où $a$ et $b$ des constantes.
+\end{theoreme}
+
+\begin{theoreme}
+	$\Esp(X|A)=\displaystyle\sum_{k=1}^\infty x_kP_X(x_k|A)$, où $X$ discrète.
+\end{theoreme}
+
+\begin{theoreme}
+	$\Esp(X|A)=\displaystyle\int_{-\infty}^\infty xf_X(x|A)$, où $X$ continue.
+\end{theoreme}
+
+\begin{theoreme}
+	$\Esp(X)=\displaystyle\sum_{i=1}^nE(X|B_i)\P(B_i)$, où $B_1,\dots,B_n$ des
+	partitions de $S_X$.
+\end{theoreme}
+
+\begin{exemple}
+	Soit $X$ une variable aléatoire mixte. Quelle est la forme de l'espérance
+	de $X$?
+
+	On définie $C$ comme l'événement où $X$ prend une valeur continue et $D$
+	lorsque $X$ prend une valeur discrète. Par conséquent, on a
+	\begin{equation*}
+		\Esp(X)=\underbrace{\Esp(X|C)}_{\int}\P(C)
+		+\underbrace{\Esp(X|D)}_{\sum}\P(D).
+	\end{equation*}
+\end{exemple}
+
+\subsection{Variance}
+\begin{definition}
+	La \textit{variance} d'une variable aléatoire $X$, dénotée $\Var(X)$, est
+	définie comme
+	\begin{equation*}
+		\Var(X)=\Esp\left[(X-\Esp(X))^2\right].
+	\end{equation*}
+\end{definition}
+
+En développant le carré de la variance, on obtient
+\begin{equation*}
+	\Var(X)
+	=\Esp\left[X^2-2X\Esp(X)+\Esp^2(X)\right]
+	=\Esp(X^2)-2\Esp\left[X\Esp(X)\right]+\Esp\left[\Esp^2(X)\right],
+\end{equation*}
+et en simplifiant les constantes, on a
+\begin{equation*}
+	\Var(X)
+	=\Esp(X^2)-2\Esp(X)\Esp(X)+\Esp^2(X)
+	=\Esp(X^2)-\Esp^2(X)
+\end{equation*}
+
+\begin{exemple}
+	Soit $X\sim\bin(1,p)$. Quelle est la variance de $X$?
+
+	On sait que l'espérance de $X$ est
+	\begin{equation*}
+		\Esp(X)=0\cdot(1-p)+1\cdot p=p,
+	\end{equation*}
+	et celle de $X^2$ est
+	\begin{equation*}
+		\Esp(X^2)=0^2\cdot(1-p)+1^2\cdot p=p.
+	\end{equation*}
+	Par conséquent, la variance est
+	\begin{equation*}
+		\Var(X)=p-p^2=p(1-p).
+	\end{equation*}
+\end{exemple}
+
+\begin{theoreme}
+	$\Var(c)=c$, où $c$ est une constante.
+\end{theoreme}
+
+\begin{theoreme}
+	$\Var(aX+b)=a^2\Var(X)$, où $a$ et $b$ des constantes.
+\end{theoreme}
+
+\begin{theoreme}
+	$\Std(X)=\sqrt{\Var(X)}$.
+\end{theoreme}
+
+\begin{theoreme}
+	$\Var(X|A)=\Esp(X^2|A)-\Esp^2(X|A)$.
+\end{theoreme}
+
+\subsection{Inégalité de Markov}
+Soit $X$ une variable aléatoire prenant des valeurs non négatives. On peut
+montrer que
+\begin{equation*}
+	\P(X\geq a)\leq\frac{\Esp(X)}{a},\forall a>0.
+\end{equation*}
+
+\subsection{Inégalité de Bienaymé-Tchebychev}
+Soit $X$ une variable aléatoire dont la moyenne $\Esp(X)=\mu_X$ et la variance
+$\Var(X)=\sigma_X^2$ existent. On peut montrer que
+\begin{equation*}
+	\P(|X-\mu_X|\geq a)\leq\frac{\sigma_X^2}{a^2},\forall a>0.
+\end{equation*}
+
+\begin{exemple}
+	Soit le lancer d'une pièce de monnaie avec $X\sim\bin(n,\nicefrac{1}{2})$.
+	On calcule la moyenne avec
+	\begin{equation*}
+		\Esp\left(\frac{X}{n}\right)
+		=\frac{1}{n}\Esp(X)
+		=\frac{1}{n}\cdot n\cdot\frac{1}{2}
+		=\frac{1}{2}
+	\end{equation*}
+	et la variance avec
+	\begin{equation*}
+		\Var\left(\frac{X}{n}\right)
+		=\frac{1}{n^2}\Var(X)
+		=\frac{1}{n^2}\cdot n\cdot\frac{1}{2}\cdot\frac{1}{2}
+		=\frac{1}{4n}.
+	\end{equation*}
+
+	Selon l'inégalité de Bienaymé-Tchebychev, on a
+	\begin{equation*}
+		\P\left(\left|\frac{X}{n}-\frac{1}{2}\right|\geq 0.01\right)
+		\geq\frac{1/4n}{(0.01)^2}
+		=\frac{10000}{4n}
+		=\frac{2500}{n}.
+	\end{equation*}
+\end{exemple}
+
+% nous ne faisons pas fonction moment/génératrice
+\subsection{Fonction caractéristique}
+\begin{definition}
+	Une fonction \textit{caractéristique}, dénoté $\phi_X(\omega)$, est
+	l'espérance d'une variable aléatoire $X$ tel que
+	\begin{equation*}
+		\phi_X(\omega)=\Esp\left(\e^{j\omega X}\right),
+	\end{equation*}
+	où $j$ est le nombre imaginaire tel que $j^2=-1$.
+\end{definition}
+
+\begin{theoreme}
+	$\phi_X(\omega)=\displaystyle\sum_{k=1}^\infty\e^{j\omega x_k}\cdot
+	P_X(x_k)$, si $X$ est discrète.
+\end{theoreme}
+
+\begin{theoreme}
+	$\phi_X(\omega)=\displaystyle\int_{-\infty}^\infty\e^{j\omega X}\cdot
+	f_X(x)\d{x}$, si $X$ est continue.
+\end{theoreme}
+
+\begin{theoreme}
+	$\phi_X(0)=1$.
+\end{theoreme}
+
+\begin{theoreme}
+	$\Esp(X^n)=(-j)^n\left[
+	\dfrac{\d{}^n}{\d{\omega}^n}\phi_X(\omega)\right]_{\omega=0}$.
+\end{theoreme}
+
+\begin{exemple}
+	Soit $X\sim\bin(n,p)$. Quelle est la fonction caractéristique de $X$?
+
+	La fonction caractéristique de la loi binomiale est donnée par
+	\begin{equation*}
+		\phi_X(\omega)
+		=\sum_{k=0}^n\e^{j\omega k}\cdot\comb{n}{k}p^kq^{n-k}
+		=\sum_{k=0}^n\comb{n}{k}\left(p\e^{j\omega}\right)^kq^{n-k}
+		=(p\e^{j\omega}+q)^n,
+	\end{equation*}
+	selon le binôme de Newton.
+\end{exemple}
+
+\begin{exemple}
+	Soit $X\sim\Norm(\mu,\sigma^2)$. On peut montrer que
+	\begin{equation*}
+		\phi_X(\omega)=\exp\left(j\omega\mu-\frac{1}{2}\omega^2\sigma^2\right).
+	\end{equation*}
+	Soit $Y=aX+b$. Quelle est la fonction caractéristique de $Y$?
+
+	Par définition, on a
+	\begin{equation*}
+		\phi_Y(\omega)
+		=\Esp\left(\e^{j\omega Y}\right)
+		=\Esp\left(\e^{j\omega(aX+b)}\right)
+		=\e^{j\omega b}\Esp\left(\e^{j\omega aX}\right)
+		=\e^{j\omega b}\cdot\exp\left(j\omega a\mu+\frac{1}{2}
+			\omega^2a^2\sigma^2
+		\right)
+	\end{equation*}
+	de sorte à obtenir
+	\begin{equation*}
+		\phi_Y(\omega)=
+		\exp\bigg[
+			j\omega\underbrace{(a\mu+b)}_{\mu_Y}-
+			\frac{1}{2}\omega^2\underbrace{(a^2\sigma)^2}_{\sigma_Y^2}
+		\bigg].
+	\end{equation*}
+	La fonction $\phi_Y(\omega)$ est de la même forme que $\phi_X(\omega)$,
+	alors on peut en déduire que $Y$ suit aussi une loi normale.
+\end{exemple}
+
+\subsection{Fiabilité}
+On s'intéresse à la durée de vie des systèmes et de leurs composantes. Soit $T$
+une variable aléatoire, continue et non-négative, représentant une durée de
+vie. En général, l'espace d'échantillion est $S_T=[0,\infty[$.
+
+On définie la fonction de fiabilité $R(T)$ tel que
+\begin{equation*}
+R(t)=\P(T>t)=1-F_T(t)
+\end{equation*}
+et le taux de défaillance $r(t)$ comme
+\begin{equation*}
+	r(t)
+	=\lim_{s\rightarrow t}f_T(s|T>t)
+	=\frac{f_T(t)}{1-F_T(t)}
+	=-\frac{R\prime(t)}{R_(t)}
+\end{equation*}
+
+Sachant $r(t)$, il est possible de déterminer la fonction de fiabilité en
+trouvant la solution de l'équation différentielle suivante, soit
+\begin{equation*}
+	r=-\frac{R\prime}{R},
+\end{equation*}
+avec $R(0)=1$, de sorte à obtenir
+\begin{equation*}
+	R(t)=\exp\left(-\int_0^tr(s)\d{s}\right).
+\end{equation*}
+
+\begin{exemple}
+	Soit $T\sim\Exp(\lambda)$. Quel est le taux de défaillance?
+
+	On calcule la fonction de fiabilité avec
+	\begin{equation*}
+		R(t)
+		=1-F_T(t)
+		=1-(1-\e^{-\lambda t}
+		=\e^{-\lambda t}
+	\end{equation*}
+	de sorte à obtenir le taux de défaillance
+	\begin{equation*}
+		r(t)
+		=\frac{\lambda\e^{-\lambda t}}{\e^{-\lambda t}}
+		=\lambda.
+	\end{equation*}
+	On remarque que si $T\sim\Exp(\lambda)$, alors $T$ a la propriété de
+	non-vieillissement.
+\end{exemple}
+
+\subsubsection{Durée de vie moyenne}
+La \textit{durée de vie moyenne} est l'espérance de $T$ et peut se calculer
+selon
+\begin{equation*}
+	\Esp(T)=\int_0^\infty R(t)\d{t}.
+\end{equation*}
+
+\begin{proof}
+	Par définition, on a
+	\begin{equation*}
+		\Esp(T)=\int_0^\infty t\cdot f_T(t)\d{t}.
+	\end{equation*}
+	Hors, on peut exprimé $t$ comme
+	\begin{equation*}
+		t=\int_0^t\d{s}
+	\end{equation*}
+	de sorte à obtenir
+	\begin{equation*}
+		\Esp(T)
+		=\int_0^\infty\int_0^t f_T(t)\d{s}d{t}
+		=\int_0^\infty\underbrace{\int_s^\infty f_T(t)\d{t}}_{\P(T>s)}\d{s}
+		=\int_0^\infty R(t)\d{t},
+	\end{equation*}
+	en inversant l'ordre d'intégration.
+\end{proof}
+
+\begin{exemple}
+	Soit un système en série à $n$ composantes. On suppose que les composantes
+	fonctionnent indépendaments les un des autres. Quelle est la fonction de
+	fiabilité du système?
+\end{exemple}
+\addtocounter{exemple}{-1}
+\begin{exemple}[suite]
+	La probabilité que le système fonctionne après un temps $t$ est équivalent
+	à la probabilité que tous les composantes fonctionnents après un temps $t$,
+	soit
+	\begin{equation*}
+		\P(T>t)
+		=\P(\left\{T_1>t\right\}\cap\cdots\cap\left\{T_N>t\right\})
+		=\P(T_1>t)\cdots\P(T_n>t),
+	\end{equation*}
+	car les événements sont indépendants. Par conséquent, on obtient
+	\begin{equation*}
+		R(t)=\prod_{k=1}^n R_k(t).
+	\end{equation*}
+\end{exemple}
+
+\begin{exemple}
+	Soit un système en parrallèle à $n$ composantes. On suppose que les
+	composantes fonctionnents indépendaments les un de sautres. Quelle est la
+	fonction de fiablité dus système?
+
+	La probabilité que le système soit en panne est équivalent à la probabilité
+	que tous les composantes soit en panne après un temps $t$, soit
+	\begin{equation*}
+		\P(T\leq t)
+		=\P(\left\{T_1\leq t\right\}\cap\cdots\cap\left\{T_n\leq t\right\})
+		=\P(T_1\leq t)\cdots\P(T_n\leq t),
+	\end{equation*}
+	car les événements sont indépendants. Par conséquent, on obtient
+	\begin{equation*}
+		R(t)=1-\prod_{k=1}^n\bigg[1-R_k(t)\bigg].
+	\end{equation*}
+\end{exemple}
 \end{document}
 
