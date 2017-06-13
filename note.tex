@@ -1048,7 +1048,7 @@ possibles. De plus, la somme de toutes les valeurs discrètes donne 1. La figure
 	$(x-\epsilon<X\leq x)\equiv (X=x)$ lorsque $\epsilon\rightarrow 0$, on
 	obtient
 	\begin{equation*}
-		\P(X=x)=F_X(x)-F_X(x^-).
+		\P(X=x)=F_X(x)-F_X(x^-).\qedhere
 	\end{equation*}
 \end{proof}
 
@@ -1309,7 +1309,7 @@ $S_X=\left\{0,1,2,\dots,n\right\}$.
 	\end{equation*}
 	et que $q=1-p$, on peut simplifier de sorte à obtenir
 	\begin{equation*}
-		\P(S_X)=(p+q)^k=1^k=1.
+		\P(S_X)=(p+q)^k=1^k=1.\qedhere
 	\end{equation*}
 \end{proof}
 
@@ -1375,7 +1375,7 @@ est $S_X=\left\{1,2,\dots\right\}$.
 	\begin{equation*}
 		P_X(k)=
 		\underbrace{\P(A_1^c)\P(A_2^c)\cdots\P(A_{k-1})}_\text{$k-1$ fois}
-		\cdot\P(A_k)=q^{k-1}p.
+		\cdot\P(A_k)=q^{k-1}p.\qedhere
 	\end{equation*}
 \end{proof}
 
@@ -1394,7 +1394,7 @@ est $S_X=\left\{1,2,\dots\right\}$.
 	\end{equation*}
 	Puisque $q=1-p\Leftrightarrow p=1-q$, on obtient
 	\begin{equation*}
-		F_X(n)=(1-q)\frac{1-q^n}{1-q}=1-q^n.
+		F_X(n)=(1-q)\frac{1-q^n}{1-q}=1-q^n.\qedhere
 	\end{equation*}
 \end{proof}
 
@@ -1433,7 +1433,7 @@ est $S_X=\left\{1,2,\dots\right\}$.
 	\end{equation*}
 	Avec le complément du théorème \ref{th:repartition_geo}, on a
 	\begin{equation*}
-		\P(X>k+j|X>j)=\frac{q^{k+j}}{q^{j}}=q^{k}=\P(X>k).
+		\P(X>k+j|X>j)=\frac{q^{k+j}}{q^{j}}=q^{k}=\P(X>k).\qedhere
 	\end{equation*}
 \end{proof}
 
@@ -1466,7 +1466,7 @@ Par conséquent, la probabilité que $X$ prend une valeur proche de $\alpha$ est
 		=\sum_{k=0}^\infty P_X(k)
 		=\e^{-\alpha}\sum_{k=0}^\infty\frac{\alpha^k}{k!}
 		=\e^{-\alpha}\e^\alpha
-		=1.
+		=1.\qedhere
 	\end{equation*}
 \end{proof}
 
@@ -1575,7 +1575,7 @@ où $\alpha>0$ et $\lambda>0$, a l'espace échantillion $S_X=[0,\infty[$.
 	et en posant $y=\lambda x$, on obtient
 	\begin{equation*}
 		\frac{1}{\Gamma(\alpha)}\int_0^\infty y^{\alpha-1}\e^{-y}\d{y}
-		=\frac{1}{\Gamma(\alpha)}\Gamma{(\alpha)}=1.
+		=\frac{1}{\Gamma(\alpha)}\Gamma{(\alpha)}=1.\qedhere
 	\end{equation*}
 \end{proof}
 
@@ -1600,25 +1600,6 @@ aussi $sigma$ comme l'écart-type. L'espace échantillion est $S_X=\mathbb{R}$.
 		\dfrac{1}{\sqrt{2\pi}}\exp\left(-\dfrac{z^2}{2}\right)\d{z}$
 	où $z=\dfrac{t-\mu}{\sigma}$.
 \end{theoreme}
-
-\begin{exemple}
-	On suppose que $X\sim\Norm(6,4)$. On utilise la normale centrée réduite
-	pour calculer
-	\begin{equation*}
-		\P(X\leq 11)
-		=\Phi\left(\frac{11-6}{2}\right)
-		=\Phi(2.5)
-		\approx\SI{0.9938}{}
-	\end{equation*}
-	et
-	\begin{equation*}
-		\P(X> 7)
-		=1-\Phi\left(\frac{7-6}{2}\right)
-		=1-\Phi(0.5)
-		\approx1-\SI{0.9938}{}
-		=\SI{0.3085}{}.
-	\end{equation*}
-\end{exemple}
 
 \begin{theoreme}
 	$\displaystyle\int_{-\infty}^\infty
@@ -1769,6 +1750,7 @@ aussi $sigma$ comme l'écart-type. L'espace échantillion est $S_X=\mathbb{R}$.
 	\end{equation*}
 \end{exemple}
 
+\pagebreak
 \begin{exemple}
 	Soit $X\sim\Exp(\lambda)$. Quelle est l'espérance de $X$?
 
@@ -1970,13 +1952,13 @@ $\Var(X)=\sigma_X^2$ existent. On peut montrer que
 	selon le binôme de Newton.
 \end{exemple}
 
+\pagebreak
 \begin{exemple}
 	Soit $X\sim\Norm(\mu,\sigma^2)$. On peut montrer que
 	\begin{equation*}
 		\phi_X(\omega)=\exp\left(j\omega\mu-\frac{1}{2}\omega^2\sigma^2\right).
 	\end{equation*}
 	Soit $Y=aX+b$. Quelle est la fonction caractéristique de $Y$?
-
 	Par définition, on a
 	\begin{equation*}
 		\phi_Y(\omega)
@@ -2026,6 +2008,7 @@ avec $R(0)=1$, de sorte à obtenir
 	R(t)=\exp\left(-\int_0^tr(s)\d{s}\right).
 \end{equation*}
 
+\pagebreak
 \begin{exemple}
 	Soit $T\sim\Exp(\lambda)$. Quel est le taux de défaillance?
 
@@ -2076,9 +2059,7 @@ selon
 	Soit un système en série à $n$ composantes. On suppose que les composantes
 	fonctionnent indépendaments les un des autres. Quelle est la fonction de
 	fiabilité du système?
-\end{exemple}
-\addtocounter{exemple}{-1}
-\begin{exemple}[suite]
+
 	La probabilité que le système fonctionne après un temps $t$ est équivalent
 	à la probabilité que tous les composantes fonctionnents après un temps $t$,
 	soit
@@ -2087,7 +2068,11 @@ selon
 		=\P(\left\{T_1>t\right\}\cap\cdots\cap\left\{T_N>t\right\})
 		=\P(T_1>t)\cdots\P(T_n>t),
 	\end{equation*}
-	car les événements sont indépendants. Par conséquent, on obtient
+	car les événements sont indépendants. 
+\end{exemple}
+\addtocounter{exemple}{-1}
+\begin{exemple}[suite]
+	Par conséquent, on obtient
 	\begin{equation*}
 		R(t)=\prod_{k=1}^n R_k(t).
 	\end{equation*}
