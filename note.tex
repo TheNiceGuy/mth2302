@@ -2095,5 +2095,165 @@ selon
 		R(t)=1-\prod_{k=1}^n\bigg[1-R_k(t)\bigg].
 	\end{equation*}
 \end{exemple}
+
+\section{Vecteurs aléatoires}
+\begin{definition}
+	Un \textit{vecteur aléatoire} est formé de plusieurs variables aléatoires
+	observées lors d'une même expérience.
+\end{definition}
+
+\begin{exemple}
+	Soit le lancer de 2 dés.
+
+	On pose $X$ comme étant le résultat du premier dé et $Y$ comme étant le 
+	résultat du deuxième dé. On défini le vecteur aléatoire $(X,Y)$. L'espace
+	échantillion est $S_{X,Y}=\left\{(1,1),(1,2),\dots,(6,5),(6,6)\right\}$.
+
+	La probabilité d'avoir un évènement est
+	\begin{equation*}
+		\P(\left\{X=j\right\}]\cap\left\{Y=i\right\})=\frac{1}{36},
+	\end{equation*}
+	pour $i=1,\dots,6$ et $j=1,\dots,6$.
+\end{exemple}
+
+\pagebreak
+\begin{exemple}
+	On génère un point au hasard dans le triangle $T$ de coordonnées $(0,0)$,
+	$(1,1)$ et $(0,1)$.
+
+	Chaque point dans le triangle peut être considéré comme une vecteur
+	aléatoire $(X,Y)$ où $X$ est l'abscisse et $Y$ l'ordonnée. Soit
+	$f_{X,Y}(x,y)$ la fonction de masse du vecteur tel que
+	\begin{equation*}
+		f_{X,Y}(x,y)=\left\{
+			\begin{array}{rl}
+				c&\text{si $(x,y)$ est dans le triangle}\\
+				0&\text{sinon}\\
+			\end{array}
+		\right.,
+	\end{equation*}
+	où la constante $c$ est donnée par
+	\begin{equation*}
+		\iint_Tf_{X,Y}(x,y)\d{A}=1\Leftrightarrow c=2.
+	\end{equation*}
+\end{exemple}
+
+\subsection{Vecteur aléatoire discret}
+\subsubsection{Fonction de masse conjointe}
+\begin{theoreme}
+	$p_{X,Y}(x_j,y_k)=\P(\left\{X=x_j\right\}\cap\left\{Y=y_k\right\})$.
+\end{theoreme}
+
+\begin{theoreme}
+	$p_{X,Y}(x_j,y_k)\geq 0$.
+\end{theoreme}
+
+\begin{theoreme}
+	$\displaystyle\sum_{j=1}^\infty\displaystyle\sum_{k=1}^\infty
+	p_{X,Y}(x_j,y_k)=1$.
+\end{theoreme}
+
+\subsubsection{Fonction de masse marginale}
+\begin{theoreme}
+	$p_X(x_j)=\displaystyle\sum_{k=0}^\infty p_{X,Y}(x_j,y_k)$.
+\end{theoreme}
+
+\begin{theoreme}
+	$p_Y(y_k)=\displaystyle\sum_{j=0}^\infty p_{X,Y}(x_j,y_k)$.
+\end{theoreme}
+
+\subsubsection{Fonction de masse conditionnelle}
+\begin{theoreme}
+	$p_{Y|X}(y_k|x_j)=\dfrac{p_{X,Y}(x_j,y_k)}{p_X(x_j)}$.
+\end{theoreme}
+
+\begin{theoreme}
+	$p_{X|Y}(x_j|y_k)=\dfrac{p_{X,Y}(x_j,y_k)}{p_Y(y_k)}$.
+\end{theoreme}
+
+\begin{theoreme}
+	$\P(A)=\displaystyle\sum\displaystyle\sum_Ap_{X,Y}(x_j,y_k)$.
+\end{theoreme}
+
+\subsection{Vecteur aléatoire continu}
+\subsubsection{Fonction de densité conjointe}
+\begin{theoreme}
+	$f_{X,Y}(x,y)=\dfrac{1}{\delta\epsilon}\P\left(
+		\left\{
+			x-\dfrac{\delta}{2}\leq X\leq x+\dfrac{\delta}{2}
+		\right\}\cap
+		\left\{
+			y-\dfrac{\epsilon}{2}\leq Y\leq y+\dfrac{\epsilon}{2}
+		\right\}
+	\right)$
+\end{theoreme}
+
+\begin{theoreme}
+	$\displaystyle\int_{-\infty}^\infty\displaystyle\int_{-\infty}^\infty
+		f_{X,Y}(x,y)\d{x}\d{y}=1$.
+\end{theoreme}
+
+\subsubsection{Fonction de densité marginale}
+\begin{theoreme}
+	$f_X(x)=\displaystyle\int_{-\infty}^\infty f_{X,Y}(x,y)\d{y}$.
+\end{theoreme}
+
+\begin{theoreme}
+	$f_Y(y)=\displaystyle\int_{-\infty}^\infty f_{X,Y}(x,y)\d{x}$.
+\end{theoreme}
+
+\subsubsection{Fonction de densité conditionnelle}
+
+\begin{theoreme}
+	$f_{Y|X}(y|x)=\dfrac{f_{X,Y}(x,y)}{f_X(x)}$.
+\end{theoreme}
+
+\begin{theoreme}
+	$f_{X|Y}(x|y)=\dfrac{f_{X,Y}(x,y)}{f_Y(y)}$.
+\end{theoreme}
+
+\begin{theoreme}
+	$\P(A)=\displaystyle\iint_Af_{X,Y}(x,y)\d{A}$.
+\end{theoreme}
+
+\subsection{Fonction de répartition conjointe}
+\begin{theoreme}
+	$F_{X,Y}(x,y)=\P(\left\{X\leq x\right\}\cap\left\{Y\leq y\right\})$.
+\end{theoreme}
+
+\begin{theoreme}
+	$F_{X,Y}(x,y)=\displaystyle\sum_{x_j\leq x}
+	\displaystyle\sum_{y_k\leq y}p_{X,Y}(x_j,y_k)$ dans le cas discret.
+\end{theoreme}
+
+\begin{theoreme}
+	$F_{X,Y}(x,y)=\displaystyle\int_{-\infty}^x
+	\displaystyle\int_{-\infty}^yf_{X,Y}(s,t)\d{t}\d{s}$ dans le cas continue.
+\end{theoreme}
+
+\begin{theoreme}
+	$f_{X,Y}(x,y)=\dfrac{\p{}^2}{\p{x}\p{y}}F_{X,Y}(x,y)$.
+\end{theoreme}
+
+\subsection{Fonction de répartition marginale}
+\begin{theoreme}
+	$F_X(x)=\displaystyle\lim_{y\leftarrow\infty}F_{X,Y}(x,y)$.
+\end{theoreme}
+
+\begin{theoreme}
+	$F_Y(y)=\displaystyle\lim_{x\leftarrow\infty}F_{X,Y}(x,y)$.
+\end{theoreme}
+
+\begin{exemple}
+	Quelle est la probabilité que $(X,Y)$ soit dans un rectangle $R$? On
+	suppose qu'on connait $F_{X,Y}(x,y)=\P(\left\{X\leq x\right\}\cap
+	\left\{Y\leq y\right\})$.
+
+	\begin{equation*}
+		\P(R)
+		=F_{X,Y}(b,d)-F_{X,Y}(b,c)-F_{X,Y}(a,d)+2F_{X,Y}(a,c).
+	\end{equation*}
+\end{exemple}
+
 \end{document}
 
