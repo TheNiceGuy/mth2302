@@ -59,9 +59,15 @@
 	}%
 }%
 
-\renewcommand\P{%
+\renewcommand\P[1]{%
 	\ensuremath{%
-		\mathbb{P}%
+		\mathbb{P}\left[\,#1\,\right]%
+	}%
+}%
+
+\newcommand\Pg[2]{%
+	\ensuremath{%
+		\mathbb{P}\left[\,#1\middle\rvert#2\,\right]%
 	}%
 }%
 
@@ -71,65 +77,95 @@
 	}%
 }%
 
-\newcommand\bin{%
+\newcommand\Bin[2]{%
 	\ensuremath{%
-		\mathcal{B}%
+		\mathcal{B}\left(#1,#2\right)%
 	}%
 }%
 
-\newcommand\geo{%
+\newcommand\Geo[1]{%
 	\ensuremath{%
-		\mathcal{G}%
+		\mathcal{G}\left(#1\right)%
 	}%
 }%
 
-\newcommand\poi{%
+\newcommand\Poi[1]{%
 	\ensuremath{%
-		\mathrm{Poi}%
+		\mathrm{Poi}\left(#1\right)%
 	}%
 }%
 
-\newcommand\uni{%
+\newcommand\Uni[2]{%
 	\ensuremath{%
-		\mathcal{U}%
+		\mathcal{U}\left(#1,#2\right)%
 	}%
 }%
 
-\newcommand\Exp{%
+\newcommand\Exp[1]{%
 	\ensuremath{%
-		\mathrm{Exp}%
+		\mathrm{Exp}\left(#1\right)%
 	}%
 }%
 
-\newcommand\Gam{%
+\newcommand\Gam[2]{%
 	\ensuremath{%
-		\mathrm{Gam}%
+		\mathrm{Gam}\left(#1,#2\right)%
 	}%
 }%
 
-\newcommand\Norm{%
+\newcommand\Norm[2]{%
 	\ensuremath{%
-		\mathcal{N}%
+		\mathcal{N}\left(#1,#2\right)%
 	}%
 }%
 
-\newcommand\Esp{%
+\newcommand\BiNorm[5]{%
 	\ensuremath{%
-		\mathrm{E}%
+		\mathcal{N}\left(#1,#2,#3,#4,#5\right)%
 	}%
 }%
 
-\newcommand\Var{%
+\newcommand\Esp[1]{%
 	\ensuremath{%
-		\mathrm{Var}%
+		\mathrm{E}\left[\,#1\,\right]%
 	}%
 }%
 
-\newcommand\Std{%
+\newcommand\Espg[2]{%
 	\ensuremath{%
-		\mathrm{Std}%
+		\mathrm{E}\left[\,#1\middle\vert#2\,\right]%
 	}%
 }%
+
+\newcommand\Var[1]{%
+	\ensuremath{%
+		\mathrm{Var}\left[\,#1\,\right]%
+	}%
+}%
+
+\newcommand\Varg[2]{%
+	\ensuremath{%
+		\mathrm{Var}\left[\,#1\middle\vert#2\,\right]%
+	}%
+}%
+
+\newcommand\Std[1]{%
+	\ensuremath{%
+		\mathrm{Std}\left[\,#1\,\right]%
+	}%
+}%
+
+\newcommand\Cov[2]{%
+	\ensuremath{%
+		\mathrm{Cov}\left[#1,#2\right]%
+	}%
+}%
+
+\newcommand\Min{
+	\ensuremath{%
+		\mathrm{min}\,%
+	}%
+}
 
 \newtheorem{axiome}{Axiome}
 \newtheorem{theoreme}{Théoreme}[section]
@@ -252,7 +288,7 @@ un évènement élémentaire tandis que $\card(A)\geq 1$ pour un évènement.
 	La limite lorsque l'expérience est répétée infiniment est la probabilité de
 	l'évènement $A$, dénotée
 	\begin{equation*}
-		\P(A)=\lim_{n\rightarrow\infty}f_A.
+		\P{A}=\lim_{n\rightarrow\infty}f_A.
 	\end{equation*}
 \end{definition}
 
@@ -299,7 +335,7 @@ Soit deux ensembles $A$ et $B$ tel que $A,B\subset S$. La figure
 \begin{axiome}
 	La probabilité d'un évèment $A$ est plus grand ou égal à 0, c'est-à-dire
 	\begin{equation*}
-		\P(A)\geq 0,
+		\P{A}\geq 0,
 	\end{equation*}
 	pour tout $A\in S$.
 \end{axiome}
@@ -307,7 +343,7 @@ Soit deux ensembles $A$ et $B$ tel que $A,B\subset S$. La figure
 \begin{axiome}
 	La probabilité de l'espace d'échantilion $S$ est 1, c'est-à-dire
 	\begin{equation*}
-		\P\left(S\right)=1.
+		\P{S}=1.
 	\end{equation*}
 \end{axiome}
 
@@ -315,58 +351,58 @@ Soit deux ensembles $A$ et $B$ tel que $A,B\subset S$. La figure
 	La probabilité d'un évènement $A$ ou d'un évènement $B$ est équivalent à la
 	somme de leur probabilité, c'est-à-dire
 	\begin{equation*}
-		\P(A\cup B)=\P(A)+\P(B),
+		\P{A\cup B}=\P{A}+\P{B},
 	\end{equation*}
 	si $A\cup B=\emptyset$.
 
 	En général, 
 	\begin{equation*}
-		\P\left(\bigcup_{k=1}^\infty A_k\right)=\sum_{k=1}^\infty \P\left(A_k\right),
+		\P{\bigcup_{k=1}^\infty A_k}=\sum_{k=1}^\infty\P{A_k},
 	\end{equation*}
 	si $A_i\cup A_j=\emptyset$, $\forall i,j$.
 \end{axiome}
 
 \begin{theoreme}
-	$\P(A^c)=1-\P(A)$.
+	$\P{A^c}=1-\P{A}$.
 \end{theoreme}
 
 \begin{proof}
 	On sait que $A\cup A^c=S$ et $A\cap A^c=\emptyset$. Hors,
-	$\P(A\cup A^c)=\P(S)\Leftrightarrow \P(A)+\P(A^c)=1$, car
+	$\P{A\cup A^c}=\P{S}\Leftrightarrow\P{A}+\P{A^c}=1$, car
 	$A\cup A^c=\emptyset$.
-	En réarrangeant, on obtient que $\P(A^c)=1-\P(A).$
+	En réarrangeant, on obtient que $\P{A^c}=1-\P{A}.$
 \end{proof}
 
 \begin{theoreme}
-	$\P(A)\leq 1$.
+	$\P{A}\leq 1$.
 \end{theoreme}
 
 \begin{proof}
-	On sait que $\P(A^c)\geq 0$ et $\P(A^c)=1-\P(A)$. En réarrangeant, on
-	obtient que $\P(A)\leq 1$.
+	On sait que $\P{A^c}\geq 0$ et $\P{A^c}=1-\P{A}$. En réarrangeant, on
+	obtient que $\P{A}\leq 1$.
 \end{proof}
 
 \begin{theoreme}
-	$\P(\emptyset)=0$.
+	$\P{\emptyset}=0$.
 \end{theoreme}
 
 \begin{proof}
-	On sait que $S^c=\emptyset$. Par conséquent, $\P(\emptyset)=1-\P(S)=1-1=0$.
+	On sait que $S^c=\emptyset$. Par conséquent, $\P{\emptyset}=1-\P{S}=1-1=0$.
 \end{proof}
 
 \begin{theoreme}
-	$A\subset B\Rightarrow \P(A)\leq \P(B)$.
+	$A\subset B\Rightarrow \P{A}\leq\P{B}$.
 \end{theoreme}
 
 \begin{proof}
 	La différence entre $A$ et $B$ est $A^c\cap B$ de sorte qu'on peut écrire
-	$B=A\cup(A^c\cap B)$. Par conséquent, $\P(B)=\P(A)+\P(A^c\cap B)
-	\Leftrightarrow \P(B)-\P(A)=\P(A^c\cap B)\geq 0$, car
-	$A\cup(A^c\cap B)=\emptyset$. En réarrangeant, on obtient $\P(A)\leq \P(B)$.
+	$B=A\cup(A^c\cap B)$. Par conséquent, $\P{B}=\P{A}+\P{A^c\cap B}
+	\Leftrightarrow\P{B}-\P{A}=\P{A^c\cap B}\geq 0$, car
+	$A\cup(A^c\cap B)=\emptyset$. En réarrangeant, on obtient $\P{A}\leq\P{B}$.
 \end{proof}
 
 \begin{theoreme}
-	$\P(A\cup B)=\P(A)+\P(B)-\P(A\cap B)$.
+	$\P{A\cup B}=\P{A}+\P{B}-\P{A\cap B}$.
 \end{theoreme}
 
 \subsection{Principe d'équiprobabilité}
@@ -374,31 +410,31 @@ Soit deux ensembles $A$ et $B$ tel que $A,B\subset S$. La figure
 On suppose que $S$ est fini, soit $S=\left\{e_1,e_2,\dots,e_n\right\}$. On dit
 que les résultats d'une expérience aléatoire sont \textit{équiprobables} si
 \begin{equation*}
-	\P(e_1)=\P(e_2)=\cdots=\P(e_n)=\frac{1}{n}.
+	\P{e_1}=\P{e_2}=\cdots=\P{e_n}=\frac{1}{n}.
 \end{equation*}
 Dans ce cas, on a que la probabilité d'un évènement $A\subset S$ est
 \begin{equation*}
-	\P(A)=\frac{n_A}{n},
+	\P{A}=\frac{n_A}{n},
 \end{equation*}
 où $n_A$ est le nombre d'élément dans $A$ et $n$ celui dans $S$.
 
 \subsubsection{Ensemble infini dénombrable}
 On suppose que $S$ est infini dénombrable, alors l'équiprobabilité est
-impossible. Si la probabilité d'un évènement élémentaire est $\P(e_i)=\epsilon$,
-on obtient que $\P(S)=\P(e_1)+\P(e_2)+\cdots=\infty$, Ce qui est en contradiction
-avec les axiomes. D'une manière similaire, si $\P(e_i)=0$, alors $\P(S)=0$, ce
+impossible. Si la probabilité d'un évènement élémentaire est $\P{e_i}=\epsilon$,
+on obtient que $\P{S}=\P{e_1}+\P{e_2}+\cdots=\infty$, Ce qui est en contradiction
+avec les axiomes. D'une manière similaire, si $\P{e_i}=0$, alors $\P{S}=0$, ce
 qui est aussi en contradiction avec les axiomes.
 
 \subsubsection{Ensemble infini non-dénombrable}
 On suppose que $S=[a,b]$ est infini non-dénombrable. Soit un évènement
 $A=[c,d]\subset S$. La probabilité de l'évènement est
 \begin{equation*}
-	\P(A)=\frac{l_A}{l}=\frac{d-c}{b-a},
+	\P{A}=\frac{l_A}{l}=\frac{d-c}{b-a},
 \end{equation*}
 où $l_A$ est la longueur de $A$ et $l$ la longueur de $S$. Par conséquent, la
 probabilité d'un évènement élémentaire $e\in S$ est
 \begin{equation*}
-	\P(e)=0,
+	\P{e}=0,
 \end{equation*}
 car $l_A=0$.
 
@@ -417,9 +453,9 @@ car $l_A=0$.
 	\begin{table}[H]
 		\centering
 		\begin{tabular}{r|ccccccccccc}
-			$\phantom{\P(}A\phantom{)}$ &
+			$\phantom{\mathbb{P}(}A\phantom{)}$ &
 			$2$ & $3$ & $4$ & $5$ & $6$ & $7$ & $8$ & $9$ & $10$ & $11$ & $12$\\
-			$\P(A)$ &
+			$\P{A}$ &
 			$\frac{1}{36}$ & $\frac{2}{36}$ & $\frac{3}{36}$ & $\frac{4}{36}$ &
 			$\frac{5}{36}$ & $\frac{6}{36}$ & $\frac{5}{36}$ & $\frac{4}{36}$ &
 			$\frac{3}{36}$ & $\frac{2}{36}$ & $\frac{1}{36}$\\
@@ -479,7 +515,7 @@ Lorsqu'il y a remise, le nombre de permutations de $n$ éléments est $n^k$.
 	On suppose qu'il y a équiprobabilité du choix des 3 composantes. La
 	probabilité d'obtenir 3 composantes non défecteuses $F$ est
 	\begin{equation*}
-		\P(F)
+		\P{F}
 		=\frac{6\cdot 5\cdot 4}{10\cdot 9\cdot 8}
 		=\frac{\perm{3}{6}}{\perm{3}{10}}
 		=\frac{1}{6}.
@@ -517,12 +553,12 @@ et en réarrangeant, on obtient
 	Sans ordre, il y a 1 seul cas favorable et $\comb{6}{49}$ cas possibles.
 	Par conséquent, la probabilité de gagner $G$ est
 	\begin{equation*}
-		\P(G)=\frac{1}{\comb{6}{49}}=\frac{1}{\SI{13983816}{}}.
+		\P{G}=\frac{1}{\comb{6}{49}}=\frac{1}{\SI{13983816}{}}.
 	\end{equation*}
 	Avec ordre, il y a $6!$ cas favorables et $\perm{6}{49}$ cas possibles de
 	sorte que la probabilité est
 	\begin{equation*}
-		\P(G)=\frac{6!}{\perm{6}{49}}=\frac{720}{\SI{10068347520}{}}.
+		\P{G}=\frac{6!}{\perm{6}{49}}=\frac{720}{\SI{10068347520}{}}.
 	\end{equation*}
 \end{exemple}
 
@@ -628,7 +664,7 @@ ordres possibles.
 	les <<mauvais>> chemins passent par la ligne critique. La probabilité d'un
 	bon chemin $B$ peut s'écrire en fonction de son complément, soit
 	\begin{equation*}
-		\P(B)=1-\P(M)=1-\frac{n_m}{C_{n-1}^{2n-2}},
+		\P{B}=1-\P{M}=1-\frac{n_m}{C_{n-1}^{2n-2}},
 	\end{equation*}
 	où $M$ est un mauvais chemin et $n_m$ est le nombre de mauvais chemins.
 
@@ -666,7 +702,7 @@ ordres possibles.
 
 	Par conséquent, la probabilité d'avoir un bon chemin au hasard est
 	\begin{equation*}
-		\P(B)
+		\P{B}
 		=1-\frac{\comb{n-2}{2n-2}}{\comb{n-1}{2n-2}}
 		=\frac{1}{n}.
 	\end{equation*}
@@ -713,38 +749,38 @@ ordres possibles.
 
 Mathématiquement, on dénote une probabilité conditionnelle avec
 \begin{equation*}
-	\P(A|B)=\frac{\P(A\cap B)}{\P(B)}.
+	\Pg{A}{B}=\frac{\P{A\cap B}}{\P{B}}.
 \end{equation*}
 où $A$ et $B$ sont des évènements.
 
 \begin{exemple}
 	Soit le lancement d'un dé avec les évènements $A=\left\{5,6\right\}$ et
-	$B=\left\{2,4,6\right\}$, alors $\P(A)=\nicefrac{1}{3}$ et 
+	$B=\left\{2,4,6\right\}$, alors $\P{A}=\nicefrac{1}{3}$ et 
 	\begin{equation*}
-		\P(A|B)=\frac{\P(\left\{6\right\})}{\P(B)}=\frac{1}{3}.
+		\Pg{A}{B}=\frac{\P{\left\{6\right\}}}{\P{B}}=\frac{1}{3}.
 	\end{equation*}
 
-	Si $A=\left\{6\right\}$, alors $\P(A)=\nicefrac{1}{6}$ et
+	Si $A=\left\{6\right\}$, alors $\P{A}=\nicefrac{1}{6}$ et
 	\begin{equation*}
-		\P(A|B)=\frac{\P(\left\{6\right\})}{\P(B)}=\frac{1}{3}.
+		\Pg{A}{B}=\frac{\P{\left\{6\right\}}}{\P{B}}=\frac{1}{3}.
 	\end{equation*}
 \end{exemple}
 
 \subsection{Propriétés}
 \begin{theoreme}
-	$\P(A\cap B)=\P(A|B)\cdot \P(B)$.
+	$\P{A\cap B}=\Pg{A}{B}\cdot\P{B}$.
 \end{theoreme}
 
 \begin{theoreme}
-	$\P(A|B)=\P(B|A)=0$, si $A\cap B=\emptyset$.
+	$\Pg{A}{B}=\Pg{B}{A}=0$, si $A\cap B=\emptyset$.
 \end{theoreme}
 
 \begin{theoreme}
-	$\P(A|B)\neq \P(B|A)$, en général.
+	$\Pg{A}{B}\neq\Pg{B}{A}$, en général.
 \end{theoreme}
 
 \begin{theoreme}
-	$\P(A|S)=\P(A)$, $A\in S$.
+	$\Pg{A}{S}=\P{A}$, $A\in S$.
 \end{theoreme}
 
 Le dernier théorème résulte que toutes probabilités peut s'exprimer sous la
@@ -754,7 +790,7 @@ forme d'une probabilité conditionnelle.
 	On pige sans remise 3 composantes non défecteuses parmis 10 composantes, donc 4 sont
 	défecteuses. Soit $A_i$ le $i^\text{e}$ composante non défecteuses.
 	\begin{equation*}
-		\P(A_1\cap A_2\cap A_3)=\P(A_3|A_1\cap A_2)\P(A_2|A_1)\P(A_1)
+		\P{A_1\cap A_2\cap A_3}=\Pg{A_3}{A_1\cap A_2}\Pg{A_2}{A_1}\P{A_1}
 		=\frac{4}{8}\cdot\frac{5}{9}\cdot\frac{6}{10}
 	\end{equation*}
 \end{exemple}
@@ -768,7 +804,7 @@ forme d'une probabilité conditionnelle.
 
 Avec une partition, on a la règle de probabilités totales, soit
 \begin{equation*}
-	\P(A)=\sum_{i=1}^n\P(A\cap B_i)=\sum_{i=1}^n\P(A|B_i)\P(B_i).
+	\P{A}=\sum_{i=1}^n\P{A\cap B_i}=\sum_{i=1}^n\Pg{A}{B_i}\P{B_i}.
 \end{equation*}
 
 \begin{exemple}
@@ -780,16 +816,16 @@ Avec une partition, on a la règle de probabilités totales, soit
 
 	À partir de l'arbre, il facile de déterminer les probabilités
 	conditionnelles de $A$ et $A^c$. Par exemple,
-	$\P(A|B_1)=\nicefrac{3}{6}\cdot\nicefrac{1}{10}=\nicefrac{1}{30}$ et
-	$\P(A^c|B_2)=\nicefrac{2}{6}\cdot\nicefrac{9}{10}=\nicefrac{3}{10}$.
+	$\Pg{A}{B_1}=\nicefrac{3}{6}\cdot\nicefrac{1}{10}=\nicefrac{1}{30}$ et
+	$\Pg{A^c}{B_2}=\nicefrac{2}{6}\cdot\nicefrac{9}{10}=\nicefrac{3}{10}$.
 \end{exemple}
 
 \begin{theoreme}[Règle d'inversion]
-	$\P(B|A)=\dfrac{\P(A|B)\P(B)}{\P(A)}$
+	$\Pg{B}{A}=\dfrac{\Pg{A}{B}\P{B}}{\P{A}}$
 \end{theoreme}
 
 \begin{theoreme}[Règles de Bayes]
-	$\P(B_j|A)=\dfrac{\P(A|B_j)\P(B_j)}{\sum_{i=1}^n\P(A|B_i)\P(B_i)}$, où $B_i$ et
+	$\Pg{B_j}{A}=\dfrac{\Pg{A}{B_j}\P{B_j}}{\sum_{i=1}^n\Pg{A}{B_i}\P{B_i}}$, où $B_i$ et
 	$B_j$ sont des partitions.
 \end{theoreme}
 
@@ -806,12 +842,14 @@ Avec une partition, on a la règle de probabilités totales, soit
 	pour dépistage. Quelle est la probabilité que ça soit un fumeur?
 
 	Soit $B$ les fumeurs, $B^c$ les non fumeurs, $A$ la présence de cancer du
-	poumon et $A^c$ son absence. Par conséquent, on cherche $\P(B|A)$. Avec les
-	données, on sait que $\P(A|B)=\SI{0.10}{}$, $\P(A|B^c)=\SI{0.01}{}$,
-	$\P(B)=\SI{0.25}{}$ et $\P(B^c)=\SI{0.75}{}$, de sorte que le théorème de
+	poumon et $A^c$ son absence. Par conséquent, on cherche $\Pg{B}{A}$. Avec les
+	données, on sait que $\Pg{A}{B}=\SI{0.10}{}$, $\Pg{A}{B^c}=\SI{0.01}{}$,
+	$\P{B}=\SI{0.25}{}$ et $\P{B^c}=\SI{0.75}{}$, de sorte que le théorème de
 	Bayes nous donne
 	\begin{equation*}
-		\P(B|A)=\frac{\P(A|B)\P(B)}{\P(A|B)\P(B)+\P(A|B^c)\P(B^c)}\approx\SI{0.769}{}.
+		\Pg{B}{A}
+		=\frac{\Pg{A}{B}\P{B}}{\Pg{A}{B}\P{B}+\Pg{A}{B^c}\P{B^c}}
+		\approx\SI{0.769}{}.
 	\end{equation*}
 \end{exemple}
 
@@ -822,14 +860,14 @@ Avec une partition, on a la règle de probabilités totales, soit
 \end{definition}
 
 Mathématiquement parlant, des évènements indépendants $A$ et $B$ sont tels que
-$\P(A|B)=\P(A)$ et $\P(B|A)=\P(B)$.
+$\Pg{A}{B}=\P{A}$ et $\Pg{B}{A}=\P{B}$.
 
 \begin{theoreme}
-	$\P(A\cap B)=\P(A)\P(B)\Leftrightarrow \P(A|B)=\P(A)\wedge \P(B|A)=\P(B)$
+	$\P{A\cap B}=\P{A}\P{B}\Leftrightarrow\Pg{A}{B}=\P{A}\wedge\Pg{B}{A}=\P{B}$
 \end{theoreme}
 
 \begin{theoreme}
-	$\P(A\cap B)=\P(A)\P(B)\Leftrightarrow \P(A\cap B^c)=\P(A)\P(B^c)$.
+	$\P{A\cap B}=\P{A}\P{B}\Leftrightarrow\P{A\cap B^c}=\P{A}\P{B^c}$.
 \end{theoreme}
 
 \begin{exemple}
@@ -855,9 +893,9 @@ $\P(A|B)=\P(A)$ et $\P(B|A)=\P(B)$.
 	\end{equation*}
 	de sorte que
 	\begin{equation*}
-		\P(A_S)
-		=\P\left(\bigcap_{i=1}^nA_i\right)
-		=\prod_{i=1}^n\P(A_i)
+		\P{A_S}
+		=\P{\bigcap_{i=1}^nA_i}
+		=\prod_{i=1}^n\P{A_i}
 		=\SI{0.75}{}^n.
 	\end{equation*}
 \end{exemple}
@@ -876,8 +914,8 @@ $\P(A|B)=\P(A)$ et $\P(B|A)=\P(B)$.
 \begin{exemple}[suite]
 	Puisqu'il y a équiprobabilité continue, alors les probabilités sont données
 	par le rapport entre l'aire de $A$ ou $B$ sur $S$, alors
-	$\P(A)=\nicefrac{2}{10}$ et $\P(B)=\nicefrac{3}{10}$. De plus,
-	$\P(A\cap B)=\nicefrac{6}{10}$. Puisque $\P(A\cap B)=\P(A)\P(B)$, alors les
+	$\P{A}=\nicefrac{2}{10}$ et $\P{B}=\nicefrac{3}{10}$. De plus,
+	$\P{A\cap B}=\nicefrac{6}{10}$. Puisque $\P{A\cap B}=\P{A}\P{B}$, alors les
 	évènements $A$ et $B$ sont indépendants.
 \end{exemple}
 
@@ -922,7 +960,7 @@ On peut décrire une variable aléatoire par sa
 \begin{definition}
 	Un \textit{fonction de répartition} $F_X(x)$ est égal à la probabilité
 	qu'une variable aléatoire $X$ soit plus petite qu'une valeur $x$,
-	c'est-à-dire $F_X(x)=\P(X\leq x)$, $\forall x\in\mathbb{R}$.
+	c'est-à-dire $F_X(x)=\P{X\leq x}$, $\forall x\in\mathbb{R}$.
 \end{definition}
 
 \begin{theoreme}
@@ -962,7 +1000,7 @@ distribution de Maxwell-Boltzmann pour certains paramètres différents.
 \begin{definition}
 	Une \textit{fonction de masse} $P_X(x_k)$ est égal à la probabilité qu'une
 	variable aléatoire $X$ soit égal à une valeur discrète $x_k\in S_X$,
-	c'est-à-dire $P_X(x_k)=\P(X=x_k)$ avec
+	c'est-à-dire $P_X(x_k)=\P{X=x_k}$ avec
 	$S_X=\left\{x_1,x_2,\dots,x_k|x_1<x_2<\cdots<x_k\right\}$
 \end{definition}
 
@@ -971,7 +1009,7 @@ distribution de Maxwell-Boltzmann pour certains paramètres différents.
 \end{theoreme}
 
 \begin{theoreme}
-	$\displaystyle\sum_{a< x_k\leq b}P_X(x_k)=\P(a<X\leq b)$.
+	$\displaystyle\sum_{a< x_k\leq b}P_X(x_k)=\P{a<X\leq b}$.
 \end{theoreme}
 
 \begin{theoreme}
@@ -996,7 +1034,7 @@ possibles. De plus, la somme de toutes les valeurs discrètes donne 1. La figure
 	c'est-à-dire
 	\begin{equation*}
 		f_X(x)=\lim_{\epsilon\rightarrow 0}\frac{1}{\epsilon}
-		\P\left(x-\frac{\epsilon}{2}\leq X\leq x+\frac{\epsilon}{2}\right),
+		\P{x-\frac{\epsilon}{2}\leq X\leq x+\frac{\epsilon}{2}},
 	\end{equation*}
 	où $\epsilon$ est positif.
 \end{definition}
@@ -1011,7 +1049,7 @@ possibles. De plus, la somme de toutes les valeurs discrètes donne 1. La figure
 
 \subsection{Règles de calcul fondamentale}
 \begin{theoreme}\label{th:calc_fond}
-	$\P(a<X\leq b)=F_X(b)-F_X(a)$
+	$\P{a<X\leq b}=F_X(b)-F_X(a)$
 \end{theoreme}
 
 \begin{proof}
@@ -1026,29 +1064,29 @@ possibles. De plus, la somme de toutes les valeurs discrètes donne 1. La figure
 	\end{figure}
 	
 	On sait que $A\cap C=\emptyset$ et $A\cup C=B$. Par conséquent, 
-	$\P(B)=\P(A)+\P(C)\Leftrightarrow \P(C)=\P(B)-\P(A)=F_X(b)-F_X(a)$.
+	$\P{B}=\P{A}+\P{C}\Leftrightarrow\P{C}=\P{B}-\P{A}=F_X(b)-F_X(a)$.
 \end{proof}
 
 \begin{theoreme}
-	$\P(X=x)=F_X(x)-F_X(x^-)$.
+	$\P{X=x}=F_X(x)-F_X(x^-)$.
 \end{theoreme}
 
 \begin{proof}
 	Soit $a=x-\epsilon$ et $b=x$, où $\epsilon$ est positif. Selon le théorème
 	\ref{th:calc_fond}, on a
 	\begin{equation*}
-		\P(x-\epsilon<X\leq x)=F_X(x)-F_X(x-\epsilon).
+		\P{x-\epsilon<X\leq x}=F_X(x)-F_X(x-\epsilon).
 	\end{equation*}
 	En prenant la limite lorsque $\epsilon\rightarrow 0$, on obtient
 	\begin{equation*}
-		\lim_{\epsilon\rightarrow 0}\P(x-\epsilon<X\leq x)
+		\lim_{\epsilon\rightarrow 0}\P{x-\epsilon<X\leq x}
 		=F_X(x)-\lim_{\epsilon\rightarrow 0}F_X(x-\epsilon).
 	\end{equation*}
 	Avec $F_X(x^-)=\lim_{\epsilon\rightarrow 0}F_X(x-\epsilon)$ et
 	$(x-\epsilon<X\leq x)\equiv (X=x)$ lorsque $\epsilon\rightarrow 0$, on
 	obtient
 	\begin{equation*}
-		\P(X=x)=F_X(x)-F_X(x^-).\qedhere
+		\P{X=x}=F_X(x)-F_X(x^-).\qedhere
 	\end{equation*}
 \end{proof}
 
@@ -1155,7 +1193,7 @@ aléatoire est discrète, alors elle peut être décrite pas une fonction de mas
 	Soit $X$ un nombrbe réel choisie au hasard dans l'intervalle $[0,2]$.
 	Quelle est la fonction de répartition de $X$?
 
-	On sait que $F_X(x)=\P(X\leq x)=\nicefrac{x}{2}$ lorsque $0\leq x\leq 2$,
+	On sait que $F_X(x)=\P{X\leq x}=\nicefrac{x}{2}$ lorsque $0\leq x\leq 2$,
 	$F_X(x)=0$ si $x<0$ et $F_X(x)=1$ si $x>2$. On obtient donc la fonction de
 	répartition
 	\begin{equation*}
@@ -1177,7 +1215,7 @@ aléatoire est discrète, alors elle peut être décrite pas une fonction de mas
 \end{definition}
 
 \begin{theoreme}
-	$F_X(x|A)=\dfrac{\P(\left\{X\leq x\right\}\cap A)}{\P(A)}$.
+	$F_X(x|A)=\dfrac{\P{\left\{X\leq x\right\}\cap A}}{\P{A}}$.
 \end{theoreme}
 
 \begin{theoreme}
@@ -1188,7 +1226,7 @@ aléatoire est discrète, alors elle peut être décrite pas une fonction de mas
 	$P_X(x_k|A)=
 	\left\{
 		\begin{matrix}
-			\dfrac{P_X(x_k)}{\P(A)}, & x_k\in A\\
+			\dfrac{P_X(x_k)}{\P{A}}, & x_k\in A\\
 			0, & x_k\notin A\\
 		\end{matrix}
 	\right.$
@@ -1232,11 +1270,11 @@ Une expérience aléatoire où la variable aléatoire $X$ peut être un
 \textit{succès} ou un \textit{échec} suit une loi de Bernoulli de paramètre
 $p$ dénotée
 \begin{equation*}
-	X\sim\bin(1,p),
+	X\sim\Bin{1}{p},
 \end{equation*}
 où $p$ est la probabilité de succès. On dénote un succès comme $X=1$ et un
-échec comme $X=0$. Par conséquent, la probabilité d'un succès est $\P(X=1)=p$
-tandis que celle d'un échec est $\P(X=0)=q$ où $q=1-p$.
+échec comme $X=0$. Par conséquent, la probabilité d'un succès est $\P{X=1}=p$
+tandis que celle d'un échec est $\P{X=0}=q$ où $q=1-p$.
 
 \begin{theoreme}
 	$P_X(k)=\left\{
@@ -1251,7 +1289,7 @@ tandis que celle d'un échec est $\P(X=0)=q$ où $q=1-p$.
 Une expérience aléatoire où la variable aléatoire $X$ est le nombre de
 \textit{succès} obtenu en $n$ essaie suit une loi binomiale dénotée
 \begin{equation*}
-	X\sim\bin(n,p),
+	X\sim\Bin{n}{p},
 \end{equation*}
 où $p$ est la probabilité d'un succès individuel. L'espace échantillion est
 $S_X=\left\{0,1,2,\dots,n\right\}$.
@@ -1265,25 +1303,25 @@ $S_X=\left\{0,1,2,\dots,n\right\}$.
 	expérience aléatoire à $n$ essai. La probabilité d'obtenir $k$ succès est
 	donnée par
 	\begin{equation*}
-		\P\big(
+		\P{
 			\underbrace{A_1\cap A_2\cap\cdots\cap A_k}_\text{$k$ fois}
 			\cap
 			\underbrace{A_{k+1}^c\cap A_{k+1}^c\cap\cdots\cap A_n^c}_
 			\text{$n-k$ fois}
-		\big),
+		},
 	\end{equation*}
 	où $k=0,1,2,3,\dots,n$.
 
-	Hors, la probabilité d'un succès est $\P(A_i)=p$ et celle d'un échec est
-	$\P(A_i^c)=q$, où $q=1-p$. Puisque chaque essai est indépendant des autres,
+	Hors, la probabilité d'un succès est $\P{A_i}=p$ et celle d'un échec est
+	$\P{A_i^c}=q$, où $q=1-p$. Puisque chaque essai est indépendant des autres,
 	la probabilité peut s'écrire
 	\begin{equation*}
 		\underbrace{
-			\P(A_1)\P(A_2)\cdots P(A_k)
+			\P{A_1}\P{A_2}\cdots P(A_k)
 		}_\text{$k$ fois}
 		\cdot
 		\underbrace{
-			\P(A_{k+1}^c)\P(A_{k+2}^c)\cdots P(A_n^c)
+			\P{A_{k+1}^c}\P{A_{k+2}^c}\cdots P(A_n^c)
 		}_\text{$n-k$ fois}
 		=p^kq^{n-k}.
 	\end{equation*}
@@ -1291,17 +1329,17 @@ $S_X=\left\{0,1,2,\dots,n\right\}$.
 	De plus, les succès peuvent être à n'importe quel essai. Par conséquent,
 	il faut choisir $k$ essaies parmis les $n$ essaies de sorte que la
 	probabilité d'obtenir $k$ succès en tout est
-	$P_X(k)=\P(X=k)=\comb{k}{n}p^kq^{n-k}$.
+	$P_X(k)=\P{X=k}=\comb{k}{n}p^kq^{n-k}$.
 \end{proof}
 
 \begin{theoreme}
-	$\P(S_X)=1$.
+	$\P{S_X}=1$.
 \end{theoreme}
 
 \begin{proof}
 	Par définition, on a
 	\begin{equation*}
-		\P(S_X)=\sum_{k=0}^n\comb{k}{n}p^kq^{n-k}
+		\P{S_X}=\sum_{k=0}^n\comb{k}{n}p^kq^{n-k}
 	\end{equation*}
 	Selon le théorème binomial, soit
 	\begin{equation*}
@@ -1309,7 +1347,7 @@ $S_X=\left\{0,1,2,\dots,n\right\}$.
 	\end{equation*}
 	et que $q=1-p$, on peut simplifier de sorte à obtenir
 	\begin{equation*}
-		\P(S_X)=(p+q)^k=1^k=1.\qedhere
+		\P{S_X}=(p+q)^k=1^k=1.\qedhere
 	\end{equation*}
 \end{proof}
 
@@ -1321,7 +1359,7 @@ $S_X=\left\{0,1,2,\dots,n\right\}$.
 	
 	Ce problème se décrit à l'aide d'une loi binomiale, soit
 	\begin{equation*}
-		X\sim\bin\left(n,\frac{1}{\SI{13983816}{}}\right),
+		X\sim\Bin{n}{\frac{1}{\SI{13983816}{}}},
 	\end{equation*}
 	où $n$ est le nombre d'essaies et $X$ le nombre de gros lots gagnés.
 	\vspace{-1mm}
@@ -1338,7 +1376,7 @@ $S_X=\left\{0,1,2,\dots,n\right\}$.
 	de sorte que la probabilité d'obtenir au moins 1 billet gagnant est donnée
 	par le complément, soit
 	\begin{equation*}
-		\P(X\geq 1)
+		\P{X\geq 1}
 		=1-\left(\frac{\SI{13983815}{}}{\SI{13983816}{}}\right)^{4160}
 		\approx\SI{0.000297}{}.
 	\end{equation*}
@@ -1348,7 +1386,7 @@ $S_X=\left\{0,1,2,\dots,n\right\}$.
 Une expérience aléatoire où la variable aléatoire $X$ est le nombre d'essais
 requis pour obtenir un premier succès suit une loi géométrique dénotée
 \begin{equation*}
-	X\sim\geo(p),
+	X\sim\Geo{p},
 \end{equation*}
 où $p$ est la probabilité d'avoir un succès à un essai. L'espace échantillion
 est $S_X=\left\{1,2,\dots\right\}$.
@@ -1362,20 +1400,20 @@ est $S_X=\left\{1,2,\dots\right\}$.
 	expérience aléatoire où il faut $k$ essai pour obtenir un succès. La
 	probabilité d'obtenir le succès au $k$-ième essai est donnée par
 	\begin{equation*}
-		\P\big(
+		\P{
 			\underbrace{A_1^c\cap A_2^c\cap\cdots\cap A_{k-1}^c}_
 			\text{$k-1$ fois}\cap A_k
-		\big),
+		},
 	\end{equation*}
 	où $k=1,2,\dots$
 
-	Hors, la probabilité d'un succès est $\P(A_i)=p$ et celle d'un échec
-	est $\P(A_i^c)=q$, où $q=1-p$. Puisque chaque essai est indépendant des
+	Hors, la probabilité d'un succès est $\P{A_i}=p$ et celle d'un échec
+	est $\P{A_i^c}=q$, où $q=1-p$. Puisque chaque essai est indépendant des
 	autres, la probabilité peut s'écrire
 	\begin{equation*}
 		P_X(k)=
-		\underbrace{\P(A_1^c)\P(A_2^c)\cdots\P(A_{k-1})}_\text{$k-1$ fois}
-		\cdot\P(A_k)=q^{k-1}p.\qedhere
+		\underbrace{\P{A_1^c}\P{A_2^c}\cdots\P{A_{k-1}}}_\text{$k-1$ fois}
+		\cdot\P{A_k}=q^{k-1}p.\qedhere
 	\end{equation*}
 \end{proof}
 
@@ -1399,13 +1437,13 @@ est $S_X=\left\{1,2,\dots\right\}$.
 \end{proof}
 
 \begin{theoreme}
-	$\P(S_X)=1$.
+	$\P{S_X}=1$.
 \end{theoreme}
 
 \begin{proof}
 	En utilisant à nouveau la série géométrique, on a
 	\begin{equation*}
-		\P(S_X)
+		\P{S_X}
 		=\sum_{k=1}^\infty P_X(k)
 		=p\sum_{k=1}^\infty q^{k-1}
 		=p\frac{1}{1-q}
@@ -1416,24 +1454,24 @@ est $S_X=\left\{1,2,\dots\right\}$.
 \end{proof}
 
 \begin{theoreme}[absence de mémoire]
-	$\P(X>k+j|X>j)=\P(X>k)$ où $k,j\in\mathbb{Z}$.
+	$\Pg{X>k+j}{X>j}=\P{X>k}$ où $k,j\in\mathbb{Z}$.
 \end{theoreme}
 
 \begin{proof}
 	On sait que
 	\begin{equation*}
-		\P(X>k+j|X>j)=\frac{\P(
+		\Pg{X>k+j}{X>j}=\frac{\P{
 			\left\{X>k+j\right\}\cap
-	   		\left\{X>j\right\})}{\P(X>j)}.
+	   		\left\{X>j\right\}}}{\P{X>j}}.
 	\end{equation*}
 	Puisque $k\in\mathbb{Z}$, alors $\left\{X>k+j\right\}\cap\left\{X>j\right\}
 	=\left\{X>k+1\right\}$ de sorte que
 	\begin{equation*}
-		\P(X>k+j|X>j)=\frac{\P(X>k+j)}{\P(X>j)}.
+		\Pg{X>k+j}{X>j}=\frac{\P{X>k+j}}{\P{X>j}}.
 	\end{equation*}
 	Avec le complément du théorème \ref{th:repartition_geo}, on a
 	\begin{equation*}
-		\P(X>k+j|X>j)=\frac{q^{k+j}}{q^{j}}=q^{k}=\P(X>k).\qedhere
+		\Pg{X>k+j}{X>j}=\frac{q^{k+j}}{q^{j}}=q^{k}=\P{X>k}.\qedhere
 	\end{equation*}
 \end{proof}
 
@@ -1443,8 +1481,8 @@ On pose $p=\alpha/n$ où $\alpha$ est un nombre positif, de sorte que la
 probabilité lorsque $n$ est grand devient nulle. On dénote une loi de Poisson
 par
 \begin{equation*}
-	X\sim\poi(\alpha)
-	=\lim_{n\rightarrow\infty}\bin\left(n,\frac{\alpha}{n}\right).
+	X\sim\Poi{\alpha}
+	=\lim_{n\rightarrow\infty}\Bin{n}{\frac{\alpha}{n}}.
 \end{equation*}
 
 Par conséquent, la probabilité que $X$ prend une valeur proche de $\alpha$ est
@@ -1456,13 +1494,13 @@ Par conséquent, la probabilité que $X$ prend une valeur proche de $\alpha$ est
 \end{theoreme}
 
 \begin{theoreme}
-	$\P(S_X)=1$.
+	$\P{S_X}=1$.
 \end{theoreme}
 
 \begin{proof}
 	En utilisant le développement en série de la fonction exponentielle, on a
 	\begin{equation*}
-		\P(S_X)
+		\P{S_X}
 		=\sum_{k=0}^\infty P_X(k)
 		=\e^{-\alpha}\sum_{k=0}^\infty\frac{\alpha^k}{k!}
 		=\e^{-\alpha}\e^\alpha
@@ -1471,16 +1509,16 @@ Par conséquent, la probabilité que $X$ prend une valeur proche de $\alpha$ est
 \end{proof}
 
 \subsubsection{Approximation par une loi de Poisson}
-Soit une loi binomiale $X\sim\bin(n,p)$. Si $p$ est près de $0$, alors
-$X\approx\poi(np)$. Par conséquent,
+Soit une loi binomiale $X\sim\Bin{n}{p}$. Si $p$ est près de $0$, alors
+$X\approx\Poi{np}$. Par conséquent,
 \begin{equation*}
-	\P(X=k)\approx\frac{(np)^k}{k!}\e^{-np}.
+	\P{X=k}\approx\frac{(np)^k}{k!}\e^{-np}.
 \end{equation*}
 
 En général, l'approximation est bonne si $n\geq 30$ et $p\leq 0.05$. Si $p$
 est proche de 1, alors on considère les échecs au lieu des succès. Dans ce cas,
 \begin{equation*}
-	\P(X=k)\approx\frac{(nq)^{n-k}}{(n-k)!}\e^{-nq}.
+	\P{X=k}\approx\frac{(nq)^{n-k}}{(n-k)!}\e^{-nq}.
 \end{equation*}
 
 \subsection{Loi des probabilités continues}
@@ -1488,7 +1526,7 @@ est proche de 1, alors on considère les échecs au lieu des succès. Dans ce ca
 Une expérience aléatoire où la variable aléatoire $X$ est le choix d'un nombre
 réel dans un intervalle $[a,b]$ suit une loi uniforme dénotée
 \begin{equation*}
-	X\sim\uni([a,b]),
+	X\sim\Uni{a}{b},
 \end{equation*}
 où l'ensemble échantillion est $S_X=[a,b]$.
 
@@ -1516,7 +1554,7 @@ où l'ensemble échantillion est $S_X=[a,b]$.
 Une expérience aléatoire où la variable aléatoire $X$ suit la loi exponentielle
 dénotée
 \begin{equation*}
-	X\sim\Exp(\lambda),
+	X\sim\Exp{\lambda},
 \end{equation*}
 où $\lambda>0$, a l'espace échantillion $S_X=[0,\infty[$.
 
@@ -1539,13 +1577,13 @@ où $\lambda>0$, a l'espace échantillion $S_X=[0,\infty[$.
 \end{theoreme}
 
 \begin{theoreme}[absence de mémoire]
-	$\P(X>s+t|X>t)=\P(X>t)$ où $s,t\in[0,\infty[$.
+	$\Pg{X>s+t}{X>t}=\P{X>t}$ où $s,t\in[0,\infty[$.
 \end{theoreme}
 
 \subsubsection{Loi gamma}
 Une expérience aléatoire où la variable aléatoire $X$ suit la loi gamma dénotée
 \begin{equation*}
-	X\sim\Gam(\alpha,\lambda),
+	X\sim\Gam{\alpha}{\lambda},
 \end{equation*}
 où $\alpha>0$ et $\lambda>0$, a l'espace échantillion $S_X=[0,\infty[$.
 
@@ -1561,7 +1599,7 @@ où $\alpha>0$ et $\lambda>0$, a l'espace échantillion $S_X=[0,\infty[$.
 \end{theoreme}
 
 \begin{theoreme}
-	$\P(S_X)=1$.
+	$\P{S_X}=1$.
 \end{theoreme}
 
 \begin{proof}
@@ -1584,7 +1622,7 @@ On modèle souvent les erreurs d'observation et l'addition des résultats de
 plusieurs expérience aléatoires d'une variable aléatoire $X$ par une loi
 normale dénotée
 \begin{equation*}
-	X\sim\Norm(\mu,\sigma^2),
+	X\sim\Norm{\mu}{\sigma^2},
 \end{equation*}
 où $\mu\in\mathbb{R}$ est la moyenne et $\sigma^2>0$ la variance. On appel
 aussi $sigma$ comme l'écart-type. L'espace échantillion est $S_X=\mathbb{R}$.
@@ -1655,18 +1693,18 @@ aussi $sigma$ comme l'écart-type. L'espace échantillion est $S_X=\mathbb{R}$.
 % diagramme du mapping entre X -> Y selon Y(X)
 %
 \begin{exemple}
-	Soit $X\sim\bin(2,\nicefrac{1}{4})$ et $Y=(X-1)^2$. Quelle est la fonction
+	Soit $X\sim\Bin{2}{\nicefrac{1}{4}}$ et $Y=(X-1)^2$. Quelle est la fonction
 	de masse de $Y$?
 
-	On sait que $\P(Y=0)=\P(X=1)$ et $\P(Y=1)=\P(X=0)+\P(X=2)$. On sait que
-	$\P(X=0)=\nicefrac{9}{16}$, $\P(X=1)=\nicefrac{6}{16}$ et $\P(X=0)=
-	\nicefrac{1}{16}$ de sorte que $\P(Y=0)=\nicefrac{6}{16}$ et
-	$\P(Y=1)=\nicefrac{10}{16}$.
+	On sait que $\P{Y=0}=\P{X=1}$ et $\P{Y=1}=\P{X=0}+\P{X=2}$. On sait que
+	$\P{X=0}=\nicefrac{9}{16}$, $\P{X=1}=\nicefrac{6}{16}$ et $\P{X=0}=
+	\nicefrac{1}{16}$ de sorte que $\P{Y=0}=\nicefrac{6}{16}$ et
+	$\P{Y=1}=\nicefrac{10}{16}$.
 \end{exemple}
 
 \subsubsection{$X$ et $Y$ sont des variables aléatoires discrète et continue}
 \begin{exemple}
-	Soit $X\sim\Norm(0,1)$ et
+	Soit $X\sim\Norm{0}{1}$ et
 	\begin{equation*}
 		Y=\left\{
 			\begin{matrix}
@@ -1678,32 +1716,32 @@ aussi $sigma$ comme l'écart-type. L'espace échantillion est $S_X=\mathbb{R}$.
 	\end{equation*}
 	Quelle est la probabilité que $Y=1$?
 
-	On cherche $\P(X\leq-\nicefrac{1}{2})=\Phi(-\nicefrac{1}{2})=
-	\Phi(\nicefrac{1}{2})\approx\SI{0.3085}{}$. De plus, $\P(-\nicefrac{1}{2}
-	\leq X\leq\nicefrac{1}{2})=\Phi(\nicefrac{1}{2})-\Phi(-\nicefrac{1}{2})
-	\approx\SI{0.3830}{}$. Finalement, $\P(X<-\nicefrac{1}{2})\approx
+	On cherche $\P{X\leq-\nicefrac{1}{2}}=\Phi(-\nicefrac{1}{2})=
+	\Phi(\nicefrac{1}{2})\approx\SI{0.3085}{}$. De plus, $\P{-\nicefrac{1}{2}
+	\leq X\leq\nicefrac{1}{2}}=\Phi(\nicefrac{1}{2})-\Phi(-\nicefrac{1}{2})
+	\approx\SI{0.3830}{}$. Finalement, $\P{X<-\nicefrac{1}{2}}\approx
 	\SI{0.3085}{}$.
 \end{exemple}
 
 \subsubsection{$X$ et $Y$ sont de svariables aléatoires continues}
 % P(Y<=y)=P(X^2<=y)=P(-sqrt(y)<=X<=sqrt(y)=F_X(sqrt(Y)-F_X(-sqrt(Y))
 \begin{exemple}
-	Soit $X\sim\uni(-1,2)$ et $Y=X^2$. Quelle est la fonction de répartition de
+	Soit $X\sim\Uni{-1}{2}$ et $Y=X^2$. Quelle est la fonction de répartition de
 	$Y$?
 \end{exemple}
 
 \subsection{Espérance mathématique}
 \begin{definition}
-	Une \textit{espérance} d'une variable aléatoire $X$, dénotée $\Esp(X)$, est
+	Une \textit{espérance} d'une variable aléatoire $X$, dénotée $\Esp{X}$, est
 	la somme des valeur possibles de $X$ pondérées par leur probabilité.
 \end{definition}
 
 \begin{theoreme}
-	$\Esp(X)=\displaystyle\sum_{k=1}^\infty x_kP_X(x_k)$ si $X$ est discrète.
+	$\Esp{X}=\displaystyle\sum_{k=1}^\infty x_kP_X(x_k)$ si $X$ est discrète.
 \end{theoreme}
 
 \begin{theoreme}
-	$\Esp(X)=\displaystyle\int_{-\infty}^\infty xf_X(x)\d{x}$ si $X$ est
+	$\Esp{X}=\displaystyle\int_{-\infty}^\infty xf_X(x)\d{x}$ si $X$ est
 	continue.
 \end{theoreme}
 
@@ -1712,7 +1750,7 @@ aussi $sigma$ comme l'écart-type. L'espace échantillion est $S_X=\mathbb{R}$.
 
 	On calcule l'espérance d'une variable discrète, soit
 	\begin{equation*}
-		\Esp(X)=
+		\Esp{X}=
 			1\cdot\frac{1}{6}+
 			2\cdot\frac{1}{6}+
 			3\cdot\frac{1}{6}+
@@ -1724,18 +1762,18 @@ aussi $sigma$ comme l'écart-type. L'espace échantillion est $S_X=\mathbb{R}$.
 \end{exemple}
 
 \begin{exemple}
-	Soit $X\sim\poi(\alpha)$. Quelle est l'espérance de $X$?
+	Soit $X\sim\Poi{\alpha}$. Quelle est l'espérance de $X$?
 
 	Par définition, on calcule l'espérance avec
 	\begin{equation*}
-		\Esp(X)
+		\Esp{X}
 		=\sum_{k=0}^\infty k\cdot P_X(k)
 		=\sum_{k=0}^\infty k\cdot\frac{\e^{-\alpha}\alpha^k}{k!}
 		=\sum_{k=1}^\infty k\cdot\frac{\e^{-\alpha}\alpha^k}{k!},
 	\end{equation*}
 	car le premier terme à $k=0$ est nul. Par conséquent,
 	\begin{equation*}
-		\Esp(X)
+		\Esp{X}
 		=\sum_{k=1}^\infty\frac{\e^{-\alpha}\alpha^k}{(k-1)!}
 		=\e^{-\alpha}\sum_{k=1}^\infty\frac{\alpha^k}{(k-1)!}
 		=\e^{-\alpha}\sum_{i=0}^\infty\frac{\alpha^{i+1}}{i!}
@@ -1744,7 +1782,7 @@ aussi $sigma$ comme l'écart-type. L'espace échantillion est $S_X=\mathbb{R}$.
 	Hors, la somme est le développement en séries de la fonction exponentielle,
 	alors
 	\begin{equation*}
-		\Esp(X)
+		\Esp{X}
 		=\e^{-\alpha}\alpha\e^{\alpha}
 		=\alpha.
 	\end{equation*}
@@ -1752,17 +1790,17 @@ aussi $sigma$ comme l'écart-type. L'espace échantillion est $S_X=\mathbb{R}$.
 
 \pagebreak
 \begin{exemple}
-	Soit $X\sim\Exp(\lambda)$. Quelle est l'espérance de $X$?
+	Soit $X\sim\Exp{\lambda}$. Quelle est l'espérance de $X$?
 
 	Par définition, on calcule l'espérance avec
 	\begin{equation*}
-		\Esp(X)
+		\Esp{X}
 		=\int_{-\infty}^\infty xf_X(x)\d{x}
 		=\int_0^\infty x\lambda\e^{-\lambda x}\d{x}.
 	\end{equation*}
 	En posant $u=x$ et $\d{v}=\lambda\e^{-\lambda x}\d{x}$, on obtient
 	\begin{equation*}
-		\Esp(X)
+		\Esp{X}
 		=-x\e^{-\lambda x}\bigg\rvert_0^\infty
 		+\int_0^\infty\e^{-\lambda x}\d{x}
 		=\frac{1}{\lambda}\int_0^\infty\lambda\e^{-\lambda x}\d{x}
@@ -1774,31 +1812,31 @@ aussi $sigma$ comme l'écart-type. L'espace échantillion est $S_X=\mathbb{R}$.
 Soit $Y=g(X)$, où $X$ et $Y$ sont des variables aléatoires et $g$ une
 tranformation. Si $X$ et $Y$ discrètes, alors
 \begin{equation*}
-	\Esp(Y)=\Esp(g(X))=\sum_{k=1}^\infty g(x_k)P_X(x_k),
+	\Esp{Y}=\Esp{g(X)}=\sum_{k=1}^\infty g(x_k)P_X(x_k),
 \end{equation*}
 et si $X$ et $Y$ sont continues, alors
 \begin{equation*}
-	\Esp(Y)=\Esp(g(X))=\int_{-\infty}^\infty g(x)f_X(x)\d{x}.
+	\Esp{Y}=\Esp{g(X)}=\int_{-\infty}^\infty g(x)f_X(x)\d{x}.
 \end{equation*}
 
 \begin{theoreme}
-	$\Esp(c)=c$, où $c$ est une constante.
+	$\Esp{c}=c$, où $c$ est une constante.
 \end{theoreme}
 
 \begin{theoreme}
-	$\Esp(aX+b)=a\Esp(X)+b$, où $a$ et $b$ des constantes.
+	$\Esp{aX+b}=a\Esp{X}+b$, où $a$ et $b$ des constantes.
 \end{theoreme}
 
 \begin{theoreme}
-	$\Esp(X|A)=\displaystyle\sum_{k=1}^\infty x_kP_X(x_k|A)$, où $X$ discrète.
+	$\Espg{X}{A}=\displaystyle\sum_{k=1}^\infty x_kP_X(x_k|A)$, où $X$ discrète.
 \end{theoreme}
 
 \begin{theoreme}
-	$\Esp(X|A)=\displaystyle\int_{-\infty}^\infty xf_X(x|A)$, où $X$ continue.
+	$\Espg{X}{A}=\displaystyle\int_{-\infty}^\infty xf_X(x|A)$, où $X$ continue.
 \end{theoreme}
 
 \begin{theoreme}
-	$\Esp(X)=\displaystyle\sum_{i=1}^nE(X|B_i)\P(B_i)$, où $B_1,\dots,B_n$ des
+	$\Esp{X}=\displaystyle\sum_{i=1}^nE(X|B_i)\P{B_i}$, où $B_1,\dots,B_n$ des
 	partitions de $S_X$.
 \end{theoreme}
 
@@ -1809,100 +1847,100 @@ et si $X$ et $Y$ sont continues, alors
 	On définie $C$ comme l'événement où $X$ prend une valeur continue et $D$
 	lorsque $X$ prend une valeur discrète. Par conséquent, on a
 	\begin{equation*}
-		\Esp(X)=\underbrace{\Esp(X|C)}_{\int}\P(C)
-		+\underbrace{\Esp(X|D)}_{\sum}\P(D).
+		\Esp{X}=\underbrace{\Espg{X}{C}}_{\int}\P{C}
+		+\underbrace{\Espg{X}{D}}_{\sum}\P{D}.
 	\end{equation*}
 \end{exemple}
 
 \subsection{Variance}
 \begin{definition}
-	La \textit{variance} d'une variable aléatoire $X$, dénotée $\Var(X)$, est
+	La \textit{variance} d'une variable aléatoire $X$, dénotée $\Var{X}$, est
 	définie comme
 	\begin{equation*}
-		\Var(X)=\Esp\left[(X-\Esp(X))^2\right].
+		\Var{X}=\Esp{\left(X-\Esp{X}\right)^2}.
 	\end{equation*}
 \end{definition}
 
 En développant le carré de la variance, on obtient
 \begin{equation*}
-	\Var(X)
-	=\Esp\left[X^2-2X\Esp(X)+\Esp^2(X)\right]
-	=\Esp(X^2)-2\Esp\left[X\Esp(X)\right]+\Esp\left[\Esp^2(X)\right],
+	\Var{X}
+	=\Esp{X^2-2X\Esp{X}+\Esp{X}^2}
+	=\Esp{X^2}-2\Esp{X\Esp{X}}+\Esp{\Esp{X}^2},
 \end{equation*}
 et en simplifiant les constantes, on a
 \begin{equation*}
-	\Var(X)
-	=\Esp(X^2)-2\Esp(X)\Esp(X)+\Esp^2(X)
-	=\Esp(X^2)-\Esp^2(X)
+	\Var{X}
+	=\Esp{X^2}-2\Esp{X}\Esp{X}+\Esp{X}^2
+	=\Esp{X^2}-\Esp{X}^2
 \end{equation*}
 
 \begin{exemple}
-	Soit $X\sim\bin(1,p)$. Quelle est la variance de $X$?
+	Soit $X\sim\Bin{1}{p}$. Quelle est la variance de $X$?
 
 	On sait que l'espérance de $X$ est
 	\begin{equation*}
-		\Esp(X)=0\cdot(1-p)+1\cdot p=p,
+		\Esp{X}=0\cdot(1-p)+1\cdot p=p,
 	\end{equation*}
 	et celle de $X^2$ est
 	\begin{equation*}
-		\Esp(X^2)=0^2\cdot(1-p)+1^2\cdot p=p.
+		\Esp{X^2}=0^2\cdot(1-p)+1^2\cdot p=p.
 	\end{equation*}
 	Par conséquent, la variance est
 	\begin{equation*}
-		\Var(X)=p-p^2=p(1-p).
+		\Var{X}=p-p^2=p(1-p).
 	\end{equation*}
 \end{exemple}
 
 \begin{theoreme}
-	$\Var(c)=c$, où $c$ est une constante.
+	$\Var{c}=c$, où $c$ est une constante.
 \end{theoreme}
 
 \begin{theoreme}
-	$\Var(aX+b)=a^2\Var(X)$, où $a$ et $b$ des constantes.
+	$\Var{aX+b}=a^2\Var{X}$, où $a$ et $b$ des constantes.
 \end{theoreme}
 
 \begin{theoreme}
-	$\Std(X)=\sqrt{\Var(X)}$.
+	$\Std{X}=\sqrt{\Var{X}}$.
 \end{theoreme}
 
 \begin{theoreme}
-	$\Var(X|A)=\Esp(X^2|A)-\Esp^2(X|A)$.
+	$\Varg{X}{A}=\Espg{X^2}{A}-\Espg{X}{A}^2$.
 \end{theoreme}
 
 \subsection{Inégalité de Markov}
 Soit $X$ une variable aléatoire prenant des valeurs non négatives. On peut
 montrer que
 \begin{equation*}
-	\P(X\geq a)\leq\frac{\Esp(X)}{a},\forall a>0.
+	\P{X\geq a}\leq\frac{\Esp{X}}{a},\forall a>0.
 \end{equation*}
 
 \subsection{Inégalité de Bienaymé-Tchebychev}
-Soit $X$ une variable aléatoire dont la moyenne $\Esp(X)=\mu_X$ et la variance
-$\Var(X)=\sigma_X^2$ existent. On peut montrer que
+Soit $X$ une variable aléatoire dont la moyenne $\Esp{X}=\mu_X$ et la variance
+$\Var{X}=\sigma_X^2$ existent. On peut montrer que
 \begin{equation*}
-	\P(|X-\mu_X|\geq a)\leq\frac{\sigma_X^2}{a^2},\forall a>0.
+	\P{|X-\mu_X|\geq a}\leq\frac{\sigma_X^2}{a^2},\forall a>0.
 \end{equation*}
 
 \begin{exemple}
-	Soit le lancer d'une pièce de monnaie avec $X\sim\bin(n,\nicefrac{1}{2})$.
+	Soit le lancer d'une pièce de monnaie avec $X\sim\Bin{n}{\nicefrac{1}{2}}$.
 	On calcule la moyenne avec
 	\begin{equation*}
-		\Esp\left(\frac{X}{n}\right)
-		=\frac{1}{n}\Esp(X)
+		\Esp{\frac{X}{n}}
+		=\frac{1}{n}\Esp{X}
 		=\frac{1}{n}\cdot n\cdot\frac{1}{2}
 		=\frac{1}{2}
 	\end{equation*}
 	et la variance avec
 	\begin{equation*}
-		\Var\left(\frac{X}{n}\right)
-		=\frac{1}{n^2}\Var(X)
+		\Var{\frac{X}{n}}
+		=\frac{1}{n^2}\Var{X}
 		=\frac{1}{n^2}\cdot n\cdot\frac{1}{2}\cdot\frac{1}{2}
 		=\frac{1}{4n}.
 	\end{equation*}
 
 	Selon l'inégalité de Bienaymé-Tchebychev, on a
 	\begin{equation*}
-		\P\left(\left|\frac{X}{n}-\frac{1}{2}\right|\geq 0.01\right)
+		\P{\left|\frac{X}{n}-\frac{1}{2}\right|\geq 0.01}
 		\geq\frac{1/4n}{(0.01)^2}
 		=\frac{10000}{4n}
 		=\frac{2500}{n}.
@@ -1915,7 +1953,7 @@ $\Var(X)=\sigma_X^2$ existent. On peut montrer que
 	Une fonction \textit{caractéristique}, dénoté $\phi_X(\omega)$, est
 	l'espérance d'une variable aléatoire $X$ tel que
 	\begin{equation*}
-		\phi_X(\omega)=\Esp\left(\e^{j\omega X}\right),
+		\phi_X(\omega)=\Esp{\e^{j\omega X}},
 	\end{equation*}
 	où $j$ est le nombre imaginaire tel que $j^2=-1$.
 \end{definition}
@@ -1935,12 +1973,12 @@ $\Var(X)=\sigma_X^2$ existent. On peut montrer que
 \end{theoreme}
 
 \begin{theoreme}
-	$\Esp(X^n)=(-j)^n\left[
+	$\Esp{X^n}=(-j)^n\left[
 	\dfrac{\d{}^n}{\d{\omega}^n}\phi_X(\omega)\right]_{\omega=0}$.
 \end{theoreme}
 
 \begin{exemple}
-	Soit $X\sim\bin(n,p)$. Quelle est la fonction caractéristique de $X$?
+	Soit $X\sim\Bin{n}{p}$. Quelle est la fonction caractéristique de $X$?
 
 	La fonction caractéristique de la loi binomiale est donnée par
 	\begin{equation*}
@@ -1954,7 +1992,7 @@ $\Var(X)=\sigma_X^2$ existent. On peut montrer que
 
 \pagebreak
 \begin{exemple}
-	Soit $X\sim\Norm(\mu,\sigma^2)$. On peut montrer que
+	Soit $X\sim\Norm{\mu}{\sigma^2}$. On peut montrer que
 	\begin{equation*}
 		\phi_X(\omega)=\exp\left(j\omega\mu-\frac{1}{2}\omega^2\sigma^2\right).
 	\end{equation*}
@@ -1962,9 +2000,9 @@ $\Var(X)=\sigma_X^2$ existent. On peut montrer que
 	Par définition, on a
 	\begin{equation*}
 		\phi_Y(\omega)
-		=\Esp\left(\e^{j\omega Y}\right)
-		=\Esp\left(\e^{j\omega(aX+b)}\right)
-		=\e^{j\omega b}\Esp\left(\e^{j\omega aX}\right)
+		=\Esp{\e^{j\omega Y}}
+		=\Esp{\e^{j\omega(aX+b)}}
+		=\e^{j\omega b}\Esp{\e^{j\omega aX}}
 		=\e^{j\omega b}\cdot\exp\left(j\omega a\mu+\frac{1}{2}
 			\omega^2a^2\sigma^2
 		\right)
@@ -1988,7 +2026,7 @@ vie. En général, l'espace d'échantillion est $S_T=[0,\infty[$.
 
 On définie la fonction de fiabilité $R(T)$ tel que
 \begin{equation*}
-R(t)=\P(T>t)=1-F_T(t)
+	R(t)=\P{T>t}=1-F_T(t)
 \end{equation*}
 et le taux de défaillance $r(t)$ comme
 \begin{equation*}
@@ -2010,7 +2048,7 @@ avec $R(0)=1$, de sorte à obtenir
 
 \pagebreak
 \begin{exemple}
-	Soit $T\sim\Exp(\lambda)$. Quel est le taux de défaillance?
+	Soit $T\sim\Exp{\lambda}$. Quel est le taux de défaillance?
 
 	On calcule la fonction de fiabilité avec
 	\begin{equation*}
@@ -2025,7 +2063,7 @@ avec $R(0)=1$, de sorte à obtenir
 		=\frac{\lambda\e^{-\lambda t}}{\e^{-\lambda t}}
 		=\lambda.
 	\end{equation*}
-	On remarque que si $T\sim\Exp(\lambda)$, alors $T$ a la propriété de
+	On remarque que si $T\sim\Exp{\lambda}$, alors $T$ a la propriété de
 	non-vieillissement.
 \end{exemple}
 
@@ -2033,13 +2071,13 @@ avec $R(0)=1$, de sorte à obtenir
 La \textit{durée de vie moyenne} est l'espérance de $T$ et peut se calculer
 selon
 \begin{equation*}
-	\Esp(T)=\int_0^\infty R(t)\d{t}.
+	\Esp{T}=\int_0^\infty R(t)\d{t}.
 \end{equation*}
 
 \begin{proof}
 	Par définition, on a
 	\begin{equation*}
-		\Esp(T)=\int_0^\infty t\cdot f_T(t)\d{t}.
+		\Esp{T}=\int_0^\infty t\cdot f_T(t)\d{t}.
 	\end{equation*}
 	Hors, on peut exprimé $t$ comme
 	\begin{equation*}
@@ -2047,9 +2085,9 @@ selon
 	\end{equation*}
 	de sorte à obtenir
 	\begin{equation*}
-		\Esp(T)
+		\Esp{T}
 		=\int_0^\infty\int_0^t f_T(t)\d{s}d{t}
-		=\int_0^\infty\underbrace{\int_s^\infty f_T(t)\d{t}}_{\P(T>s)}\d{s}
+		=\int_0^\infty\underbrace{\int_s^\infty f_T(t)\d{t}}_{\P{T>s}}\d{s}
 		=\int_0^\infty R(t)\d{t},
 	\end{equation*}
 	en inversant l'ordre d'intégration.
@@ -2064,9 +2102,9 @@ selon
 	à la probabilité que tous les composantes fonctionnents après un temps $t$,
 	soit
 	\begin{equation*}
-		\P(T>t)
-		=\P(\left\{T_1>t\right\}\cap\cdots\cap\left\{T_N>t\right\})
-		=\P(T_1>t)\cdots\P(T_n>t),
+		\P{T>t}
+		=\P{\left\{T_1>t\right\}\cap\cdots\cap\left\{T_N>t\right\}}
+		=\P{T_1>t}\cdots\P{T_n>t},
 	\end{equation*}
 	car les événements sont indépendants. 
 \end{exemple}
@@ -2086,9 +2124,9 @@ selon
 	La probabilité que le système soit en panne est équivalent à la probabilité
 	que tous les composantes soit en panne après un temps $t$, soit
 	\begin{equation*}
-		\P(T\leq t)
-		=\P(\left\{T_1\leq t\right\}\cap\cdots\cap\left\{T_n\leq t\right\})
-		=\P(T_1\leq t)\cdots\P(T_n\leq t),
+		\P{T\leq t}
+		=\P{\left\{T_1\leq t\right\}\cap\cdots\cap\left\{T_n\leq t\right\}}
+		=\P{T_1\leq t}\cdots\P{T_n\leq t},
 	\end{equation*}
 	car les événements sont indépendants. Par conséquent, on obtient
 	\begin{equation*}
@@ -2111,7 +2149,7 @@ selon
 
 	La probabilité d'avoir un évènement est
 	\begin{equation*}
-		\P(\left\{X=j\right\}]\cap\left\{Y=i\right\})=\frac{1}{36},
+		\P{\left\{X=j\right\}]\cap\left\{Y=i\right\}}=\frac{1}{36},
 	\end{equation*}
 	pour $i=1,\dots,6$ et $j=1,\dots,6$.
 \end{exemple}
@@ -2141,7 +2179,7 @@ selon
 \subsection{Vecteur aléatoire discret}
 \subsubsection{Fonction de masse conjointe}
 \begin{theoreme}
-	$p_{X,Y}(x_j,y_k)=\P(\left\{X=x_j\right\}\cap\left\{Y=y_k\right\})$.
+	$p_{X,Y}(x_j,y_k)=\P{\left\{X=x_j\right\}\cap\left\{Y=y_k\right\}}$.
 \end{theoreme}
 
 \begin{theoreme}
@@ -2172,20 +2210,20 @@ selon
 \end{theoreme}
 
 \begin{theoreme}
-	$\P(A)=\displaystyle\sum\displaystyle\sum_Ap_{X,Y}(x_j,y_k)$.
+	$\P{A}=\displaystyle\sum\displaystyle\sum_Ap_{X,Y}(x_j,y_k)$.
 \end{theoreme}
 
 \subsection{Vecteur aléatoire continu}
 \subsubsection{Fonction de densité conjointe}
 \begin{theoreme}
-	$f_{X,Y}(x,y)=\dfrac{1}{\delta\epsilon}\P\left(
+	$f_{X,Y}(x,y)=\dfrac{1}{\delta\epsilon}\P{
 		\left\{
 			x-\dfrac{\delta}{2}\leq X\leq x+\dfrac{\delta}{2}
 		\right\}\cap
 		\left\{
 			y-\dfrac{\epsilon}{2}\leq Y\leq y+\dfrac{\epsilon}{2}
 		\right\}
-	\right)$
+	}$
 \end{theoreme}
 
 \begin{theoreme}
@@ -2213,12 +2251,12 @@ selon
 \end{theoreme}
 
 \begin{theoreme}
-	$\P(A)=\displaystyle\iint_Af_{X,Y}(x,y)\d{A}$.
+	$\P{A}=\displaystyle\iint_Af_{X,Y}(x,y)\d{A}$.
 \end{theoreme}
 
 \subsection{Fonction de répartition conjointe}
 \begin{theoreme}
-	$F_{X,Y}(x,y)=\P(\left\{X\leq x\right\}\cap\left\{Y\leq y\right\})$.
+	$F_{X,Y}(x,y)=\P{\left\{X\leq x\right\}\cap\left\{Y\leq y\right\}}$.
 \end{theoreme}
 
 \begin{theoreme}
@@ -2237,23 +2275,603 @@ selon
 
 \subsection{Fonction de répartition marginale}
 \begin{theoreme}
-	$F_X(x)=\displaystyle\lim_{y\leftarrow\infty}F_{X,Y}(x,y)$.
+	$F_X(x)=\displaystyle\lim_{y\rightarrow\infty}F_{X,Y}(x,y)$.
 \end{theoreme}
 
 \begin{theoreme}
-	$F_Y(y)=\displaystyle\lim_{x\leftarrow\infty}F_{X,Y}(x,y)$.
+	$F_Y(y)=\displaystyle\lim_{x\rightarrow\infty}F_{X,Y}(x,y)$.
 \end{theoreme}
 
 \begin{exemple}
 	Quelle est la probabilité que $(X,Y)$ soit dans un rectangle $R$? On
-	suppose qu'on connait $F_{X,Y}(x,y)=\P(\left\{X\leq x\right\}\cap
-	\left\{Y\leq y\right\})$.
+	suppose qu'on connait $F_{X,Y}(x,y)=\P{\left\{X\leq x\right\}\cap
+	\left\{Y\leq y\right\}}$.
 
 	\begin{equation*}
-		\P(R)
+		\P{R}
 		=F_{X,Y}(b,d)-F_{X,Y}(b,c)-F_{X,Y}(a,d)+2F_{X,Y}(a,c).
 	\end{equation*}
 \end{exemple}
 
+\subsection{Indépendance dans un vecteur}
+\begin{definition}
+	Si $X$ et $Y$ sont des variables aléatoires \textit{indépendantes}, il faut
+	que
+	\begin{enumerate}
+		\item $S_{X,Y}=S_X\times S_Y$
+		\item $F_{X,Y}(x,y)=F_X(x)F_Y(y)$
+		\begin{itemize}
+			\item[$\Rightarrow$] $p_{X,Y}(x_j,y_k)=p_X(x_j)p_Y(y_k)$
+			\item[$\Rightarrow$] $f_{X,Y}(x,y)=f_X(x)f_Y(y)$
+		\end{itemize}
+	\end{enumerate}
+\end{definition}
+
+Si on veut déterminer s'il y a indépendance ou non entre deux variables
+aléatoires $X$ et $Y$, il faut vérifier les deux conditions. Si elles sont
+respectées, alors $X$ et $Y$ sont des variables aléatoires indépendantes.
+
+\begin{exemple}
+	La veille d'un examen, un professeur estime qu'il recevra $X$ questions par
+	courriel, où $X\sim\Poi{\alpha}$. Le professeur répond à chaque question
+	avec une probabilité $p$, et ce indépendamment d'une question à l'autre.
+	Soit $Y$ le nombre de réponses du professeur. Déterminer $p_Y(y)$.
+
+	L'espace échantillion du vecteur aléatoire discrète $(X,Y)$ est
+	\begin{equation*}
+		S_{X,Y}=\left\{(0,0),(1,0),(1,1),\dots,(j,0),\dots,(j,j)\right\},
+	\end{equation*}
+	soit un triangle, où $j$ est le nombre de questions reçus.
+	\begin{equation*}
+		p_{X|Y}(j|k)
+		=\underbrace{p_{Y|X}(k,j)}_{\Bin{j}{p}}
+		 \underbrace{p_X(j)}_{\Poi{\alpha}}
+		=\comb{k}{j}p^kq^{j-k}\frac{\e^{-\alpha}}{j!}\alpha^j
+	\end{equation*}
+
+	\begin{equation*}
+		p_Y(k)
+		=\sum_{j=k}^\infty p_{X,Y}(j,k)
+		=\frac{\e^{-\alpha}p^k}{k!}
+		 \sum_{k=0}^\infty\frac{\alpha^jq^{j-k}}{(j-k)!}
+		=\frac{\e^{-\alpha}(\alpha p)^k\e^{\alpha q}}{k!}
+		=\frac{\e^{-\alpha p}(\alpha p)^k}{k!}
+	\end{equation*}
+\end{exemple}
+
+\subsection{Espérance conditionelle}
+\begin{theoreme}
+	$\Espg{Y}{X=x_j}=\displaystyle\sum_{k=1}^\infty y_kp_{Y|X}(y_k|x_j)$
+	dans un cas discret.
+\end{theoreme}
+
+\begin{theoreme}
+	$\Espg{Y}{X=x_j}=\displaystyle\int_{-\infty}^\infty yf_{Y|X}(y|x)\d{x}$
+	dans un cas continu.
+\end{theoreme}
+
+En général, $\Espg{Y}{X=x}=g_1(x)$ et $\Espg{X}{Y=y}=g_2(y)$. On a donc,
+$\Espg{Y}{X}=g_1(X)$ et $\Espg{X}{Y}=g_2(Y)$, c'est-à-dire que l'espérance
+conditionelle est une variable aléatoire.
+
+\begin{theoreme}
+	$\Esp{Y}=\Esp{\Espg{Y}{X}}$.
+\end{theoreme}
+
+\begin{proof}
+	On sait que
+	\begin{equation*}
+		\Esp{\Espg{Y}{X})}
+		=\int_{-\infty}^\infty\Espg{Y}{X=x}f_X(x)\d{x}
+		=\int_{-\infty}^\infty\int_{-\infty}^\infty
+         yf_{Y|X}(y|x)\d{y}\cdot f_X(x)\d{x}
+	\end{equation*}
+	\begin{equation*}
+		\Esp{\Espg{Y}{X}}
+		=\int_{-\infty}^\infty\int_{-\infty}^\infty
+		 y\cdot\underbrace{f_{Y|X}(y|x)f_X(x)}_{f_{X,Y}(x,y)}\d{y}\d{x}
+		=\int_{-\infty}^\infty y\int_{-\infty}^\infty
+         f_{X,Y}(x,y)\d{x}\d{y}
+	\end{equation*}
+	\begin{equation*}
+		\Esp{\Espg{Y}{X}}
+		=\int_{-\infty}^\infty yf_Y(y)\d{y}
+		=\Esp{Y}.\qedhere
+	\end{equation*}
+\end{proof}
+
+\begin{theoreme}
+	$\Esp{h(Y)}=\Esp{\Espg{h(y)}{X}}$.
+\end{theoreme}
+
+\subsection{Variance conditionnelle}
+
+\begin{theoreme}
+	$\Varg{Y}{X}=\Espg{Y^2}{X}-\left(\Espg{Y}{X}\right)^2$.
+\end{theoreme}
+
+
+\begin{theoreme}
+	$\Var{Y}=\Esp{\Varg{Y}{X}}+\Var{\Espg{Y}{X}}$.
+\end{theoreme}
+
+\subsection{Covariance et corrélation}
+
+\begin{theoreme}
+	$\Esp{g(X,Y)}=\displaystyle\sum_{j=1}^\infty
+	\displaystyle\sum_{k=1}^\infty g(x_j,y_k)p_{X,Y}(x_j,y_k)$
+	dans un cas discret.
+\end{theoreme}
+\begin{theoreme}
+	$\Esp{g(X,Y)}=\displaystyle\int_{-\infty}^\infty
+	\displaystyle\int_{-\infty}^\infty g(x,y)f_{X,Y}(x,y)\d{x}\d{y}$
+	dans un cas discret.
+\end{theoreme}
+
+\begin{exemple}
+	Soit la fonction de masse conjointe de $X$ et $Y$ suivante.
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{c|ccc}
+			  & 0 & 1 & 2\\
+			\hline
+			0 & $\nicefrac{1}{6}$ & $\nicefrac{1}{6}$ & $\nicefrac{1}{6}$\\
+			1 & 0                 & $\nicefrac{1}{6}$ & $\nicefrac{1}{6}$\\
+			2 & 0                 & 0                 & $\nicefrac{1}{6}$\\
+		\end{tabular}
+	\end{table}
+
+
+	\begin{equation*}
+		\Esp{X^2Y}=\sum_{j=0}^2\sum_{k=0}^2j^2kp_{X,Y}(j,k)=\frac{13}{6}
+	\end{equation*}
+\end{exemple}
+
+\begin{exemple}
+	Soit $X\sim\Norm{1}{1}$ et $Y\sim\Norm{2}{1}$ des variables aléatoires
+	indépendates de sorte que
+	\begin{equation*}
+		f_{X,Y}(x,y)=f_X(x)f_Y(y).
+	\end{equation*}
+	Calculer $\Esp{X+Y}$ et $\Esp{XY}$.
+
+	Par définition, on a
+	\begin{equation*}
+		\Esp{X+Y}
+		=\int_{-\infty}^\infty\int_{-\infty}^\infty(x+y)f_{X,Y}(x,y)\d{x}\d{y},
+	\end{equation*}
+	et avec la linéarité de l'espérance, on obtient
+	\begin{equation*}
+		\Esp{X+Y}
+		=\underbrace{\int_{-\infty}^\infty\int_{-\infty}^\infty
+		 xf_{X,Y}(x,y)\d{x}\d{y}}_{\Esp{X}}
+		+\underbrace{\int_{-\infty}^\infty
+		 y\int_{-\infty}^\infty f_{X,Y}(x,y)\d{x}\d{y}}_{\Esp{Y}}
+	\end{equation*}
+	de sorte à obtenir que $\Esp{X+Y}=3$. L'indépendance des variables n'est
+	pas importante.
+
+	Par définition, on a
+	\begin{equation*}
+		\Esp{XY}
+		=\int_{-\infty}^\infty\int_{-\infty}^\infty(xy)f_{X,Y}(x,y)\d{x}\d{y},
+	\end{equation*}
+	et avec l'indépendance des variables, on obtient
+	\begin{equation*}
+		\Esp{XY}
+		=\int_{-\infty}^\infty xf_X(x)\d{x}\int_{-\infty}^\infty yf_Y(y)\d{y}
+		=\Esp{X}\Esp{Y}
+	\end{equation*}
+	de sorte à obtenir $\Esp{XY}=2$.
+\end{exemple}
+
+\begin{theoreme}
+	$\Esp{aX+bY}=a\Esp{X}+b\Esp{Y}$.
+\end{theoreme}
+
+\begin{theoreme}
+	$\Esp{g(X,Y)}=\Esp{g_1(X)}\Esp{g_2(Y)}$ si $X$ et $Y$ indépendants et
+	$g(X,Y)=g_1(X)g_2(Y)$.
+\end{theoreme}
+
+\begin{definition}
+	La \textit{corrélation} de deux variables aléatoires $X$ et $Y$ est
+	l'espérance de leur produit, soit $\Esp{XY}$.
+\end{definition}
+
+Lorsque $\Esp{XY}=0$, on dit que $X$ et $Y$ sont orthogonales.
+
+\begin{definition}
+	La \textit{covariance} de deux variables aléatoires $X$ et $Y$ est donnée
+	par
+	\begin{equation*}
+		\Cov{X}{Y}=\Esp{XY}-\Esp{X}\Esp{Y}.
+	\end{equation*}
+\end{definition}
+
+\begin{theoreme}
+	$\Cov{X}{X}=\Var{X}$.
+\end{theoreme}
+
+\begin{definition}
+	Le \textit{coefficient de corrélation} $\rho_{X,Y}$ de deux variables
+	aléatoires $X$ et $Y$ est donné par
+	\begin{equation*}
+		\rho_{X,Y}=\frac{\Cov{X}{Y}}{\Std{X}\Std{Y}}.
+	\end{equation*}
+\end{definition}
+
+\begin{theoreme}
+	$-1\leq\rho_{X,Y}\leq 1$.
+\end{theoreme}
+
+\begin{theoreme}
+	$\rho_{X,Y}=1\Leftrightarrow Y=aX+b$ où $a>0$.
+\end{theoreme}
+
+\begin{theoreme}
+	$\rho_{X,Y}=-1\Leftrightarrow Y=aX+b$ où $a<0$.
+\end{theoreme}
+
+\begin{theoreme}
+	$\rho_{X,Y}=0$ si $X$ et $Y$ sont indépendants.
+\end{theoreme}
+
+% rho=0, X et Y ne sont pas nécessairement indépendantes (varialbes non-corrélées)
+
+% rho=0, X,Y suivent des normales, alors on peut dire que $X$ et $Y$ sont indépendantes
+
+\subsection{Loi binormale}
+Soit un vecteur aléatoire $(X,Y)$, où la fonction de probabilité de densité suit
+l'équation 
+\begin{equation*}
+	f_{X,Y}(x,y)=\frac{1}{2\pi\sigma_X\sigma_Y\sqrt{1-\rho^2}}
+	\exp\left\{-\frac{1}{2(1-\rho)^2}\left[
+		\left(\frac{x-\mu_X}{\sigma_X}\right)^2+
+		\left(\frac{x-\mu_Y}{\sigma_Y}\right)^2+
+		2\rho\frac{(x-\mu_X)(y-\mu_Y)}{\sigma_X\sigma_Y}
+	\right]\right\},
+\end{equation*}
+suit une loi binormale dénotée
+\begin{equation*}
+	(X,Y)\sim\BiNorm{\mu_X}{\mu_Y}{\sigma_X^2}{\sigma_Y^2}{\rho}.
+\end{equation*}
+où $\rho=\rho_{X,Y}$.
+
+Il en résulte que $X\sim\Norm{\mu_X}{\sigma_X^2}$ $Y\sim\Norm{\mu_Y}{\sigma_Y^2}$.
+Si $\rho=0$, alors on voit que $f_{X,Y}=f_X(x)f_Y(y)$ de sorte que $X$ et $Y$
+sont indépendants.
+
+La conditionelle de cette loi est une loi normale, soit
+\begin{equation*}
+	X|\left\{Y=y\right\}\sim\Norm{\mu}{\sigma^2},
+\end{equation*}
+où
+\begin{equation*}
+	\mu=\mu_X+\rho\frac{\sigma_X}{\sigma_Y}(y-\mu_Y)
+\end{equation*}
+et
+\begin{equation*}
+	\sigma^2=\sigma_X^2(1-\rho^2).
+\end{equation*}
+
+\subsection{Estimation}
+On cherche à prévoir la valeur inconnue de $Y$ à partir de $X$. Soit $g(X)$ la
+fonction estimateur de $Y$. On cherche à minimiser l'erreur quadratique moyenne
+définie par
+\begin{equation*}
+	\Esp{\left(Y-g(X)\right)^2}.
+\end{equation*}
+
+\subsubsection{Estimateur constant}
+Dans un cas où $g(X)=c$, le problème se résume à
+\begin{equation*}
+	\Min\Esp{\left(Y-c\right)^2}.
+\end{equation*}
+En dérivant, on obtient la constante optimale
+\begin{equation*}
+	\hat{c}=\Esp{Y},
+\end{equation*}
+de sorte à obtenir l'erreur d'estimation
+\begin{equation*}
+	\Esp{\left(Y-\Esp{Y}\right)^2}=\Var{Y}.
+\end{equation*}
+
+\subsubsection{Estimateur linéaire}
+Dans un cas où $g(X)=aX+b$, le problème se résume à
+\begin{equation*}
+	\Min\Esp{\left(Y-aX-b\right)^2}
+\end{equation*}
+de sorte à obtenir
+\begin{equation*}
+	\hat{a}=\frac{\Cov{X}{Y}}{\Var{X}}=\frac{\Std{Y}}{\Std{X}}\rho_{X,Y}
+\end{equation*}
+et
+\begin{equation*}
+	\hat{b}=\Esp{Y}-\hat{a}\Esp{X}.
+\end{equation*}
+
+Par conséquent, le meilleur estimateur linéaire de $Y$ en fonction de $X$ est
+\begin{equation*}
+	g(X)=\hat{a}X+\hat{b}
+\end{equation*}
+avec une erreur d'estimation donnée par
+\begin{equation*}
+	\Var{Y}\left(1-\rho_{X,Y}^2\right).
+\end{equation*}
+
+\subsubsection{Estimateur non linéaire}
+\begin{equation*}
+	\Min\Esp{\left(Y-g(X)\right)^2}
+\end{equation*}
+
+\begin{equation*}
+	\Min\Esp{\Espg{\left(Y-g(X)\right)^2}{X}}
+\end{equation*}
+
+\begin{equation*}
+	\Min\sum_{j=1}^\infty
+		\underbrace{\Espg{Y-g(X)}{X=x_j}}_{\text{fonction positive à min $\forall x_j$}}
+		p_X(x_j)
+\end{equation*}
+
+On minimise pour chaque $x_j$ avec une constante différente. On retrouve un cas
+$g(X)=c$, mais conditionnel à $X=x_j$. On retrouve que le meilleur estimateur
+de $Y$ en fonction de $X$ est
+\begin{equation*}
+	g(X)=\Espg{Y}{X}.
+\end{equation*}
+
+\subsubsection{Estimateur d'une binormale}
+Lorsque $X$ et $Y$ suivents des distributions normales, alors on retrouve que
+\begin{equation*}
+	\Espg{Y}{X}=\hat{a}X+\hat{b}.
+\end{equation*}
+
+\begin{exemple}
+	Soit $(X,Y)\sim\BiNorm{\mu_X=3}{\mu_Y=1}{\sigma_X^2=4}{\sigma_Y^2=9}{\rho=\nicefrac{1}{4}}$,
+	quel est le meilleur estimateur de $Y$ en fonction de $X$?
+
+	\begin{equation*}
+		\hat{a}=\frac{\Std{Y}}{\Std{X}}\rho=\frac{3}{8}
+	\end{equation*}
+
+	\begin{equation*}
+		\hat{b}=\Esp{Y}-\hat{a}\Esp{X}=-\frac{1}{8}
+	\end{equation*}
+
+	\begin{equation*}
+		g(X)=\frac{3}{8}X-\frac{1}{8}
+	\end{equation*}
+\end{exemple}
+
+\subsection{Combinaisons linéaires}
+\begin{definition}
+	Soit un vecteur aléatoire ($X_1,X_2,\dots,X_n$), alors la
+	\textit{combinaison linéaire} $Z$ des variables aléatoires est
+	\begin{equation*}
+		Z=a_0+a_1X_1+a_2X_2+\cdots+a_nX_n=a_0+\sum_{i=1}^na_iX_i.
+	\end{equation*}
+\end{definition}
+
+\begin{theoreme}
+	$\Esp{Z}=a_0+\displaystyle\sum_{i=1}^na_i\Esp{X_i}$.
+\end{theoreme}
+
+\begin{theoreme}
+	$\Var{Z}=\displaystyle\sum_{i=1}^n\displaystyle\sum_{j=1}^na_ia_j
+	\Cov{X_i}{X_j}$.
+\end{theoreme}
+\begin{proof}
+	Soit $Y_i=a_iX_i$. Par définition, on a
+	\begin{equation*}
+		\Var{Z}
+		=\Var{\sum_{i=1}^nY_i}
+		=\Esp{\left(\sum_{i=1}^nY_i\right)^2}
+		-\left(\sum_{i=1}^n\Esp{Y_i}\right)^2.
+	\end{equation*}
+
+	En écrivant explicitement le carré, on a
+	\begin{equation*}
+		\Var{Z}
+		=\Esp{\left(\sum_{i=1}^nY_i\right)\left(\sum_{j=1}^nY_j\right)}
+		-\left(\sum_{i=1}^n\Esp{Y_i}\right)\left(\sum_{j=1}^n\Esp{Y_j}\right)
+	\end{equation*}
+
+	\begin{equation*}
+		\Var{Z}
+		=\Esp{\sum_{i=1}^n\sum_{j=1}^nY_iY_j}
+		-\sum_{i=1}^n\sum_{j=1}^n\Esp{Y_i}\Esp{Y_j}
+	\end{equation*}
+
+	\begin{equation*}
+		\Var{Z}
+		=\sum_{i=1}^n\sum_{j=1}^n\bigg(
+			\Esp{Y_iY_j}-\Esp{Y_i}\Esp{Y_j}\bigg)
+		=\sum_{i=1}^n\sum_{j=1}^na_ia_j\Cov{X_i}{X_j}
+		\qedhere
+	\end{equation*}
+\end{proof}
+
+\begin{theoreme}
+	$\Var{Z}=
+	\displaystyle\sum_{i=1}^na_i^2\Var{X_i}+
+	2\underbrace{\displaystyle\sum_{i=1}^n\displaystyle\sum_{j=1}^n}_{i<j}
+	a_ia_j\Cov{X_i}{X_j}$.
+\end{theoreme}
+
+\subsection{Variables aléatoires indépendantes}
+Soit $X_1,X_2,\dots,X_n$ des variables aléatoires indépendantes.
+
+\begin{theoreme}
+	$\Cov{X_i}{X_j}=0$.
+\end{theoreme}
+
+\begin{theoreme}
+	$\Esp{Z}=a_0+\displaystyle\sum_{i=1}^n\Esp{X_i}$.
+\end{theoreme}
+
+\begin{theoreme}
+	$\Var{Z}=\displaystyle\sum_{i=1}^na_i^2\Var{X_i}$.
+\end{theoreme}
+
+\subsection{Variables aléatoires indépendantes et identiquement distributées}
+Soit $X_1,X_2,\dots,X_n$ des variables aléatoires indépendantes et
+identiquement distribuées de sorte que $Z=X_1+X_2+\dots+X_n$.
+
+\begin{theoreme}
+	$\Esp{S_n}=n\Esp{X_1}$.
+\end{theoreme}
+
+\begin{theoreme}
+	$\Var{S_n}=n\Var{X_1}$.
+\end{theoreme}
+
+\begin{exemple}
+	Si $X_1\sim\Bin{n_1}{p}$ et $X_2\sim\Bin{n_2}{p}$ sont des variables
+	aléatoires indépendantes, alors on a
+	\begin{equation*}
+		X_1+X_2\sim\Bin{n_1+n_2}{p}.
+	\end{equation*}
+\end{exemple}
+
+\begin{exemple}
+	Si $X_i\sim\Poi{\alpha_i}$ sont des variables aléatoires indépendantes,
+	alors on a
+	\begin{equation*}
+		X_1+X_2+\dots+X_n\sim\Poi{\alpha},
+	\end{equation*}
+	où $\alpha=\alpha_1+\alpha_2+\dots+\alpha_n$.
+\end{exemple}
+
+\begin{exemple}
+	Si $X_i\sim\Exp{\lambda}$ sont des variables aléatoires indépendantes,
+	alors on a
+	\begin{equation*}
+		X_1+X_2+\dots+X_n\sim\Gam{n}{\lambda}.
+	\end{equation*}
+\end{exemple}
+
+\begin{exemple}
+	Si $X_i\sim\Gam{\alpha_i}{\lambda}$ sont des variables aléatoires
+	indépendantes, alors on a
+	\begin{equation*}
+		X_1+X_2+\dots+X_n\sim\Gam{\alpha}{\lambda},
+	\end{equation*}
+	où $\alpha=\alpha_1+\alpha_2+\dots+\alpha_n$.
+\end{exemple}
+
+\begin{exemple}
+	Si $X_i\sim\Norm{\mu_i}{\sigma_i^2}$ sont des variables aléatoires
+	indépendantes, alors on a
+	\begin{equation*}
+		a_0+\sum_{i=1}^na_iX_i\sim\Norm{\mu}{\sigma^2},
+	\end{equation*}
+	où
+	\begin{equation*}
+		\mu=a_0+\sum_{i=1}^na_i\mu_i
+		\quad\text{et}\quad
+		\sigma^2=\sum_{i=1}^n\sum_{j=1}^na_ia_j\Cov{X_i}{X_j}.
+	\end{equation*}
+\end{exemple}
+
+\subsection{Loi faible des grands nombres}
+Soit $X_1,X_2,\dots,X_n$ des variables aléatoires indépendantes et
+indentiquements distributées de moyenne $\mu$. Soit $S_n=X_1+X_2+\dots+X_n$,
+alors on a
+\begin{equation*}
+	\lim_{n\rightarrow\infty}\P{\left\rvert
+		\frac{S_n}{n}-\mu
+	\right\rvert<c}=1,
+\end{equation*}
+pour tout $c>0$.
+
+\subsection{Loi forte des grands nombres}
+Soit $X_1,X_2,\dots,X_n$ des variables aléatoires indépendantes et
+indentiquements distributées de moyenne $\mu$ et de variance $\sigma^2$. Soit
+$S_n=X_1+X_2+\dots+X_n$, alors on a
+\begin{equation*}
+	\P{\lim_{n\rightarrow\infty}\frac{S_n}{n}=\mu}=1.
+\end{equation*}
+
+\subsection{Théorème central limite}
+Soit $X_1,X_2,\dots,X_n$ des variables aléatoires indépendantes et
+identiquements distribuées de moyenne $\mu$ et de variance $\sigma^2$. Si $n$
+est \textit{grand}, on a que $S_n\approx\Norm{n\mu}{n\sigma^2}$ ou encore
+\begin{equation*}
+	\frac{S_n}{n}\approx\Norm{\mu}{\frac{\sigma^2}{n}},
+\end{equation*}
+et
+\begin{equation*}
+	\frac{S_n-n\mu}{\sqrt{n\sigma^2}}\approx\Norm{0}{1}.
+\end{equation*}
+
+En général, le théorème central limite est applicable si $n\geq 30$.
+
+\begin{exemple}
+	Soit $X\sim\Bin{2000}{\nicefrac{1}{2}}$. Calculez $\P{990\leq X\leq 1100}$.
+
+	On approxime la loi binomiale par la loi normale. Par conséquent,
+	\begin{equation*}
+		X\approx\Norm{np}{npq}
+	\end{equation*}
+	et
+	\begin{equation*}
+		\P{X=k}\approx\frac{1}{\sqrt{2\pi\cdot npq}}\exp\left\{
+			-\frac{(k-np)^2}{2npq}
+		\right\}
+	\end{equation*}
+	% Phi(4.5)-Phi(-4.5)\approx 1
+
+	Puisqu'on approxime une loi discrète par une loi continue, on applique
+	une \textit{correction de continuité}, c'est-à-dire
+	\begin{equation*}
+		\P{a\leq X\leq b}
+		\approx\Phi\left(
+			\frac{b+\nicefrac{1}{2}-np}{\sqrt{npq}}
+		\right)-\Phi\left(
+			\frac{a-\nicefrac{1}{2}-np}{\sqrt{npq}}
+		\right)
+	\end{equation*}
+
+	\begin{equation*}
+		\P{a<X\leq b}
+		\approx\Phi\left(
+			\frac{b+\nicefrac{1}{2}-np}{\sqrt{npq}}
+		\right)-\Phi\left(
+			\frac{a+\nicefrac{1}{2}-np}{\sqrt{npq}}
+		\right)
+	\end{equation*}
+\end{exemple}
+
+\begin{exemple}
+	Soit la fonction de probabilité de densité suivante
+	\begin{equation*}
+		f_{X,Y}(x,y)=\frac{3}{4},
+	\end{equation*}
+	si $0<y<1$ et $x^2<y$. Calculez $f_X(x)$ et $f_Y(y)$, ainsi que
+	$\P{Y\geq X}$.
+
+	Pour un $x$, on a
+	\begin{equation*}
+		f_X(x)
+		=\int_{x^2}^1f_{X,Y}(x,y)\d{y}
+		=\frac{3}{4}(1-x^2),
+	\end{equation*}
+	si $-1<x<1$. Pour un $y$, on a
+	\begin{equation*}
+		f_Y(y)
+		=\int_{-\sqrt{y}}^{\sqrt{y}}f_{X,Y}(x,y)\d{x}
+		=\frac{3}{2}\sqrt{y},
+	\end{equation*}
+	si $0<y<1$.
+
+	Par définition, on a
+	\begin{equation*}
+		\P{Y\geq X}
+		=\int_0^1\int_{-\sqrt{y}}^{\sqrt{y}}f_{X,Y}(x,y)\d{x}\d{y}
+		=\frac{7}{8}.
+	\end{equation*}
+\end{exemple}
 \end{document}
 
