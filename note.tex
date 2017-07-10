@@ -169,6 +169,7 @@
 
 \newtheorem{axiome}{Axiome}
 \newtheorem{theoreme}{Théoreme}[section]
+\newtheorem*{proposition}{Proposition}
 
 \declaretheoremstyle[
 	notefont=\bfseries,
@@ -1332,9 +1333,9 @@ $S_X=\left\{0,1,2,\dots,n\right\}$.
 	$P_X(k)=\P{X=k}=\comb{k}{n}p^kq^{n-k}$.
 \end{proof}
 
-\begin{theoreme}
+\begin{proposition}
 	$\P{S_X}=1$.
-\end{theoreme}
+\end{proposition}
 
 \begin{proof}
 	Par définition, on a
@@ -1392,7 +1393,7 @@ où $p$ est la probabilité d'avoir un succès à un essai. L'espace échantilli
 est $S_X=\left\{1,2,\dots\right\}$.
 
 \begin{theoreme}
-	$P_X(k)=q^{k-1}p$.
+	$p_X(k)=q^{k-1}p$.
 \end{theoreme}
 
 \begin{proof}
@@ -1411,7 +1412,7 @@ est $S_X=\left\{1,2,\dots\right\}$.
 	est $\P{A_i^c}=q$, où $q=1-p$. Puisque chaque essai est indépendant des
 	autres, la probabilité peut s'écrire
 	\begin{equation*}
-		P_X(k)=
+		p_X(k)=
 		\underbrace{\P{A_1^c}\P{A_2^c}\cdots\P{A_{k-1}}}_\text{$k-1$ fois}
 		\cdot\P{A_k}=q^{k-1}p.\qedhere
 	\end{equation*}
@@ -1424,7 +1425,7 @@ est $S_X=\left\{1,2,\dots\right\}$.
 \begin{proof}
 	Selon une variante du théorème \ref{th:masse_repartition}, on a
 	\begin{equation*}
-		F_X(n)=\sum_{k=1}^nP_X(k)=\sum_{k=1}^nq^{k-1}p=p\sum_{k=1}^nq^{k-1}.
+		F_X(n)=\sum_{k=1}^np_X(k)=\sum_{k=1}^nq^{k-1}p=p\sum_{k=1}^nq^{k-1}.
 	\end{equation*}
 	On remarque que la somme est une série géométrique, alors
 	\begin{equation*}
@@ -1444,7 +1445,7 @@ est $S_X=\left\{1,2,\dots\right\}$.
 	En utilisant à nouveau la série géométrique, on a
 	\begin{equation*}
 		\P{S_X}
-		=\sum_{k=1}^\infty P_X(k)
+		=\sum_{k=1}^\infty p_X(k)
 		=p\sum_{k=1}^\infty q^{k-1}
 		=p\frac{1}{1-q}
 		=(1-q)\frac{1}{1-q}
@@ -1490,7 +1491,7 @@ Par conséquent, la probabilité que $X$ prend une valeur proche de $\alpha$ est
 échantillion est $S_X=\left\{0,1,2,\dots\right\}$.
 
 \begin{theoreme}
-	$P_X(k)=\dfrac{\alpha^k}{k!}\e^{-\alpha}$.
+	$p_X(k)=\dfrac{\alpha^k}{k!}\e^{-\alpha}$.
 \end{theoreme}
 
 \begin{theoreme}
@@ -1501,7 +1502,7 @@ Par conséquent, la probabilité que $X$ prend une valeur proche de $\alpha$ est
 	En utilisant le développement en série de la fonction exponentielle, on a
 	\begin{equation*}
 		\P{S_X}
-		=\sum_{k=0}^\infty P_X(k)
+		=\sum_{k=0}^\infty p_X(k)
 		=\e^{-\alpha}\sum_{k=0}^\infty\frac{\alpha^k}{k!}
 		=\e^{-\alpha}\e^\alpha
 		=1.\qedhere
@@ -1737,7 +1738,7 @@ aussi $sigma$ comme l'écart-type. L'espace échantillion est $S_X=\mathbb{R}$.
 \end{definition}
 
 \begin{theoreme}
-	$\Esp{X}=\displaystyle\sum_{k=1}^\infty x_kP_X(x_k)$ si $X$ est discrète.
+	$\Esp{X}=\displaystyle\sum_{k=1}^\infty x_kp_X(x_k)$ si $X$ est discrète.
 \end{theoreme}
 
 \begin{theoreme}
@@ -1767,7 +1768,7 @@ aussi $sigma$ comme l'écart-type. L'espace échantillion est $S_X=\mathbb{R}$.
 	Par définition, on calcule l'espérance avec
 	\begin{equation*}
 		\Esp{X}
-		=\sum_{k=0}^\infty k\cdot P_X(k)
+		=\sum_{k=0}^\infty k\cdot p_X(k)
 		=\sum_{k=0}^\infty k\cdot\frac{\e^{-\alpha}\alpha^k}{k!}
 		=\sum_{k=1}^\infty k\cdot\frac{\e^{-\alpha}\alpha^k}{k!},
 	\end{equation*}
@@ -1812,7 +1813,7 @@ aussi $sigma$ comme l'écart-type. L'espace échantillion est $S_X=\mathbb{R}$.
 Soit $Y=g(X)$, où $X$ et $Y$ sont des variables aléatoires et $g$ une
 tranformation. Si $X$ et $Y$ discrètes, alors
 \begin{equation*}
-	\Esp{Y}=\Esp{g(X)}=\sum_{k=1}^\infty g(x_k)P_X(x_k),
+	\Esp{Y}=\Esp{g(X)}=\sum_{k=1}^\infty g(x_k)p_X(x_k),
 \end{equation*}
 et si $X$ et $Y$ sont continues, alors
 \begin{equation*}
@@ -1828,7 +1829,7 @@ et si $X$ et $Y$ sont continues, alors
 \end{theoreme}
 
 \begin{theoreme}
-	$\Espg{X}{A}=\displaystyle\sum_{k=1}^\infty x_kP_X(x_k|A)$, où $X$ discrète.
+	$\Espg{X}{A}=\displaystyle\sum_{k=1}^\infty x_kp_X(x_k|A)$, où $X$ discrète.
 \end{theoreme}
 
 \begin{theoreme}
@@ -1960,7 +1961,7 @@ $\Var{X}=\sigma_X^2$ existent. On peut montrer que
 
 \begin{theoreme}
 	$\phi_X(\omega)=\displaystyle\sum_{k=1}^\infty\e^{j\omega x_k}\cdot
-	P_X(x_k)$, si $X$ est discrète.
+	p_X(x_k)$, si $X$ est discrète.
 \end{theoreme}
 
 \begin{theoreme}
