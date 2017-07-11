@@ -1,0 +1,82 @@
+\documentclass[11pt]{article}
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{tikz}
+\usepackage{standalone}
+
+\usetikzlibrary{babel}
+
+\begin{document}
+\begin{tikzpicture}[
+	y=-4cm,
+	x= 4cm,
+	->,
+	notation/.style={
+		inner sep=1pt,
+		outer sep=0pt,
+		fill=white,
+		near start,
+	},
+	state/.style={
+		circle,
+		draw,
+		minimum size=1cm
+	}
+]
+
+\node[state] (N0) at (0,0) {0};
+\node[state] (N1) at (1,0) {1};
+\node[state] (N2) at (0,1) {2};
+\node[state] (N3) at (1,1) {3};
+
+\draw (N0) edge [bend right=13] node[notation] {\footnotesize $p_{0,1}$} (N1);
+\draw (N1) edge [bend right=13] node[notation] {\footnotesize $p_{1,0}$} (N0);
+
+\draw (N0) edge [bend right=13] node[notation] {\footnotesize $p_{0,2}$} (N2);
+\draw (N2) edge [bend right=13] node[notation] {\footnotesize $p_{2,0}$} (N0);
+
+\draw (N0) edge [bend right=13] node[notation] {\footnotesize $p_{0,3}$} (N3);
+\draw (N3) edge [bend right=13] node[notation] {\footnotesize $p_{3,0}$} (N0);
+
+\draw (N1) edge [bend right=13] node[notation] {\footnotesize $p_{1,3}$} (N3);
+\draw (N3) edge [bend right=13] node[notation] {\footnotesize $p_{3,1}$} (N1);
+
+\draw (N2) edge [bend right=13] node[notation] {\footnotesize $p_{2,3}$} (N3);
+\draw (N3) edge [bend right=13] node[notation] {\footnotesize $p_{3,2}$} (N2);
+
+\draw (N1) edge [bend right=13] node[notation] {\footnotesize $p_{1,2}$} (N2);
+\draw (N2) edge [bend right=13] node[notation] {\footnotesize $p_{2,1}$} (N1);
+
+\begin{scope}[shift={(0,0)}]
+	\begin{scope}[x=1,y=1,xshift=-0.5cm,yshift=0.5cm]
+		\draw (0:0.5cm) arc (0:270:0.5cm) node[notation,midway]
+			{\footnotesize $p_{0,0}$};
+	\end{scope}
+\end{scope}
+
+\begin{scope}[shift={(1,0)}]
+	\begin{scope}[x=1,y=1,xshift=0.5cm,yshift=0.5cm]
+		\draw (-90:0.5cm) arc (-90:180:0.5cm) node[notation,midway]
+			{\footnotesize $p_{1,1}$};
+	\end{scope}
+\end{scope}
+
+\begin{scope}[shift={(0,1)}]
+	\begin{scope}[x=1,y=1,xshift=-0.5cm,yshift=-0.5cm]
+		\draw (-270:0.5cm) arc (-270:0:0.5cm) node[notation,midway]
+			{\footnotesize $p_{2,2}$};
+	\end{scope}
+\end{scope}
+
+\begin{scope}[shift={(1,1)}]
+	\begin{scope}[x=1,y=1,xshift=0.5cm,yshift=-0.5cm]
+		\draw (-180:0.5cm) arc (-180:90:0.5cm) node[notation,midway]
+			{\footnotesize $p_{3,3}$};
+	\end{scope}
+\end{scope}
+
+\end{tikzpicture}
+\end{document}
+
+

@@ -170,6 +170,7 @@
 \newtheorem{axiome}{Axiome}
 \newtheorem{theoreme}{Théoreme}[section]
 \newtheorem*{proposition}{Proposition}
+\newtheorem*{exemple*}{Exemple}
 
 \declaretheoremstyle[
 	notefont=\bfseries,
@@ -2874,5 +2875,218 @@ En général, le théorème central limite est applicable si $n\geq 30$.
 		=\frac{7}{8}.
 	\end{equation*}
 \end{exemple}
+
+\section{Processus Stochastique}
+\begin{definition}
+	Un \textit{processus stochastique} est une expérience aléatoire qui ce
+	déroule dans le temps.
+\end{definition}
+
+On note $X(t)$ la variable aléatoire correspondant à l'observation du processus
+au un temps $t\geq 0$. Les valeurs possibles pour ces observations forment
+\textit{l'espace des états} du processus. Les événements élémentaires du
+processus sont ce qu'on appel des \textit{trajectoires} dans l'espace des
+états.
+
+Un processus stochastique est défini par l'ensemble $\left\{X(t)\middle\rvert
+t\in T\right\}$, avec $T=\left\{0,1,2,\dots\right\}$ dans un cas discret ou
+$T=\left[0,\infty\right[$ dans un cas continue.
+
+Il existe 4 types de processus stochastique:
+\begin{enumerate}
+	\item processus stochastique à temps discret et état discret (PSTDED)
+	\begin{exemple*}
+		Le nombre de personnes en classe à chaque jour.
+	\end{exemple*}
+	\item processus stochastique à temps discret et état continu (PSTDEC)
+	\begin{exemple*}
+		La valeur d'une action à la fermmeture de la bourse.
+	\end{exemple*}
+	\item processus stochastique à temps continu et étant discret (PSTCED)
+	\begin{exemple*}
+		La longueur de la file d'attente à la cafétéria.
+	\end{exemple*}
+	\item processus stochastique à temps discret et état discret (PSTCEC)
+	\begin{exemple*}
+		La valeur d'une action en temps réel.
+	\end{exemple*}
+\end{enumerate}
+
+\subsection{Caractéristique des processus stochastiques}
+\subsubsection{PSTCEC}
+Dans le cas d'un processus stochastique à temps continu et état continu, 
+
+
+Dans le cas d'un PSTCEC, il y a une fonction de répartition du 1er ordre, soit
+$F(x;t)=\P{X(t)\leq x}$, une fonction de répartition du 2e ordre, soit
+$F(x_1,X_2;t_1,t_2)=\P{X(t_1)\leq x_1,X(t_2)\leq x_2}$.
+
+\begin{equation*}
+	F(x_1,\dots,x_n;t_1,\dots,t_n)=\P{
+		\left\{X(t_1)\leq x_1\right\}\cap\cdots\cap
+		\left\{X(t_n)\leq x_n\right\}\cap
+	}
+\end{equation*}
+
+\begin{equation*}
+	f(x_1,\dots,x_n;t_1,\dots,t_n)=\frac{\p[n]{}}{\p{x_1}\cdots\p{x_n}}
+		F(x_1,\dots,x_n;t_1,\dots,t_n)
+\end{equation*}
+
+\begin{exemple}
+	Soit un patient qui recoit une dose de médicament $Y$. Au temps $t=0$, on
+	a $Y\sim\Uni{0}{1}$. La quantité active $X$ après $t$ unités de temps est
+	définie par $X(t)=Y\e^{-t}$. Quel est la fonction de répartition du
+	premier ordre, soit $F(x;t)$?
+	% faire graphique maybe?
+
+	Par définition, on a $F(x;t)=\P{X(t)\leq x}=\P{Y}\leq x\e^t$. Pour une loi
+	uniforme, on a
+	\begin{equation*}
+		F(x;t)=\left\{
+			\begin{matrix}
+				0     &\text{si}& x\e^t<0\\
+				x\e^t &\text{si}& 0\leq x\leq e^{-t}\\
+				1     &\text{si}& \e^{-t}<x\\
+			\end{matrix}
+		\right..
+	\end{equation*}
+\end{exemple}
+
+\subsubsection{Moyenne d'un processus stochastique}
+\begin{definition}
+	La \textit{moyenne} d'un processus stochastique, dénotée $m_X(t)$, est
+	donnée par
+	\begin{equation*}
+		m_X(t)=\Esp{X(t)}=\int_{-\infty}^\infty xf(x;t)\d{x}.
+	\end{equation*}
+\end{definition}
+
+\begin{exemple}
+	Quel est la moyenne de $X(t)=Y\e^{-t}$, où $Y\sim\Uni{0}{1}$?
+
+	Avec l'exemple précèdent, on obtient que la fonction de densité de
+	probabilité est donnée par
+	\begin{equation*}
+		f(x;t)=\frac{\p{}}{\p{x}}F(x;t)=\e^t,
+	\end{equation*}
+	pour $0\leq x\leq e^{-t}$. La moyenne est donc
+	\begin{equation*}
+		m_X(t)=\int_0^{e^{-t}}x\e^t\d{x}=\frac{e^{-t}}{2}.
+	\end{equation*}
+\end{exemple}
+
+\subsubsection{Fonction d'autocorrélation}
+\begin{definition}
+	La \textit{fonction d'autocorrélation}, dénotée $R_X(t_1,t_2)$, est la
+	corrélation d'un processus stochastique $X(t)$ avec lui-même à deux temps
+	différents. Par conséquent, on a
+	\begin{equation*}
+		R_X(t_1,t_2)
+		=\Esp{X(t_1)X(t_2)}
+		=\int_{-\infty}^\infty\int_{-\infty}^\infty
+			f(x_1,x_2;t_1,t_2)\d{x_1}\d{x_2}.
+	\end{equation*}
+\end{definition}
+
+\subsubsection{Fonction d'autocovariance}
+\begin{definition}
+	La \textit{fonction d'autocovariance}, dénotée $C_X(t_1,t_2)$, est la
+	covariance d'un processus stochastique $X(t)$ avec lui-même à deux temps
+	différents. Par conséquent, on a
+	\begin{equation*}
+		C_X(t_2,t_2)
+		=R_X(t_1,t_2)-m_X(t_1)m_X(t_2).
+	\end{equation*}
+\end{definition}
+
+\subsubsection{Processus stochastique stationnaire au sens large}
+\begin{definition}
+	Si $m_X(t)=c$, où $c$ est une constante, et si $R_X(t_1,t_2)=h(t_2-t_1)$, où
+	$h$ est une fonction, alors on dit que le processus stochastique est
+	\textit{stationnaire au sens large} (SSL).
+\end{definition}
+
+\begin{exemple}
+	Soit un signal aléatoire $X(t)=Y\sin{(t+Z)}$, où $Y$ et $Z$ sont des
+	variables aléatoires indépendantes et $Z\sim\Uni{0}{2\pi}$. Montrer que ce
+	signal est SSL.
+
+	Par définition, la moyenne est donnée par
+	\begin{equation*}
+		m_X(t)
+		=\Esp{Y\sin{(t+Z)}}
+		=\Esp{Y}\underbrace{\Esp{\sin{(t+Z)}}}_{
+			\int_0^{2\pi}\sin{(t+z)}\frac{1}{2\pi}=0}\d{z}
+		=0,
+	\end{equation*}
+	ce qui est une constante. De plus, la fonction d'autocorrélation est donnée
+	par
+	\begin{equation*}
+		R_X(t_1,t_2)
+		=\Esp{Y\sin{(t_1+Z)}Y\sin{(t_2+Z)}}
+		=\Esp{Y^2}\Esp{\sin{(t_1+Z)}\sin{(t_2+Z)}},
+	\end{equation*}
+	et avec une identité trigonométrique, on obtient
+	\begin{equation*}
+		\begin{split}
+			R_X(t_1,t_2)
+			&=\frac{1}{2}\Esp{Y^2}\left(
+				\Esp{\cos{(t_1-t_2)}}-\underbrace{\Esp{\cos{(t_1-t_2+2Z)}}}_0
+			\right)\\
+			&=\frac{1}{2}\Esp{Y^2}\cos{(t_1-t_2)}
+			=h(t_2-t_1).
+		\end{split}
+	\end{equation*}
+
+	Par conséquent, ce signal est stationnaire au sens large.
+\end{exemple}
+
+\subsection{Chaîne de Markov}
+\begin{definition}
+	Une \textit{chaîne de Markov} est un processus stochastique à temps discret
+	et état continu où :
+	\begin{enumerate}
+		\item l'espace des états est un ensemble de nombres entiers
+		\item on dénote $X_n$ l'état au temps $n=0,1,\dots$
+		\item la probabilité de passer de l'état $i$ à l'état $j$ suivant ne
+		      dépend ni de $n$ ni de la trajectoire passée
+	\end{enumerate}
+\end{definition}
+
+On dénote $p_{i,j}$ la probabilité de passer de l'état $i$ vers l'état $j$
+comme étant la probabilité conditionnelle suivante, soit
+\begin{equation*}
+	p_{i,j}=\Pg{X_{n+1}=j}{X_n=i}.
+\end{equation*}
+
+\subsubsection{Représentation graphique}
+Une chaîne de Markov peut se représenter comme un graphe, où les noeuds sont
+les états et les segments sont les probabilité $p_{i,j}$. La figure
+\ref{fig:markov_graph} représente le graphe d'une chaîne de Markov ayant 4
+états.
+
+\begin{figure}[H]
+	\centering
+	\input{figure/markov_chain}
+	\caption{Chaîne de Markov à 4 états}
+	\label{fig:markov_graph}
+\end{figure}
+
+\subsubsection{Représentation matricielle}
+Soit $P$ la matrice des probabilités de transition en une étape où chaque
+cellule $p_{i,j}$ sont les probabilités de passer de l'état $i$ vers l'état $j$
+tel que
+\begin{equation*}
+	P=\left[
+		\begin{matrix}
+			p_{0,0} & p_{0,1} & \cdots & p_{0,n}\\
+			p_{1,0} & p_{1,1} & \cdots & p_{1,n}\\
+			\vdots  & \vdots  & \ddots & \vdots \\
+			p_{n,0} & p_{n,1} & \cdots & p_{n,n}\\
+		\end{matrix}
+	\right].
+\end{equation*}
+
 \end{document}
 
