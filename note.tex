@@ -3088,5 +3088,227 @@ tel que
 	\right].
 \end{equation*}
 
+\begin{exemple}
+	On établie des prévisions météorologiques. On défini 3 états suivants : une
+	journée ensoleillée (état 0), une journée nuageuse (état 1) et une journée
+	pluvieuse (état 2). Les probabilités de transition sont définies par la
+	matrice suivante :
+	\begin{equation*}
+		P=\left[
+			\begin{matrix}
+				0.40 & 0.35 & 0.25\\
+				0.30 & 0.20 & 0.50\\
+				0.75 & 0.10 & 0.15\\
+			\end{matrix}
+		\right]
+	\end{equation*}
+	Quelle est la probabilité qu'il pleuve le lendemain d'une journée
+	ensoleillée? Quelle est la probabilité que trois journées ensoleillées
+	suivent une journée nuageuse? Quelle est la probabilité qu'il ne pleuve pas
+	pendant les deux jours suivant une journée pluvieuse?
+
+	On cherche $p_{0,2}$ dans la matrice, alors la probabilité est de 25\%.
+
+	On cherche $p_{1,0}p_{0,0}p_{0,0}$, alors la probabilité est de 4.8\%.
+
+	Il faut calculer toutes les trajectoires possibles. Il y a 4 cas possibles
+	%
+	% 2 -- 0 -- 0
+	%   |    |
+	%   |    -- 1
+	%   |
+	%   -- 1 -- 0
+	%        |
+	%        -- 1
+	On cherche $p_{2,0}p_{0,0}+p_{2,0}p_{0,1}+p_{2,1}p_{1,0}+p_{2,1}p_{1,1}$,
+	alors la probabilité est 61.25\%.
+\end{exemple}
+
+\subsubsection{Probabilité de transition en \boldmath{$n$} étapes}
+La probabilité d'atteindre un état $j$ à partir d'un état $i$ en $n$ étapes,
+dénotée $p_{i,j}^n=\Pg{X_{m+n}=j}{X_m=i}$, est donnée en multipliant $n$ fois
+la matrice des probabilités $P$, c'est à dire
+\begin{equation*}
+	P^{(n)}=\underbrace{P\cdot P\cdots P}_{\text{$n$ fois}}.
+\end{equation*}
+
+% exemple particule déplacement aléatoire 1/2 gauche/droite
+% représentation d'une matrice infini difficile
+% 
+% D : nb de déplacements vers la droite
+% D suit Bin(n, 1/2)
+%
+% G : nb de déplacements vers la gauche
+% G = n - D
+%
+% X_n = D - G = D - (n - D) = 2D - n
+%
+% P_{0,i} = P(X_n=i | X_0=0) = P(2D-n=i) = P(D=(n+i)/2)
+% si n et i impair
+% ou n et i paire
+
+\subsection{Processus de Poisson}
+\begin{definition}
+	Un processus de poisson est un processus stochastique à temps continue et
+	état discret. On dénote $N(t)$ le nombre d'événements qui se sont produits
+	dans l'intervalle de temps $[0,t]$.
+
+	Trois conditions fondamentales définissent le processus de Poisson :
+	\begin{enumerate}
+		\item $N(0)=0$
+		\item Soit les intervalles $]t_1,t_2]$ et $]t_3,t_4]$, avec
+		      $t_1<t_2\leq t_3<t_4$, et les variables aléatoires indépendantes
+			  $X=N(t_2)-N(t_1)$ et $Y=N(t_4)-N(t_3)$. On dit que les
+			  \textit{accroissements} du processus de Poisson sont
+			  indépendants.
+		\item Soit $X=N(\tau+t)-N(\tau)$ l'accroissement dans l'intervalle
+		      $]\tau,\tau+t]$. Alors, on a que $X\sim\Poi{\lambda t}$, où
+			  $\lambda$ est le taux du processus de poisson. On dit que les
+			  accroissements sont \textit{stationnaire}.
+	\end{enumerate}
+\end{definition}
+
+\begin{theoreme}
+	$C_N(t_1,t_2)=\lambda\cdot\text{min}(t_1,t_2)$.
+\end{theoreme}
+
+\begin{exemple}
+	Soit un processus de Poisson de taux $\lambda=2$ avec $t_1=3$, $t_2=7$,
+	$t_3=8$ et $t_4=10$. Quelle est la probabilité d'avoir 1 événement dans
+	l'intervalle $]t_1,t_2]$ et plus de 1 événement dans l'intervalle
+	$]t_3,t_4]$?
+	
+	On définie $X$ et $Y$ comme étant le nombre d'événements dans $]t_1,t_2]$
+	et $]t_3,t_4]$ respectivement, alors $X\sim\Poi{\lambda t}$ et
+	$Y\sim\Poi{\lambda t}$. Par conséquent, on cherche
+	\begin{equation*}
+		\P{\left\{X=1\right\}\cap\left\{Y\geq 1\right\}}
+		=\P{X=1}\P{Y\geq 1}
+		=8\e^{-8}\left(1-\e^{-4}\right).
+	\end{equation*}
+\end{exemple}
+
+\subsubsection{Temps d'arrivé}
+Soit $T_1$ le temps d'arrivée du premier événement. On cherche
+\begin{equation*}
+	\P{T_1>t}
+	=\P{N(t)=0}
+	=\e^{-\lambda t}
+\end{equation*}
+% ligne du temps
+%
+% 0-----------t----x------>
+% |                |
+% '----------------'
+
+Par conséquent,
+\begin{equation*}
+	T_1\sim\Exp{\lambda}
+\end{equation*}
+
+Soit $T_2$ le temps entre le premier et le deuxième événement. On a que 
+$T_1=t_1$ lorsque le premier événement ce produit. On définit
+\begin{equation*}
+	M(t)=N(t+t_1)-\underbrace{N(t_1)}_{1},
+\end{equation*}
+le nombre d'événements dans $[t_1,t]$. On remarque que $M(t)$ est aussi un
+processus de Poisson de sorte que $T_2\sim\Exp{\lambda}$.
+
+Soit $T_k$ le temps entre $(k-1)$-ième et le $k$-ième événement. Par
+conséquent, $T_k\sim\Exp{\lambda}$ avec $T_1,T_2,\dots$ sont des variables
+aléatoires indépendantes et identiquement distributées.
+
+Soit
+\begin{equation*}
+	S_n=\sum_{k=1}^nT_k,
+\end{equation*}
+le temps d'arrivée du $n$-ième événement. Par conséquent,
+\begin{equation*}
+	S_n\sim\Gam{n}{\lambda}.
+\end{equation*}
+
+\begin{exemple}
+	En observant un processus de Poisson de taux $\lambda$, on remarque qu'un
+	seul événement s'est produit avant le temps $t$. Quelle est la distribution
+	du temps d'arrivée $T$ de cet événement?
+
+	Le problème s'écrit en terme d'une conditionnelle, soit
+	\begin{equation*}
+		\begin{split}
+		\Pg{T\leq\tau}{N(t)=1}
+		&=\Pg{N(\tau)=1}{N(t)=1}
+		=\frac{\P{\left\{N(\tau)=1\right\}\cap\left\{N(t)=1\right\}}}
+			{\P{N(t)=1}}\\
+		&=\frac{\P{\left\{X=1\right\}\cap\left\{Y=0\right\}}}
+			{\P{N(t)=1}}
+		=\frac{\tau}{t}
+		\end{split}
+	\end{equation*}
+	$N(\tau)=X$, $N(t)=X+Y$, $X\sim\Poi{\lambda\tau}$, $Y\sim\Poi{\lambda(t-\tau)}$
+	%
+	% ^   l             l
+	% |   l    .--------l--------
+	% |   l             l
+	% +---l----T--tau---l--t----->
+	%
+\end{exemple}
+
+\subsection{Processus de Wiener}
+\begin{definition}
+	Un \textit{processus de Wiener} est un processus stochastique à temps
+	continu et état continu où $W(t)$ représente la position aléatoire d'une
+	particule à un temps $t$ le long d'un axe.
+\end{definition}
+
+On construit ce processus à partir de la position $X(t)$ de la particule
+soumise à une marche aléatoire avec des pas de $\pm\epsilon$ de distance à
+chaque $\delta$ unité de temps. On pose $\epsilon=\sigma\sqrt{\delta}$, où 
+$\sigma$ est une constante, on obtient
+\begin{equation*}
+	W(t)=\lim_{\delta\rightarrow 0^+}X(t)
+\end{equation*}
+On définit 3 conditions pour qu'un processus stochastique soit un processus
+de Wiener :
+\begin{enumerate}
+	\item $W(0)=0$
+	\item les accroissements du processus sont indépendants et stationnaires
+	\item $W(t)\sim\Norm{0}{\sigma^2 t}$
+\end{enumerate}
+
+On appel $\sigma^2$ le \textit{coefficient de diffusion}. Si $\sigma^2=1$, on
+appel ce processus le \textit{mouvement brownien standard} et on dénote parfois
+$B(t)=W(t)$. Les trajectoires de ce processus sont des fonctions continues,
+mais dérivables nulle part, comme une fractale. La \textit{dérivée généralisée}
+de ce processus s'appele \textit{bruit blanc gaussien}.
+
+\begin{exemple}
+	Calculer la fonction de densité du 2-ième ordre $f(w_1,w_2,t_1,t_2)$ du
+	processus de Wiener. On suppose que $t_1<t_2$.
+
+	On peut écrire la densité de l'événement suivant en terme d'accroissements,
+	soit
+	\begin{equation*}
+		\left\{W(t_1)=w_1,W(t_2)=w_2\right\}
+		\equiv\left\{W(t_1)=w_1,W(t_2)-W(t_1)=w_2-w_1\right\}.
+	\end{equation*}
+	On définie $X=W(t_1)\sim\Norm{0}{\sigma^2t_1}$ et $Y=W(t_2)-W(t_1)\sim
+	\Norm{0}{\sigma^2t_2}$. Par conséquent, on a
+	\begin{equation*}
+		\begin{split}
+			f(w_1,w_2;t_1,t_2)
+			&=f_X(w_1)f_Y(w_2-w_1)\\
+			&=\frac{1}{\sqrt{2\pi\sigma^2t_1}}\exp{-
+				\frac{(w_1^2)}{2\sigma^2t_1}
+			}\cdot\frac{1}{\sqrt{2\pi\sigma^2(t_2-t_1)}}\exp{-
+				\frac{(w_2-w_1)^2}{2\sigma^2(t_2-t_1)}
+			}.
+		\end{split}
+	\end{equation*}
+\end{exemple}
+
+\subsubsection{Fonction d'autocovariance}
+\begin{equation*}
+	C_w(t_1,t_2)=\sigma^2\cdot\min{t_1}{t_2}
+\end{equation*}
 \end{document}
 
