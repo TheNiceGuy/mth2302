@@ -20,6 +20,8 @@
 \usepackage{nicefrac}
 \usepackage{pgfplots}
 \usepackage{slashbox}
+\usepackage[explicit]{titlesec}
+\usepackage{fix-cm}
 
 \usetikzlibrary{babel}
 \usetikzlibrary{calc}
@@ -220,15 +222,20 @@
 	ntheorem
 ]{exemple}{Exemple}[section]
 
+\titleformat{\section}{}{}{0em}{\fancysection[\thesection]{#1}}
+
 %%%%%%%%%%%%%
 % Documents %
 %%%%%%%%%%%%%
 
 \begin{document}
-\tableofcontents
-\pagebreak
 
-\section{Élèments de probabilités}
+\input{fancysection}
+
+\tableofcontents
+
+\pagebreak
+\section{Introduction}
 \begin{definition}
 	Une expérience est \textit{aléatoire} si un observateur peut la répéter
 	dans les mêmes conditions, mais sans pouvoir en prédire le résultat.
@@ -238,9 +245,12 @@
 	Un \textit{espace échantilion} est un ensemble $S$ des résultats possibles.
 \end{definition}
 
-Un espace d'échantilion peut être \textit{qualitatif} ou \textit{quantitatif},
-ainsi que \textit{discret}, \textit{continu} ou \textit{mixte}. Il peut aussi
-être \textit{dénombrable} ou \textit{non-dénombrable}.
+\begin{remark}
+	Un espace d'échantilion peut être \textit{qualitatif} ou
+	\textit{quantitatif}, ainsi que \textit{discret}, \textit{continu} ou
+	\textit{mixte}. Il peut aussi être \textit{dénombrable} ou
+	\textit{non-dénombrable}.
+\end{remark}
 
 \begin{definition}
 	Un \textit{évènement} $A$ est un sous-ensemble de $S$ d'intêret à
@@ -251,9 +261,6 @@ ainsi que \textit{discret}, \textit{continu} ou \textit{mixte}. Il peut aussi
 	Un \textit{évènement élémentaire} $A$ est un résultat particulier,
 	c'est-à-dire, un élèment de $S$.
 \end{definition}
-
-La différence entre les deux dernières définitions est que la $\card(A)=1$ pour
-un évènement élémentaire tandis que $\card(A)\geq 1$ pour un évènement.
 
 \begin{exemple}
 	On observe le résultat du lancer de deux pièces de monnaie. On note $P$
@@ -320,8 +327,12 @@ un évènement élémentaire tandis que $\card(A)\geq 1$ pour un évènement.
 	\begin{equation*}
 		f_A=\frac{n_A}{n}.
 	\end{equation*}
-	La limite lorsque l'expérience est répétée infiniment est la probabilité de
-	l'évènement $A$, dénotée
+
+\end{definition}
+
+\begin{definition}
+	La limite lorsque l'expérience est répétée infiniment est la
+	\textit{probabilité} de l'évènement $A$, dénotée
 	\begin{equation*}
 		\P{A}=\lim_{n\rightarrow\infty}f_A.
 	\end{equation*}
@@ -366,6 +377,7 @@ Soit deux ensembles $A$ et $B$ tel que $A,B\subset S$. La figure
 	\caption{Opérations d'ensembles démontrées sur des diagrammes de Venn}
 \end{figure}
 
+\section{Probabilités Élémentaires}
 \subsection{Axiomes fondamentales de la probabilité}
 \begin{axiome}
 	La probabilité d'un évèment $A$ est plus grand ou égal à 0, c'est-à-dire
@@ -441,37 +453,54 @@ Soit deux ensembles $A$ et $B$ tel que $A,B\subset S$. La figure
 \end{theoreme}
 
 \subsection{Principe d'équiprobabilité}
+\begin{definition}
+	Une expérience aléatoire est dites \textit{equiprobable} si $\P{e_i}=c$,
+	où $0\leq c\leq 1$, pour tout $e_i\in S$.
+\end{definition}
+
 \subsubsection{Ensemble fini}
-On suppose que $S$ est fini, soit $S=\left\{e_1,e_2,\dots,e_n\right\}$. On dit
-que les résultats d'une expérience aléatoire sont \textit{équiprobables} si
-\begin{equation*}
-	\P{e_1}=\P{e_2}=\cdots=\P{e_n}=\frac{1}{n}.
-\end{equation*}
-Dans ce cas, on a que la probabilité d'un évènement $A\subset S$ est
-\begin{equation*}
-	\P{A}=\frac{n_A}{n},
-\end{equation*}
-où $n_A$ est le nombre d'élément dans $A$ et $n$ celui dans $S$.
+\begin{theoreme}
+	Soit $S=\left\{e_1,e_2,\dots,e_n\right\}$ un ensemble d'événements fini
+	et equiprobable, alors
+	\begin{equation*}
+		\P{e_1}=\P{e_2}=\cdots=\P{e_n}=\frac{1}{n}.
+	\end{equation*}
+\end{theoreme}
+
+\begin{corollary}
+	Soit $A\subset S$, alors $\P{A}=\dfrac{n_A}{n}$.
+\end{corollary}
 
 \subsubsection{Ensemble infini dénombrable}
-On suppose que $S$ est infini dénombrable, alors l'équiprobabilité est
-impossible. Si la probabilité d'un évènement élémentaire est $\P{e_i}=\epsilon$,
-on obtient que $\P{S}=\P{e_1}+\P{e_2}+\cdots=\infty$, Ce qui est en contradiction
-avec les axiomes. D'une manière similaire, si $\P{e_i}=0$, alors $\P{S}=0$, ce
-qui est aussi en contradiction avec les axiomes.
+\begin{theoreme}
+	Soit $S=\left\{e_1,e_2,\dots\right\}$ un ensemble d'événements infini
+	et dénombrable. Alors, les résultats d'une expérience aléatoire ne peuvent
+	pas être équiprobables.
+\end{theoreme}
+
+\begin{proof}
+	On suppose que $\P{e_i}=\epsilon$ pour tout $i=\left\{1,2,\dots\right\}$,
+	où $0<\epsilon<1$. Par conséquent, $\P{S}=\P{e_1}+\P{e_2}+\cdots=\infty$,
+	ce qui est en contradiction avec les axiomes de la probabilité. D'une
+	manière similaire, si $\P{e_i}=0$ pour tout $i=\left\{1,2,\dots\right\}$,
+	alors $\P{S}=0$. Ce qui est aussi en contradiction avec les axiomes de la
+	probabilités. Par conséquent, un ensemble infini et dénombrable ne peut
+	pas être équiprobable.
+\end{proof}
 
 \subsubsection{Ensemble infini non-dénombrable}
-On suppose que $S=[a,b]$ est infini non-dénombrable. Soit un évènement
-$A=[c,d]\subset S$. La probabilité de l'évènement est
-\begin{equation*}
-	\P{A}=\frac{l_A}{l}=\frac{d-c}{b-a},
-\end{equation*}
-où $l_A$ est la longueur de $A$ et $l$ la longueur de $S$. Par conséquent, la
-probabilité d'un évènement élémentaire $e\in S$ est
-\begin{equation*}
-	\P{e}=0,
-\end{equation*}
-car $l_A=0$.
+\begin{theoreme}
+	Soit $S=\left[a,b\right]$, où $a<b$, un ensemble d'événements infini,
+	non-dénombrable, et equiprobable, alors
+	\begin{equation*}
+		\P{A}=\frac{d-c}{b-a},
+	\end{equation*}
+	où $A=\left[c,d\right]\in S$.
+\end{theoreme}
+
+\begin{corollary}
+	Soit $A\subset S$ un événement élémentaire, alors $\P{A}=0$.
+\end{corollary}
 
 \begin{exemple}
 	On calcule la somme de deux dés lancés. Quelle est la probabilité d'obtenir
@@ -498,9 +527,7 @@ car $l_A=0$.
 	\end{table}
 \end{exemple}
 
-\section{Analyse combinatoire}
 \subsection{Diagramme en arbre}
-
 \begin{exemple}
 	On lance un dé, puis une pièce de monnaie. Combien de résultats est-il
 	possible?
@@ -776,15 +803,35 @@ ordres possibles.
 	en développant la récurrence afin d'obtenir $b_{3,3}=5$ chemins.
 \end{exemple}
 
-\section{Probabilité conditionnelles}
+\subsection{Probabilité conditionnelles}
 \begin{definition}
 	Une \textit{probabilité conditionnelle} $\Pg{A}{B}$ est la probabilité
-	qu'un évènement $A$ se réalise, si $B$ s'est réalisé. Elle est équivalente
-	à
+	qu'un évènement $A$ se réalise, si $B$ s'est réalisé, soit
 	\begin{equation*}
 		\Pg{A}{B}=\frac{\P{A\cap B}}{\P{B}}.
 	\end{equation*}
 \end{definition}
+
+\begin{property}
+	$\P{A\cap B}=\Pg{A}{B}\cdot\P{B}$.
+\end{property}
+
+\begin{property}
+	$\Pg{A}{B}=\Pg{B}{A}=0$, si $A\cap B=\emptyset$.
+\end{property}
+
+\begin{property}
+	$\Pg{A}{B}\neq\Pg{B}{A}$, en général.
+\end{property}
+
+\begin{property}
+	$\Pg{A}{S}=\P{A}$, $A\in S$.
+\end{property}
+
+\begin{remark}
+	La dernière propriété résulte que toutes probabilités peut s'exprimer sous
+	la forme d'une probabilité conditionnelle.
+\end{remark}
 
 \begin{exemple}
 	Soit le lancement d'un dé avec les évènements $A=\left\{5,6\right\}$ et
@@ -798,26 +845,6 @@ ordres possibles.
 		\Pg{A}{B}=\frac{\P{\left\{6\right\}}}{\P{B}}=\frac{1}{3}.
 	\end{equation*}
 \end{exemple}
-
-\subsection{Propriétés}
-\begin{theoreme}
-	$\P{A\cap B}=\Pg{A}{B}\cdot\P{B}$.
-\end{theoreme}
-
-\begin{theoreme}
-	$\Pg{A}{B}=\Pg{B}{A}=0$, si $A\cap B=\emptyset$.
-\end{theoreme}
-
-\begin{theoreme}
-	$\Pg{A}{B}\neq\Pg{B}{A}$, en général.
-\end{theoreme}
-
-\begin{theoreme}
-	$\Pg{A}{S}=\P{A}$, $A\in S$.
-\end{theoreme}
-
-Le dernier théorème résulte que toutes probabilités peut s'exprimer sous la
-forme d'une probabilité conditionnelle.
 
 \begin{exemple}
 	On pige sans remise 3 composantes non défecteuses parmis 10 composantes, donc 4 sont
@@ -891,19 +918,16 @@ forme d'une probabilité conditionnelle.
 
 \subsection{Notion d'indépendance}
 \begin{definition}
-	On dit que les évènements $A$ et $B$ sont \textit{indépendants} si la
-	réalisation d'une n'affecte pas l'autrea.
+	On dit que les événements $A$ et $B$ sont \textit{indépendants} si la
+	réalisation d'un n'affecte pas l'autre, soit
+	\begin{equation*}
+		\Pg{A}{B}=\P{A}\Leftrightarrow
+		\Pg{B}{A}=\P{B}.
+	\end{equation*}
 \end{definition}
 
-Mathématiquement parlant, des évènements indépendants $A$ et $B$ sont tels que
-$\Pg{A}{B}=\P{A}$ et $\Pg{B}{A}=\P{B}$.
-
 \begin{theoreme}
-	$\P{A\cap B}=\P{A}\P{B}\Leftrightarrow\Pg{A}{B}=\P{A}\wedge\Pg{B}{A}=\P{B}$
-\end{theoreme}
-
-\begin{theoreme}
-	$\P{A\cap B}=\P{A}\P{B}\Leftrightarrow\P{A\cap B^c}=\P{A}\P{B^c}$.
+	Si $A$ et $B$ sont indépendants, alors $\P{A\cap B}=\P{A}\P{B}$.
 \end{theoreme}
 
 \begin{exemple}
@@ -944,10 +968,8 @@ $\Pg{A}{B}=\P{A}$ et $\Pg{B}{A}=\P{B}$.
 	\begin{figure}[H]
 		\centering
 		\input{figure/square}
+		\vspace{-3mm}
 	\end{figure}
-\end{exemple}
-\addtocounter{exemple}{-1}
-\begin{exemple}[suite]
 	Puisqu'il y a équiprobabilité continue, alors les probabilités sont données
 	par le rapport entre l'aire de $A$ ou $B$ sur $S$, alors
 	$\P{A}=\nicefrac{2}{10}$ et $\P{B}=\nicefrac{3}{10}$. De plus,
@@ -1684,8 +1706,8 @@ aléatoire est discrète, alors elle peut être décrite pas une fonction de mas
 \begin{property}
 	$f_X(x)=\left\{
 		\begin{matrix}
-			\lambda\e^{-\lambda} & \text{si} & x\geq 0,\\
-			0                    & \text{si} & x<0.\\
+			\lambda\e^{-\lambda x} & \text{si} & x\geq 0,\\
+			0                      & \text{si} & x<0.\\
 		\end{matrix}
 	\right.$
 \end{property}
@@ -1693,8 +1715,8 @@ aléatoire est discrète, alors elle peut être décrite pas une fonction de mas
 \begin{property}
 	$F_X(x)=\left\{
 		\begin{matrix}
-			1-\e^{-\lambda} & \text{si} & x\geq 0,\\
-			0               & \text{si} & x<0.\\
+			1-\e^{-\lambda x} & \text{si} & x\geq 0,\\
+			0                 & \text{si} & x<0.\\
 		\end{matrix}
 	\right.$
 \end{property}
@@ -2624,10 +2646,12 @@ aléatoire est discrète, alors elle peut être décrite pas une fonction de mas
 				       &        &        & (j,j), & \cdots\\
 					   &        &        &        & \ddots\\
 			\end{matrix}
-		\right\},
+		\right\}.
 	\end{equation*}
-	soit un triangle, où $j$ est le nombre de questions reçus. On peut montrer
-	que
+\end{exemple}
+\addtocounter{exemple}{-1}
+\begin{exemple}[suite]
+	On peut montrer que
 	\begin{equation*}
 		p_{X,Y}(j,k)
 		=\underbrace{p_{Y|X}(k,j)}_{\Bin{j}{p}}
@@ -2753,6 +2777,7 @@ aléatoire est discrète, alors elle peut être décrite pas une fonction de mas
 	\end{equation*}
 \end{exemple}
 
+\pagebreak
 \begin{exemple}
 	Soit $X\sim\Norm{1}{1}$ et $Y\sim\Norm{2}{1}$ des variables aléatoires
 	indépendantes. Calculer $\Esp{X+Y}$ et $\Esp{XY}$.
@@ -3169,7 +3194,7 @@ aléatoire est discrète, alors elle peut être décrite pas une fonction de mas
 \end{remark}
 
 \begin{exemple}
-	Soit $X\sim\Bin{2000}{\nicefrac{1}{2}}$. Donner une approximation de $X$.
+	Soit $X\sim\Bin{2000}{\nicefrac{1}{2}}$. Donnez une approximation de $X$.
 
 	Une loi binomiale est équivalente à une somme de lois de Bernoulli
 	indépendantes et identiquement distribuées de paramètre $p$. On approxime
@@ -3206,7 +3231,6 @@ aléatoire est discrète, alors elle peut être décrite pas une fonction de mas
 	\end{equation*}
 \end{exemple}
 
-\pagebreak
 \begin{exemple}
 	Soit les variables aléatoires $X$ et $Y$ avec la fonction densité conjointe
 	suivante
@@ -3238,21 +3262,19 @@ aléatoire est discrète, alors elle peut être décrite pas une fonction de mas
 	\end{equation*}
 \end{exemple}
 
-\section{Processus Stochastique}
+\pagebreak
+\section{Processus stochastique}
 \begin{definition}
 	Un \textit{processus stochastique} est une expérience aléatoire qui ce
-	déroule dans le temps.
+	déroule dans le temps. Il est défini par son \textit{espace des états}
+	$\left\{X(t):t\in T\right\}$, où $X(t)$ est la variable aléatoire
+	correspondant à l'observation du processus au temps $t\leq 0$.
 \end{definition}
 
-On note $X(t)$ la variable aléatoire correspondant à l'observation du processus
-au un temps $t\geq 0$. Les valeurs possibles pour ces observations forment
-\textit{l'espace des états} du processus. Les événements élémentaires du
-processus sont ce qu'on appel des \textit{trajectoires} dans l'espace des
-états.
-
-Un processus stochastique est défini par l'ensemble $\left\{X(t)\middle\rvert
-t\in T\right\}$, avec $T=\left\{0,1,2,\dots\right\}$ dans un cas discret ou
-$T=\left[0,\infty\right[$ dans un cas continue.
+\begin{definition}
+	Une \textit{trajectoire} d'un processus stochastique est une événement
+	élémentaire de l'espace des états.
+\end{definition}
 
 Il existe 4 types de processus stochastique:
 \begin{enumerate}
@@ -3264,7 +3286,7 @@ Il existe 4 types de processus stochastique:
 	\begin{exemple*}
 		La valeur d'une action à la fermmeture de la bourse.
 	\end{exemple*}
-	\item processus stochastique à temps continu et étant discret (PSTCED)
+	\item processus stochastique à temps continu et état discret (PSTCED)
 	\begin{exemple*}
 		La longueur de la file d'attente à la cafétéria.
 	\end{exemple*}
@@ -3274,33 +3296,51 @@ Il existe 4 types de processus stochastique:
 	\end{exemple*}
 \end{enumerate}
 
-\subsection{Caractéristique des processus stochastiques}
-\subsubsection{PSTCEC}
-Dans le cas d'un processus stochastique à temps continu et état continu, 
-
-
-Dans le cas d'un PSTCEC, il y a une fonction de répartition du 1er ordre, soit
-$F(x;t)=\P{X(t)\leq x}$, une fonction de répartition du 2e ordre, soit
-$F(x_1,X_2;t_1,t_2)=\P{X(t_1)\leq x_1,X(t_2)\leq x_2}$.
-
-\begin{equation*}
-	F(x_1,\dots,x_n;t_1,\dots,t_n)=\P{
-		\left\{X(t_1)\leq x_1\right\}\cap\cdots\cap
-		\left\{X(t_n)\leq x_n\right\}\cap
-	}
-\end{equation*}
-
-\begin{equation*}
-	f(x_1,\dots,x_n;t_1,\dots,t_n)=\frac{\p[n]{}}{\p{x_1}\cdots\p{x_n}}
+\begin{definition}
+	Soit $\left\{X(t):t\in T\right\}$, où $T=[0,\infty[$, un processus
+	stochastique à temps continu et état continu. La \textit{fonction de
+	répartition d'ordre $n$} est la probabilité que $n$ états soient plus
+	petite ou égal à $n$ valeurs, c'est-à-dire
+	\begin{equation*}
 		F(x_1,\dots,x_n;t_1,\dots,t_n)
-\end{equation*}
+		=\P{\left\{X(t_1)\leq x_1\right\}
+		 \cap\cdots\cap
+		 \left\{X(t_n)\leq x_n\right\}}.
+	\end{equation*}
+\end{definition}
 
+\begin{definition}
+	Soit $\left\{X(t):t\in T\right\}$, où $T=[0,\infty[$, un processus
+	stochastique à temps continu et état continu. La \textit{fonction de
+	densité d'ordre $n$} est la probabilité que $n$ états soient autour de $n$
+	valeurs, c'est-à-dire
+	\begin{equation*}
+		f(x_1,\dots,x_n;t_1,\dots,t_n)
+		=\P{\left\{X(t_1)=x_1\right\}
+		 \cap\cdots\cap
+		 \left\{X(t_n)=x_n\right\}}.
+	\end{equation*}
+\end{definition}
+
+\begin{theoreme}
+	$f(x_1,\dots,x_n;t_1,\dots,t_n)=\dfrac{\p[n]{}}{\p{x_1}\cdots\p{x_n}}
+	F(x_1,\dots,x_n;t_1,\dots,t_n)$.
+\end{theoreme}
+
+\begin{definition}
+	Un \textit{accroissement} $X(t_1,t_2)$, où $t_1<t_2$, est la différence
+	les états à $t_1$ et $t_2$, c'est-à-dire
+	\begin{equation*}
+		X(t_1,t_2)=X(t_2)-X(t_1).
+	\end{equation*}
+\end{definition}
+
+\pagebreak
 \begin{exemple}
 	Soit un patient qui recoit une dose de médicament $Y$. Au temps $t=0$, on
 	a $Y\sim\Uni{0}{1}$. La quantité active $X$ après $t$ unités de temps est
 	définie par $X(t)=Y\e^{-t}$. Quel est la fonction de répartition du
 	premier ordre, soit $F(x;t)$?
-	% faire graphique maybe?
 
 	Par définition, on a $F(x;t)=\P{X(t)\leq x}=\P{Y}\leq x\e^t$. Pour une loi
 	uniforme, on a
@@ -3315,7 +3355,7 @@ $F(x_1,X_2;t_1,t_2)=\P{X(t_1)\leq x_1,X(t_2)\leq x_2}$.
 	\end{equation*}
 \end{exemple}
 
-\subsubsection{Moyenne d'un processus stochastique}
+\subsection{Moyenne d'un processus stochastique}
 \begin{definition}
 	La \textit{moyenne} d'un processus stochastique, dénotée $m_X(t)$, est
 	donnée par
@@ -3338,7 +3378,7 @@ $F(x_1,X_2;t_1,t_2)=\P{X(t_1)\leq x_1,X(t_2)\leq x_2}$.
 	\end{equation*}
 \end{exemple}
 
-\subsubsection{Fonction d'autocorrélation}
+\subsection{Fonction d'autocorrélation}
 \begin{definition}
 	La \textit{fonction d'autocorrélation}, dénotée $R_X(t_1,t_2)$, est la
 	corrélation d'un processus stochastique $X(t)$ avec lui-même à deux temps
@@ -3347,11 +3387,11 @@ $F(x_1,X_2;t_1,t_2)=\P{X(t_1)\leq x_1,X(t_2)\leq x_2}$.
 		R_X(t_1,t_2)
 		=\Esp{X(t_1)X(t_2)}
 		=\int_{-\infty}^\infty\int_{-\infty}^\infty
-			f(x_1,x_2;t_1,t_2)\d{x_1}\d{x_2}.
+			x_1x_2f(x_1,x_2;t_1,t_2)\d{x_1}\d{x_2}.
 	\end{equation*}
 \end{definition}
 
-\subsubsection{Fonction d'autocovariance}
+\subsection{Fonction d'autocovariance}
 \begin{definition}
 	La \textit{fonction d'autocovariance}, dénotée $C_X(t_1,t_2)$, est la
 	covariance d'un processus stochastique $X(t)$ avec lui-même à deux temps
@@ -3362,7 +3402,7 @@ $F(x_1,X_2;t_1,t_2)=\P{X(t_1)\leq x_1,X(t_2)\leq x_2}$.
 	\end{equation*}
 \end{definition}
 
-\subsubsection{Processus stochastique stationnaire au sens large}
+\subsection{Processus stochastique stationnaire au sens large}
 \begin{definition}
 	Si $m_X(t)=c$, où $c$ est une constante, et si $R_X(t_1,t_2)=h(t_2-t_1)$, où
 	$h$ est une fonction, alors on dit que le processus stochastique est
@@ -3378,8 +3418,8 @@ $F(x_1,X_2;t_1,t_2)=\P{X(t_1)\leq x_1,X(t_2)\leq x_2}$.
 	\begin{equation*}
 		m_X(t)
 		=\Esp{Y\sin{(t+Z)}}
-		=\Esp{Y}\underbrace{\Esp{\sin{(t+Z)}}}_{
-			\int_0^{2\pi}\sin{(t+z)}\frac{1}{2\pi}=0}\d{z}
+		=\Esp{Y}\hspace{-8mm}\underbrace{\Esp{\sin{(t+Z)}}}_{\displaystyle
+			\int_0^{2\pi}\sin{(t+z)}\frac{1}{2\pi}\d{z}=0}\hspace{-8mm}
 		=0,
 	\end{equation*}
 	ce qui est une constante. De plus, la fonction d'autocorrélation est donnée
@@ -3406,21 +3446,19 @@ $F(x_1,X_2;t_1,t_2)=\P{X(t_1)\leq x_1,X(t_2)\leq x_2}$.
 
 \subsection{Chaîne de Markov}
 \begin{definition}
-	Une \textit{chaîne de Markov} est un processus stochastique à temps discret
-	et état continu où :
-	\begin{enumerate}
-		\item l'espace des états est un ensemble de nombres entiers
-		\item on dénote $X_n$ l'état au temps $n=0,1,\dots$
-		\item la probabilité de passer de l'état $i$ à l'état $j$ suivant ne
-		      dépend ni de $n$ ni de la trajectoire passée
-	\end{enumerate}
+	Une \textit{chaîne de Markov} est un processus stochastique sans mémoire à
+	temps discret et état discret dont l'espace des états $\left\{X_n:n=0,1,
+	\dots\right\}$ est constitué de nombres entiers.
 \end{definition}
 
-On dénote $p_{i,j}$ la probabilité de passer de l'état $i$ vers l'état $j$
-comme étant la probabilité conditionnelle suivante, soit
-\begin{equation*}
-	p_{i,j}=\Pg{X_{n+1}=j}{X_n=i}.
-\end{equation*}
+\begin{notation}
+	On dénote $p_{i,j}$ la probabilité de passer de l'état $i$ vers l'état $j$,
+	où $i$ et $j$ sont des nombres entiers.
+\end{notation}
+
+\begin{theoreme}
+	$p_{i,j}=\Pg{X_{n+1}=j}{X_n=i}$.
+\end{theoreme}
 
 \subsubsection{Représentation graphique}
 Une chaîne de Markov peut se représenter comme un graphe, où les noeuds sont
@@ -3436,19 +3474,21 @@ les états et les segments sont les probabilité $p_{i,j}$. La figure
 \end{figure}
 
 \subsubsection{Représentation matricielle}
-Soit $P$ la matrice des probabilités de transition en une étape où chaque
-cellule $p_{i,j}$ sont les probabilités de passer de l'état $i$ vers l'état $j$
-tel que
-\begin{equation*}
-	P=\left[
-		\begin{matrix}
-			p_{0,0} & p_{0,1} & \cdots & p_{0,n}\\
-			p_{1,0} & p_{1,1} & \cdots & p_{1,n}\\
-			\vdots  & \vdots  & \ddots & \vdots \\
-			p_{n,0} & p_{n,1} & \cdots & p_{n,n}\\
-		\end{matrix}
-	\right].
-\end{equation*}
+\begin{definition}
+	Soit $P$ la \textit{matrice des probabilités de transition} en une étape où
+	chaque cellule $p_{i,j}$ sont les probabilités de passer de l'état $i$ vers
+	l'état $j$ telles que
+	\begin{equation*}
+		P=\left[
+			\begin{matrix}
+				p_{0,0} & p_{0,1} & \cdots & p_{0,n}\\
+				p_{1,0} & p_{1,1} & \cdots & p_{1,n}\\
+				\vdots  & \vdots  & \ddots & \vdots \\
+				p_{n,0} & p_{n,1} & \cdots & p_{n,n}\\
+			\end{matrix}
+		\right].
+	\end{equation*}
+\end{definition}
 
 \begin{exemple}
 	On établie des prévisions météorologiques. On défini 3 états suivants : une
@@ -3474,64 +3514,104 @@ tel que
 	On cherche $p_{1,0}p_{0,0}p_{0,0}$, alors la probabilité est de 4.8\%.
 
 	Il faut calculer toutes les trajectoires possibles. Il y a 4 cas possibles
-	%
-	% 2 -- 0 -- 0
-	%   |    |
-	%   |    -- 1
-	%   |
-	%   -- 1 -- 0
-	%        |
-	%        -- 1
 	On cherche $p_{2,0}p_{0,0}+p_{2,0}p_{0,1}+p_{2,1}p_{1,0}+p_{2,1}p_{1,1}$,
 	alors la probabilité est 61.25\%.
 \end{exemple}
 
 \subsubsection{Probabilité de transition en \boldmath{$n$} étapes}
-La probabilité d'atteindre un état $j$ à partir d'un état $i$ en $n$ étapes,
-dénotée $p_{i,j}^n=\Pg{X_{m+n}=j}{X_m=i}$, est donnée en multipliant $n$ fois
-la matrice des probabilités $P$, c'est à dire
-\begin{equation*}
-	P^{(n)}=\underbrace{P\cdot P\cdots P}_{\text{$n$ fois}}.
-\end{equation*}
+\begin{notation}
+	On dénote $p_{i,j}^n$ la probabilité de passer de l'état $i$ vers l'état
+	$j$ en $n$ étapes, où $i$ et $j$ sont des nombres entiers.
+\end{notation}
 
-% exemple particule déplacement aléatoire 1/2 gauche/droite
-% représentation d'une matrice infini difficile
-% 
-% D : nb de déplacements vers la droite
-% D suit Bin(n, 1/2)
-%
-% G : nb de déplacements vers la gauche
-% G = n - D
-%
-% X_n = D - G = D - (n - D) = 2D - n
-%
-% P_{0,i} = P(X_n=i | X_0=0) = P(2D-n=i) = P(D=(n+i)/2)
-% si n et i impair
-% ou n et i paire
+\begin{theoreme}
+	$p_{i,j}^n=\Pg{X_{m+n}=j}{X_m=i}$.
+\end{theoreme}
+
+\begin{theoreme}
+	Si $P^n=\underbrace{P\cdot P\cdots P}_{\text{$n$ fois}}$, alors $p_{i,j}^n
+	=P_{i,j}^n$.
+\end{theoreme}
+
+\subsection{Processus de comptage}
+\begin{definition}
+	Un \textit{processus de comptage} est un processus stochastique à temps
+	continu et état discret dont l'espace des états est $\left\{N(t):t\geq 0
+	\right\}$ avec $N(t)$ le nombre d'événements jusqu'à un temps $t$ tel que
+	\begin{enumerate}
+		\item $N(t)\geq 0$ pour tout $t\geq 0$
+		\item $N(t)\in\mathbb{N}$ pour tout $t\geq 0$
+		\item $N(t_1)\leq N(t_2)$ si $t_1\leq t_2$
+	\end{enumerate}
+\end{definition}
 
 \subsection{Processus de Poisson}
 \begin{definition}
-	Un processus de poisson est un processus stochastique à temps continue et
-	état discret. On dénote $N(t)$ le nombre d'événements qui se sont produits
-	dans l'intervalle de temps $[0,t]$.
-
-	Trois conditions fondamentales définissent le processus de Poisson :
+	Un \textit{processus de Poisson} est un processus de comptage où
 	\begin{enumerate}
 		\item $N(0)=0$
-		\item Soit les intervalles $]t_1,t_2]$ et $]t_3,t_4]$, avec
-		      $t_1<t_2\leq t_3<t_4$, et les variables aléatoires indépendantes
-			  $X=N(t_2)-N(t_1)$ et $Y=N(t_4)-N(t_3)$. On dit que les
-			  \textit{accroissements} du processus de Poisson sont
-			  indépendants.
-		\item Soit $X=N(\tau+t)-N(\tau)$ l'accroissement dans l'intervalle
-		      $]\tau,\tau+t]$. Alors, on a que $X\sim\Poi{\lambda t}$, où
-			  $\lambda$ est le taux du processus de poisson. On dit que les
-			  accroissements sont \textit{stationnaire}.
+		\item $N(t_1,t_2)$ et $N(t_3,t_4)$ sont indépendants si $t_1<t_2\leq
+		      t_3<t_4$
+		\item $N(\tau,\tau+t)\sim\Poi{\lambda t}$
 	\end{enumerate}
 \end{definition}
 
 \begin{theoreme}
-	$C_N(t_1,t_2)=\lambda\cdot\text{min}(t_1,t_2)$.
+	$C_N(t_1,t_2)=\lambda\cdot\mathrm{min}(t_1,t_2)$.
+\end{theoreme}
+
+\subsubsection{Temps d'arrivé}
+\begin{notation}
+	On dénote $T_n$ le temps entre le $n$-ième et celui qui le précède.
+\end{notation}
+
+\begin{theoreme}
+	$T_n\sim\Exp{\lambda}$.
+\end{theoreme}
+
+\begin{proof}
+	Soit $M_n(t)=N(T_{n-1}+t)-N(T_{n-1})$ le nombre d'événements compris entre
+	l'événement $n-1$ et un temps $t$ plus tard. On peut alors définir que
+	\begin{equation*}
+		\P{T_n>t}
+		=\P{M_n(t)=0}
+		=\P{N(T_{n-1}+t)-N(T_{n-1})=0}
+	\end{equation*}
+
+	Par définition, on a que $N(T_{n-1})=n-1$ de sorte que
+	\begin{equation*}
+		\P{T_n>t}
+		=\P{N(T_{n-1}+t)=n-1}
+		=\P{\left\{N(T_{n-1})=n-1\right\}\cap\left\{N(t)=0\right\}}
+	\end{equation*}
+	Puisque les accroissements dans un processus de Poisson sont indépendants,
+	on a
+	\begin{equation*}
+		\P{T_n>t}
+		=\underbrace{\P{N(T_{n-1})=n-1}}_{1}\P{N(t)=0}
+		=\P{N(t)=0}
+		=\e^{-\lambda t},
+	\end{equation*}
+	car $N(t)=N(t)-N(0)\sim\Poi{\lambda t}$.
+	
+	Par conséquent, on a que
+	\begin{equation*}
+		\P{T_n\leq t}=1-\e^{-\lambda t},
+	\end{equation*}
+	ce qui est la fonction de répartition d'une distribution exponentielle de
+	paramètre $\lambda$.
+\end{proof}
+
+\begin{definition}
+	Le \textit{temps d'arrivé} $S_n$ d'un événement $n$ est la somme de la
+	différence de tous les événements consécutifs antérieurs, c'est-à-dire
+	\begin{equation*}
+		S_n=\sum_{k=1}^nT_k.
+	\end{equation*}
+\end{definition}
+
+\begin{theoreme}
+	$S_n\sim\Gam{n}{\lambda}$.
 \end{theoreme}
 
 \begin{exemple}
@@ -3540,9 +3620,8 @@ la matrice des probabilités $P$, c'est à dire
 	l'intervalle $]t_1,t_2]$ et plus de 1 événement dans l'intervalle
 	$]t_3,t_4]$?
 	
-	On définie $X$ et $Y$ comme étant le nombre d'événements dans $]t_1,t_2]$
-	et $]t_3,t_4]$ respectivement, alors $X\sim\Poi{\lambda t}$ et
-	$Y\sim\Poi{\lambda t}$. Par conséquent, on cherche
+	Soit $X=N(t_1,t_2)\sim\Poi{\lambda}$ et $Y=N(t_3,t_4)\sim\Poi{\lambda}$. On
+	cherche
 	\begin{equation*}
 		\P{\left\{X=1\right\}\cap\left\{Y\geq 1\right\}}
 		=\P{X=1}\P{Y\geq 1}
@@ -3550,129 +3629,135 @@ la matrice des probabilités $P$, c'est à dire
 	\end{equation*}
 \end{exemple}
 
-\subsubsection{Temps d'arrivé}
-Soit $T_1$ le temps d'arrivée du premier événement. On cherche
-\begin{equation*}
-	\P{T_1>t}
-	=\P{N(t)=0}
-	=\e^{-\lambda t}
-\end{equation*}
-% ligne du temps
-%
-% 0-----------t----x------>
-% |                |
-% '----------------'
+\subsection{Marche aléatoire}
+\begin{definition}
+	Une \textit{marche aléatoire} est un processus stochastique sans mémoire à
+	temps discret et état discret dont l'espace des états est $\left\{X_n:n\in
+	\mathbb{N}\right\}$ avec $X_n$ la position du processus tel que
+	\begin{enumerate}
+		\item $\left\rvert X_{n}-X_{n-1}\right\rvert=1$ pour tout
+		      $n\in\mathbb{N}^*$
+		\item $X_n\in\mathbb{Z}$ pour tout $n\in\mathbb{N}$
+	\end{enumerate}
+\end{definition}
 
-Par conséquent,
-\begin{equation*}
-	T_1\sim\Exp{\lambda}
-\end{equation*}
-
-Soit $T_2$ le temps entre le premier et le deuxième événement. On a que 
-$T_1=t_1$ lorsque le premier événement ce produit. On définit
-\begin{equation*}
-	M(t)=N(t+t_1)-\underbrace{N(t_1)}_{1},
-\end{equation*}
-le nombre d'événements dans $[t_1,t]$. On remarque que $M(t)$ est aussi un
-processus de Poisson de sorte que $T_2\sim\Exp{\lambda}$.
-
-Soit $T_k$ le temps entre $(k-1)$-ième et le $k$-ième événement. Par
-conséquent, $T_k\sim\Exp{\lambda}$ avec $T_1,T_2,\dots$ sont des variables
-aléatoires indépendantes et identiquement distributées.
-
-Soit
-\begin{equation*}
-	S_n=\sum_{k=1}^nT_k,
-\end{equation*}
-le temps d'arrivée du $n$-ième événement. Par conséquent,
-\begin{equation*}
-	S_n\sim\Gam{n}{\lambda}.
-\end{equation*}
+\begin{remark}
+	On définit souvent ce processus comme le mouvement discret d'une particule
+	en une dimension.
+\end{remark}
 
 \begin{exemple}
-	En observant un processus de Poisson de taux $\lambda$, on remarque qu'un
-	seul événement s'est produit avant le temps $t$. Quelle est la distribution
-	du temps d'arrivée $T$ de cet événement?
+	Soit une particule se déplaçant aléatoirement en une dimension. La
+	probabilité qu'elle se dirige vers la droite peut importe sa position est
+	$\nicefrac{1}{2}$ tandis que celle qu'elle se dirige vers la gauche est
+	$\nicefrac{1}{2}$.
 
-	Le problème s'écrit en terme d'une conditionnelle, soit
+	On définit les variables aléatoires $D$ et $G$ comme étant le nombre de
+	déplacements vers la droite et la gauche respectivement. On peut montrer
+	que
 	\begin{equation*}
-		\begin{split}
-		\Pg{T\leq\tau}{N(t)=1}
-		&=\Pg{N(\tau)=1}{N(t)=1}
-		=\frac{\P{\left\{N(\tau)=1\right\}\cap\left\{N(t)=1\right\}}}
-			{\P{N(t)=1}}\\
-		&=\frac{\P{\left\{X=1\right\}\cap\left\{Y=0\right\}}}
-			{\P{N(t)=1}}
-		=\frac{\tau}{t}
-		\end{split}
+		D\sim\Bin{n}{\nicefrac{1}{2}}
+		\quad\text{et}\quad
+		G\sim\Bin{n}{\nicefrac{1}{2}},
 	\end{equation*}
-	$N(\tau)=X$, $N(t)=X+Y$, $X\sim\Poi{\lambda\tau}$, $Y\sim\Poi{\lambda(t-\tau)}$
-	%
-	% ^   l             l
-	% |   l    .--------l--------
-	% |   l             l
-	% +---l----T--tau---l--t----->
-	%
+	où $n$ est le nombre d'étapes.
+\end{exemple}
+\addtocounter{exemple}{-1}
+\begin{exemple}[suite]
+	Si un déplacement correspond à une unité entière sur $\mathbb{Z}$, alors la
+	position $X_n$ à l'étape $n$ est
+	\begin{equation*}
+		X_n=D-G=D-(n-D)=2D-n,
+	\end{equation*}
+	si $X_0=0$, de sorte que
+	\begin{equation*}
+		p_{0,i}
+		=\Pg{X_n=i}{X_0=0}
+		=\P{2D-n=i}
+		=\P{D=\frac{n+i}{2}},
+	\end{equation*}
+	soit la probabilité d'être à la position $i$ en $n$ étapes à partir de $0$.
 \end{exemple}
 
 \subsection{Processus de Wiener}
 \begin{definition}
 	Un \textit{processus de Wiener} est un processus stochastique à temps
-	continu et état continu où $W(t)$ représente la position aléatoire d'une
-	particule à un temps $t$ le long d'un axe.
+	continu et état continu dont l'espace des états est $\left\{W(t):t\geq 0
+	\right\}$, où
+	\begin{enumerate}
+		\item $W(0)=0$
+		\item $W(t_1,t_2)$ et $W(t_3,t_4)$ sont indépendants si $t_1<t_2\leq
+		      t_3<t_4$
+		\item $W(t_1,t_2)$ et $W(t_1+\tau,t_2+\tau)$ suivent la même loi pour
+		      tout $\tau$ et $t_1<t_2$
+		\item $W(t)\sim\Norm{0}{\sigma^2 t}$
+	\end{enumerate}
 \end{definition}
 
-On construit ce processus à partir de la position $X(t)$ de la particule
-soumise à une marche aléatoire avec des pas de $\pm\epsilon$ de distance à
-chaque $\delta$ unité de temps. On pose $\epsilon=\sigma\sqrt{\delta}$, où 
-$\sigma$ est une constante, on obtient
-\begin{equation*}
-	W(t)=\lim_{\delta\rightarrow 0^+}X(t)
-\end{equation*}
-On définit 3 conditions pour qu'un processus stochastique soit un processus
-de Wiener :
-\begin{enumerate}
-	\item $W(0)=0$
-	\item les accroissements du processus sont indépendants et stationnaires
-	\item $W(t)\sim\Norm{0}{\sigma^2 t}$
-\end{enumerate}
+\begin{remark}
+	On peut construire ce processus à partir d'une marche aléatoire de pas
+	$\pm\epsilon$ et d'unité de temps $\delta$. On pose alors $\epsilon=\sigma
+	\sqrt{\delta}$ afin d'obtenir
+	\begin{equation*}
+		W(t)=\lim_{\delta\rightarrow 0^+}X(t).
+	\end{equation*}
+\end{remark}
 
-On appel $\sigma^2$ le \textit{coefficient de diffusion}. Si $\sigma^2=1$, on
-appel ce processus le \textit{mouvement brownien standard} et on dénote parfois
-$B(t)=W(t)$. Les trajectoires de ce processus sont des fonctions continues,
-mais dérivables nulle part, comme une fractale. La \textit{dérivée généralisée}
-de ce processus s'appele \textit{bruit blanc gaussien}.
+\begin{remark}
+	Les trajectoires de ce processus sont des fonctions continues, mais
+	dérivables nulle part. La \textit{dérivée généralisée} de ce processus 
+	s'appele le \textit{bruit blanc gaussien}.
+\end{remark}
+
+\begin{definition}
+	Un \textit{mouvement Brownien standard} est un processus de Wiener où le
+	\textit{coefficient de diffusion} est $\sigma^2=1$.
+\end{definition}
 
 \begin{exemple}
-	Calculer la fonction de densité du 2-ième ordre $f(w_1,w_2,t_1,t_2)$ du
+	Calculer la fonction de densité du 2-ième ordre $f(w_1,w_2;t_1,t_2)$ du
 	processus de Wiener. On suppose que $t_1<t_2$.
 
-	On peut écrire la densité de l'événement suivant en terme d'accroissements,
-	soit
+	Par définition, on a
 	\begin{equation*}
-		\left\{W(t_1)=w_1,W(t_2)=w_2\right\}
-		\equiv\left\{W(t_1)=w_1,W(t_2)-W(t_1)=w_2-w_1\right\}.
+		f(w_1,w_2;t_1,t_2)
+		=\P{\left\{W(t_1)=w_1\right\}\cap\left\{W(t_2)=w_2\right\}}.
 	\end{equation*}
-	On définie $X=W(t_1)\sim\Norm{0}{\sigma^2t_1}$ et $Y=W(t_2)-W(t_1)\sim
-	\Norm{0}{\sigma^2t_2}$. Par conséquent, on a
+	En écrivant l'expression en terme d'accroissements indépendants, on a
 	\begin{equation*}
 		\begin{split}
-			f(w_1,w_2;t_1,t_2)
-			&=f_X(w_1)f_Y(w_2-w_1)\\
-			&=\frac{1}{\sqrt{2\pi\sigma^2t_1}}\exp{-
-				\frac{(w_1^2)}{2\sigma^2t_1}
-			}\cdot\frac{1}{\sqrt{2\pi\sigma^2(t_2-t_1)}}\exp{-
-				\frac{(w_2-w_1)^2}{2\sigma^2(t_2-t_1)}
-			}.
+		f(w_1,w_2;t_1,t_2)
+		&=\P{\left\{W(t_1)=w_1\right\}\cap\left\{W(t_2)-W(t_1)=w_2-w_1\right\}}
+		\\
+		&=\P{W(t_1)=w_1}\P{W(t_2)-W(t_1)=w_2-w_1}.
 		\end{split}
+	\end{equation*}
+\end{exemple}
+\addtocounter{exemple}{-1}
+\begin{exemple}[suite]
+	Hors, $X=W(t_1)\sim\Norm{0}{\sigma^2t_1}$ et $Y=W(t_2)-W(t_1)\sim\Norm{0}{
+	\sigma^2(t_2-t_1)}$ de sorte que
+	\begin{equation*}
+		f(w_1,w_2;t_1,t_2)
+		=f_X(w_1)f_Y(w_2-w_1)
+	\end{equation*}
+	et
+	\begin{equation*}
+		f(w_1,w_2;t_1,t_2)
+		=\frac{1}{\sqrt{2\pi\sigma^2t_1}}\exp\left\{-
+			\frac{(w_1^2)}{2\sigma^2t_1}
+		\right\}\cdot\frac{1}{\sqrt{2\pi\sigma^2(t_2-t_1)}}\exp\left\{-
+			\frac{(w_2-w_1)^2}{2\sigma^2(t_2-t_1)}
+		\right\}.
 	\end{equation*}
 \end{exemple}
 
 \subsubsection{Fonction d'autocovariance}
-\begin{equation*}
-	C_w(t_1,t_2)=\sigma^2\cdot\min{t_1}{t_2}
-\end{equation*}
+\begin{theoreme}
+	$C_w(t_1,t_2)=\sigma^2\cdot\min(t_1,t_2)$.
+\end{theoreme}
 
+\pagebreak
 \section{Statistique descriptive}
 \begin{definition}
 	Un \textit{échantillion} est un ensemble de données, dénoté $x_1,x_2,\dots,
@@ -3762,6 +3847,7 @@ de ce processus s'appele \textit{bruit blanc gaussien}.
 	\end{equation*}
 \end{definition}
 
+\pagebreak
 \section{Inférence statistique}
 On suppose que la population est décrite par la variable aléatoire $X$ idéale.
 On a alors un échantillion aléatoire $X_1,X_2,\dots,X_n$ telle que $X_k$ sont
@@ -4133,6 +4219,282 @@ estimateur à vraisemblance maximale} de $\theta$.
 			=2\bar{X}
 		$
 	\end{enumerate}
+\end{exemple}
+
+\subsection{Intervalle de confiance}
+\begin{exemple}
+	Un premier sondage révèle que $p_1=45\pm 3\%$ des personnes sont en faveur
+	d'un événement, tandis qu'un deuxième sondage révèle $p_2=51\pm 10\%$ des
+	personnes sont en faveur.
+\end{exemple}
+
+\begin{exemple}
+	Soit $X$ une population avec un paramètre inconnu $\theta$. On définit 
+	$[\mathrm{LI},\mathrm{LS}]$, où $\mathrm{LI}$ et $\mathrm{LS}$ sont les
+	limites inférieure et supérieure respectivement, comme un intervalle de
+	confiance à $100(1-\alpha)\%$ pour $\theta$ si
+	\begin{equation*}
+		\P{\mathrm{LI}\leq\theta\leq\mathrm{LS}}=1-\alpha
+	\end{equation*}
+	On a que $\mathrm{LI}$ et $\mathrm{LS}$ sont des probabilités.
+	
+	On cherche l'intervalle de confiance pour une moyenne $\mu$ d'un loi
+	$\Norm{\mu}{\sigma^2}$ avec $\sigma^2$ connue. Par conséquent, on sait que
+	\begin{equation*}
+		\bar{X}\sim\Norm{\mu}{\frac{\sigma^2}{n}}
+	\end{equation*}
+	et
+	\begin{equation*}
+		Z=\frac{\bar{X}-\mu}{\sigma/\sqrt{n}}\sim\Norm{0}{1}.
+	\end{equation*}
+
+	On définit $z_\alpha=\P{Z\leq z_\alpha}=\alpha$. On a alors 
+	\begin{equation*}
+	\begin{split}
+		\P{-z_{\alpha/2}\leq Z\leq z_{\alpha/2}}
+		&=\P{z_{\alpha/2}\leq\frac{\bar{X}-\mu}{\sigma/\sqrt{n}}\leq z_{\alpha/2}}\\
+		&=\P{
+		 \underbrace{\bar{X}-z_{\alpha/2}\frac{\sigma}{\sqrt{n}}}_{\mathrm{LI}}
+		 \leq\mu\leq
+		 \underbrace{\bar{X}+z_{\alpha/2}\frac{\sigma}{\sqrt{n}}}_{\mathrm{LS}}
+		 }\\
+		&=1-\alpha
+	\end{split}
+	\end{equation*}
+	Par conséquent, la formule pour l'intervalle de confiance à
+	$100(1-\alpha)\%$ est
+	\begin{equation*}
+		\bar{X}\pm z_{\alpha/2}\frac{\sigma}{\sqrt{n}}.
+	\end{equation*}
+\end{exemple}
+
+\begin{remark}
+	Si $X$ ne suit pas une loi normale, mais que $\Var{X}$ est tout de même
+	connue, alors la formule trouvée reste valide si $n$ est grand (T.C.L.).
+\end{remark}
+
+\begin{remark}
+	Si $n$ est grand et si $\mu$ est le seul paramètre de $X$, alors on obtient
+	l'intervalle de confiance \textit{approximatif} suivant
+	\begin{equation*}
+		\bar{X}\pm z_{\alpha/2}\frac{\sqrt{h(\bar{X})}}{\sqrt{n}},
+	\end{equation*}
+	où $h(\bar{X})=\Var{X}=h(\mu)$.
+\end{remark}
+
+\begin{exemple}
+	Soit $X\sim\Norm{\mu}{1}$ avec $x_n\in\left\{2.3,1.8,2.0,1.7,1.4,2.2
+	\right\}$. Calculer l'intervalle de confiance pour $\mu$ avec un niveau
+	de confiance de $95\%$.
+
+	On a que $\bar{x}=1.9$ et $\alpha=0.025$. Par conséquent, les limites sont
+	données par
+	\begin{equation*}
+		1.9\pm z_{0.025}\frac{1}{\sqrt{6}}
+	\end{equation*}
+	de sorte que $\mathrm{LI}=1.0998$ et $\mathrm{LS}=2.7002$.
+	
+	La moyenne $\mu$ est comprise dans l'intervalle $[1.0998,2.7002]$ au niveau
+	de confiance de $95\%$.
+\end{exemple}
+
+\subsection{\boldmath moyenne $\mu$ si $\Norm{\mu}{\sigma^2}$ et $\sigma^2$ inconnue}
+Si $n\geq 30$ (grand), alors on remplace $\sigma$ par $S$. Les bornes sont donc
+données par
+\begin{equation*}
+	\bar{X}\pm z_{\alpha/2}\frac{S}{\sqrt{n}}
+\end{equation*}
+(aussi valide si $X$ n'est pas normale)
+
+Si $n<30$ (petit), on a
+\begin{equation*}
+	T=\frac{\bar{X}-\mu}{S/\sqrt{n}}\sim t_{n-1}
+\end{equation*}
+(loi de Student à $n-1$ degrés de liberté)
+
+On définit $t_{\alpha,n}$ par $\P{T>t_{\alpha,n}}=\alpha$. L'intervalle de
+confiance à $100(a-\alpha)\%$ pour $\mu$ est
+\begin{equation*}
+	\bar{X}\pm t_{\alpha/2,n-1}\frac{S}{\sqrt{n}}.
+\end{equation*}
+
+\begin{exemple}
+	Soit $X\sim\Norm{\mu}{\sigma^2}$ avec $x_n\in\left\{2.3,1.8,2.0,1.7,1.4,2.2
+	\right\}$. Calculer l'intervalle de confiance pour $mu$.
+
+	On a que $\bar{x}=1.9$ et $S=0.3347$. Par conséquent, l'intervalle de
+	confiance à $95\%$ est
+	\begin{equation*}
+		1.9\pm t_{0.025,5}\frac{0.3347}{\sqrt{6}}
+	\end{equation*}
+	et $\mathrm{LI}=1.5487$ et $\mathrm{LS}=2.2513$.
+\end{exemple}
+
+\begin{remark}
+	Un intervalle de confiance unilatérale est un intervalle de la forme
+	$[\mathrm{LI},\infty[$ et $]-\infty,\mathrm{LS}]$. On réutilise les
+	formules de $\mathrm{LI}$ et $\mathrm{LS}$ en remplçant $z_{\alpha/2}$
+	par $z_\alpha$ ou $t_{\alpha/2,n-1}$ par $t_{\alpha,n-1}$.
+\end{remark}
+
+\subsection{Test d'ajustement du \boldmath $\chi^2$}
+On cherche à valider ou rejeter un modèle proposé pour $X$. On teste
+l'\textit{hypothèse nulle} $H_0:f_X(x)=f_0(x)$, où $f_X(x)$ est la densité
+inconnue et $f_0(x)$ la densité proposée, versus la \textit{contre-hypothèse}
+$H_1:f_X(x)\neq f_0(x)$.
+
+\begin{enumerate}
+	\item On divise $S_X$ en $k$ classes.
+	\item On prélève un échantillon de taille $n$ de $X$.
+	\item On calcule la statistique 
+		  \begin{equation*}
+		  	  D^2=\displaystyle\sum_{j=1}^k\dfrac{\left(n_j-m_j\right)^2}{m_j},
+		  \end{equation*}
+	      où $n_j$ est l'effectif observé dans la classe $j$ et $m_j$ est
+		  l'effectif espéré dans la classe $j$ en supposant $H_0$ comme étant
+		  vraie.
+	\item On rejète $H_0$ au seuil de signification $\alpha$ si et seulement si
+	      \begin{equation*}
+	          D^2>\chi^2_{\alpha,k-r-1},
+		  \end{equation*}
+		  où $r$ est le nombre de paramètres estimés pour $f_0(x)$. Dans le cas
+		  contraire, on dit qu'on \textit{ne rejette pas} $H_0$.
+\end{enumerate}
+
+\begin{remark}
+	On a $m_j=n\underbrace{\Pg{X\in C_j}{H_o\text{ vraie}}}_{\text{calcul fait
+	avec $f_0$}}$, où $C_j$ est la classe $j$.
+\end{remark}
+
+\begin{remark}
+	Il faut que $m_j\geq 5$ pour tout $j$. Si ce n'est pas le cas, on peut
+	regrouper des classes adjacentes ($k$ diminue).
+\end{remark}
+
+\begin{exemple}
+	Soit un test de $H_0:X\sim\Uni{0}{5}$ contre $H_1:X\nsim\Uni{0}{5}$ avec le
+	tableau d'effectifs suivant et $n=80$.
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{c|ccc}
+			\toprule
+			$j$   & $1$     & $2$     & $3$\\
+                  & $[0,1]$ & $]1,2]$ & $]2,5]$\\
+			\midrule
+			$n_j$ & $20$    & $23$    & $37$\\
+			\bottomrule
+		\end{tabular}
+	\end{table}
+
+	On a $m_1=16$, $m_2=16$ et $m_3=48$. Par conséquent, $D^2\approx 6.58$. On
+	compare $D^2$ à $\chi^2_{0.05,3-0-1}=\chi^2_{0.05,2}\approx 5.99$. Par
+	conséquent, on a $D^2>\chi^2$ et on rejette $H_0$.
+\end{exemple}
+
+\begin{exemple}
+	Soit un test de $H_0:X\sim\Bin{3}{p}$ contre $H_1:X\nsim\Bin{3}{p}$ au
+	seuil $\alpha=0.05$ à partir du tableau d'effectif suivant et $n=100$.
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{c|cccc}
+			\toprule
+			$j$   & $0$  & $1$  & $2$  & $3$\\
+			\midrule
+			$n_j$ & $33$ & $36$ & $24$ & $7$\\
+			\bottomrule
+		\end{tabular}
+	\end{table}
+
+	On estime $p$ par la méthode des moments, soit
+	\begin{equation*}
+		\Esp{X}=3p=\bar{X}\Leftrightarrow p=0.35.
+	\end{equation*}
+	On a $m_0\approx 27.46$, $m_1\approx 44.36$, $m_2\approx 23.89$ et
+	$m_3\approx 4.29$. Puisque $m_3<5$, alors on regroupe les classes $2$ et
+	$3$. On obtient alors le tableau d'effectif suivant.
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{c|ccc}
+			\toprule
+			$j$   & $0$     & $1$     & $\left\{2,3\right\}$\\
+			\midrule
+			$n_j$ & $33$    & $36$    & $31$\\
+			$m_j$ & $27.46$ & $44.36$ & $28.18$\\
+			\bottomrule
+		\end{tabular}
+	\end{table}
+
+	Par conséquent, $D^2\approx 2.97$. On compare $D^2$ à $\chi^2_{0.05,3-1-1}=
+	\chi^2_{0.05,1}\approx 3.84$. Puisque $D^2<\chi^2_{0.05,1}$, alors on ne
+	rejette pas $H_0$.
+\end{exemple}
+
+\subsection{Tests d'hypothèses}
+Soit $H_0$ et $H_1$ des hypothèses au sujet de $\mu/\mu_1/\mu_2$ ou $\sigma^2/
+\sigma_1^2/\sigma_2^2$. En général, on pose un énoncé que l'on croit \textit{%
+faux} comme $H_0$.
+
+\begin{definition}
+	L'\textit{erreur de première espèce} $\alpha$ est la probabilité de
+	rejeter $H_0$ sachant que $H_0$ est vrai, c'est-à-dire
+	\begin{equation*}
+		\alpha=\Pg{\text{rejeter $H_0$}}{\text{$H_0$ est vrai}}.
+	\end{equation*}
+\end{definition}
+
+\begin{remark}
+	En général, $\alpha$ est une valeur fixée par l'expérimentateur.
+\end{remark}
+
+\begin{definition}
+	L'\textit{erreur de deuxième espèce} $\beta$ est la probabilité d'accepter
+	$H_0$ sachant que $H_0$ est fausse, c'est-à-dire
+	\begin{equation*}
+		\beta=\Pg{\text{accepter $H_0$}}{\text{$H_0$ est fausse}}.
+	\end{equation*}
+\end{definition}
+
+\begin{remark}
+	En général, $\beta$ dépend de $\alpha$, de $n$ et d'une contre-hypothèse
+	particulière.
+\end{remark}
+
+\begin{definition}
+	On définit la \textit{puissance du test} comme $1-\beta$.
+\end{definition}
+
+Puisque $\alpha$ est fixée à l'avance, on dit que <<rejeter $H_0$>> est une
+\textit{conclusion forte}. D'une manière similaire, puisque $\beta$ peut être
+élevée, on dit que <<ne pas rejeter $H_0$>> est une \textit{conclusion faible}.
+
+\begin{remark}
+	Dans le cas d'une seule population, on suppose que $X\sim\Norm{\mu}
+	{\sigma^2}$. Dans le cas de deux populations, on suppose que $X_1\sim\Norm
+	{\mu_1}{\sigma_1^2}$ et $X_2\sim\Norm{\mu_2}{\sigma_2^2}$.
+\end{remark}
+
+\begin{exemple}
+	Soit le test d'une moyenne et variance inconnue avec l'échantillon de $n=8$
+	notes d'examens :
+	\begin{equation*}
+		\left\{75\%,72\%,64\%,81\%,79\%,65\%,82\%,85\%\right\}
+	\end{equation*}
+	On suppose que $X\sim\Norm{\mu}{\sigma^2}$ comme population. Peut-on
+	affirmer que la moyenne $\mu$ est au-dessus de $75\%$? ($\alpha=0.05$)
+
+	On remarque que l'unité de mesure est sans conséquent pour le test. Soit
+	$H_0:\mu=75$ et $H_1:\mu>75$, une conclusion forte. On a donc
+	\begin{equation*}
+		t_0=\frac{\bar{X}-75}{S/\sqrt{8}}\approx 0.135
+	\end{equation*}
+	et
+	\begin{equation*}
+		t_{\alpha,n-1}=t_{0.05,7}\approx 1.835.
+	\end{equation*}
+
+	Par conséquent, on rejette si $t_0>t_{\alpha,n-1}$. Puisque
+	$0.135\leq 1.835$, on ne rejette pas $H_0$, car on ne peut pas affirmer que
+	$\mu>75$.
 \end{exemple}
 
 \end{document}

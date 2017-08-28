@@ -1,0 +1,76 @@
+\documentclass[11pt]{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage{tikz}
+\usepackage{moresize}
+\usepackage{fix-cm}
+\usepackage{blindtext}
+\usepackage{standalone}
+
+\usetikzlibrary{calc}
+
+\begin{document}
+\newlength\FSnumberdotwidth
+\newlength\FSnumberwidth
+\newlength\FStitlewidth
+\newlength\FStitleheight
+
+\gdef\fancysection[#1]#2{
+    \def\sectionnumber{#1}
+    \def\sectiontitle{#2}
+
+    \def\customsize{\fontsize{60}{0}\selectfont}
+    \def\titlesize{\scshape\Large}
+
+    
+    \settowidth{\FSnumberdotwidth}{\customsize\sectionnumber.}
+    \settowidth{\FSnumberwidth}{\customsize\sectionnumber}
+    \settowidth{\FStitlewidth}{\titlesize\sectiontitle}
+    \settoheight{\FStitleheight}{\titlesize\sectiontitle}
+    
+    \noindent
+    \begin{tikzpicture}[
+        x=\textwidth,
+        nopad/.style={
+            inner sep=0pt,
+            outer sep=0pt,
+            yshift=-1pt}
+        ]
+
+        \draw[fill] let
+            \n{VT} = {0.5pt},
+            \n{HT} = {2.0pt},
+            \n{HEND} = {\textwidth-\n{HT}},
+            \n{VEND} = {1cm-\n{VT}},
+            \n{S}  = {1mm},
+            \n{A}  = {5mm},
+            \n{B}  = {\n{A}+\n{S}},
+            \n{C}  = {\n{B}+\FSnumberdotwidth},
+            \n{D}  = {\textwidth-\FStitlewidth-\n{S}},
+            \n{E}  = {\FStitleheight},
+            \n{F}  = {\n{A}+\FSnumberwidth+\n{S}+\n{S}}
+        in
+            (0,0) rectangle (\n{A},\n{VT})
+            (\n{C},0) rectangle (\n{D},\n{VT})
+            (\n{HEND},\n{E}) rectangle (1,1)
+            (0,0) rectangle (\n{HT},1)
+            (0,\n{VEND}) rectangle (\n{A},1cm)
+            (\n{F},\n{VEND}) rectangle (1,1cm)
+            
+            node[
+                nopad,
+                anchor=south west,
+                xshift=\n{B},
+                font=\customsize]
+            at (0,0) {\sectionnumber.}
+            
+            node[
+                nopad,
+                anchor=south east,
+                font=\titlesize,
+                yshift=-2mm]
+            at (1,0) {\strut\sectiontitle}
+        ;
+    \end{tikzpicture}
+}
+
+\end{document}

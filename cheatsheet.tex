@@ -1,0 +1,1174 @@
+\documentclass[8pt]{article}
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{standalone}
+\usepackage{geometry}
+\usepackage{gphys}
+\usepackage{siunitx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{booktabs}
+\usepackage{nicefrac}
+\usepackage{parskip}
+\usepackage{pdflscape}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{enumitem}
+\usepackage{mdframed}
+\usepackage{tabularx}
+\usepackage{float}
+
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{calc}
+
+% TODO: approx de Poisson
+
+%%%%%%%%%%%%%%%%%%
+% Configurations %
+%%%%%%%%%%%%%%%%%%
+
+\geometry{
+	total={210mm,297mm},
+	left=4mm,
+	right=4mm,
+	top=3mm,
+	bottom=3mm,
+}
+
+\mdfsetup{
+    skipabove=2mm,
+    skipbelow=2mm,
+    leftmargin=2mm,
+    rightmargin=2mm,
+    hidealllines=true,
+    backgroundcolor=black!10
+}
+
+%%%%%%%%%%
+% Macros %
+%%%%%%%%%%
+
+\newcommand\titre[1]{%
+    \noindent{%
+        \normalsize\bfseries #1\par%
+        \vspace{-3mm}%
+        \rule{\linewidth}{0.1pt}\par%%
+    }%
+}
+
+\newcommand\comb{%
+    \ensuremath{%
+        \mathcal{C}%
+    }%
+}
+
+\newcommand\perm{%
+    \ensuremath{%
+        \mathcal{P}%
+    }%
+}
+
+\renewcommand\P[1]{%
+    \ensuremath{%
+        \mathbb{P}\left[#1\right]%
+    }%
+}
+
+\newcommand\Pg[2]{%
+    \ensuremath{%
+        \mathbb{P}\left(#1\vert#2\right)%
+    }%
+}
+
+\newcommand\e{%
+    \ensuremath{%
+        \mathrm{e}%
+    }%
+}
+
+\newcommand\Bin[2]{%
+    \ensuremath{%
+        \mathcal{B}\left(#1,#2\right)%
+    }%
+}
+
+\newcommand\Bern[1]{%
+    \ensuremath{%
+        \Bin{1}{#1}%
+    }%
+}
+
+\newcommand\Geo[1]{%
+    \ensuremath{%
+        \mathcal{G}\left(#1\right)%
+    }%
+}
+
+\newcommand\Poi[1]{%
+    \ensuremath{%
+        \mathrm{Poi}\left(#1\right)%
+    }%
+}
+
+\newcommand\Uni[2]{%
+    \ensuremath{%
+        \mathcal{U}\left(#1,#2\right)%
+    }%
+}
+
+\newcommand\Exp[1]{%
+    \ensuremath{%
+        \mathrm{Exp}\left(#1\right)%
+    }%
+}
+
+\newcommand\Gam[2]{%
+    \ensuremath{%
+        \Gamma\left(#1,#2\right)%
+    }%
+}
+
+\newcommand\Norm[2]{%
+    \ensuremath{%
+        \mathcal{N}\left(#1,#2\right)%
+    }%
+}
+
+\newcommand\Esp[1]{%
+    \ensuremath{%
+        \mathrm{E}\left[\,#1\,\right]%
+    }%
+}
+
+\newcommand\Espg[2]{%
+    \ensuremath{%
+        \mathrm{E}\left[\,#1\vert#2\,\right]%
+    }%
+}
+
+\newcommand\Var[1]{%
+    \ensuremath{%
+        \mathrm{Var}\left[\,#1\,\right]%
+    }%
+}
+
+\newcommand\Std[1]{%
+    \ensuremath{%
+        \mathrm{Std}\left[\,#1\,\right]%
+    }%
+}
+
+\newcommand\Varg[2]{%
+    \ensuremath{%
+        \mathrm{Var}\left[\,#1\,\vert#2\right]%
+    }%
+}
+
+\newcommand\Cov[2]{%
+    \ensuremath{%
+        \mathrm{Cov}\left[\,#1,#2\right]%
+    }%
+}
+
+\newcommand\erf{%
+    \ensuremath{%
+        \mathrm{erf}%
+    }%
+}
+
+\newcommand{\tikzmark}[1]{\tikz[overlay,remember picture] \node (#1) {};}
+\newcommand\tikzbrace[3]{%
+    \begin{tikzpicture}[overlay, remember picture]%
+        \path[fill=white] let
+            \p1=(#1),%
+            \p2=(#2)%
+        in ({max(\x1+55mm,\x2)}, {\y1+0.8em}) 
+           rectangle ({max(\x1+65mm,\x2)}, {\y2});
+        \draw [decoration={brace,amplitude=1em},decorate,black] let%
+            \p1=(#1),%
+            \p2=(#2)%
+        in ({max(\x1+56mm,\x2)}, {\y1+0.8em})%
+        -- node[right=2em,rotate=-90,anchor=center] {#3}%
+           ({max(\x1+56mm,\x2)}, {\y2});%
+    \end{tikzpicture}%
+}
+
+\newenvironment{boxedeq}{%
+    \begin{mdframed}%
+    \begin{equation*}%
+}{%
+    \end{equation*}%
+    \end{mdframed}%
+}
+
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+
+%%%%%%%%%%%%%
+% Documents %
+%%%%%%%%%%%%%
+
+\begin{document}
+\setlength{\abovedisplayskip}{0pt}
+\setlength{\abovedisplayshortskip}{0pt}
+
+\begin{minipage}[t]{0.33\linewidth}
+    \titre{Axiomes}
+    \begin{itemize}[label={\tiny $\bullet$}]
+        \item $\P{A}\geq 0$.
+        \item $\P{S}=1$.
+        \item $\P{A\cup B}=\P{A}+\P{B}$,\\si $A\cup B=\emptyset$.
+    \end{itemize}
+    
+    \titre{Permutations}
+    \begin{boxedeq}
+        \perm_n^k=\frac{n!}{(n-k)!}
+    \end{boxedeq}
+    
+    \titre{Permutations semblables}
+    \begin{boxedeq}
+        \frac{n!}{n_1!n_2!\dots n_k!}
+    \end{boxedeq}
+
+    \titre{Combinaisons}
+    \begin{boxedeq}
+        \comb_n^k=\frac{n!}{k!(n-k)!}
+    \end{boxedeq}
+    \begin{itemize}[label={\tiny $\bullet$}]
+        \item $\comb_n^k=\comb_{n-1}^{k-1}+\comb_{n-1}^{k}$.
+    \end{itemize}
+    
+    \titre{Binôme de Newton}
+    \begin{boxedeq}
+        (a+b)^n=\sum_{k=0}^n\comb_n^k\cdot a^k\cdot b^{n-k}
+    \end{boxedeq}
+    
+    \titre{Probabilité conditionnelles}
+    \begin{boxedeq}
+        \Pg{A}{B}=\frac{\P{A\cap B}}{\P{B}}
+    \end{boxedeq}
+    \begin{itemize}[label={\tiny $\bullet$}]
+        \item $\P{A\cap B}=\Pg{A}{B}\P{B}$.
+        \item $\Pg{A}{B}=\Pg{B}{A}=0$,\\si $A\cap B=\emptyset$.
+        \item $\Pg{A}{B}=\Pg{B}{A}$, en général.
+        \item $\Pg{A}{S}=\P{A}$, si $A\in S$.
+    \end{itemize}
+    
+    \titre{Probabilité totales}
+    \begin{mdframed}
+        \begin{equation*}
+            \begin{split}
+                \P{A}
+                &=\sum_{i=1}^n\P{A\cap B_i}\\
+                &=\sum_{i=1}^n\Pg{A}{B_i}\P{B_i}\\
+            \end{split}
+        \end{equation*}
+        si $B_1,B_2,\dots,B_n$ des partitions.
+    \end{mdframed}
+    
+    \titre{Règles d'inversion}
+    \begin{boxedeq}
+        \Pg{B}{A}=\frac{\Pg{A}{B}\P{B}}{\P{A}}
+    \end{boxedeq}
+    
+    \titre{Règles de Bayes}
+    \begin{mdframed}
+        \begin{equation*}
+            \Pg{B}{A}=
+            \frac{\Pg{A}{B}\P{B}}{\displaystyle\sum_{k=1}^n\Pg{A}{B_i}\P{B_i}}
+        \end{equation*}
+        si $B_1,B_2,\dots,B_n$ des partitions.
+    \end{mdframed}
+    
+    \titre{Médiane}
+    \begin{boxedeq}
+        F_X(x_{1/2})=\nicefrac{1}{2}
+    \end{boxedeq}
+\end{minipage}
+\begin{minipage}[t]{0.33\linewidth}
+    \titre{Fonction de répartition}
+    \begin{boxedeq}
+        F_X(x)=\P{X\leq x}
+    \end{boxedeq}
+    \begin{itemize}[label={\tiny $\bullet$}]
+        \item $0\leq F_X(x)\leq 1$.
+        \item $\displaystyle\lim_{x\rightarrow-\infty}F_X(x)=0$.
+        \item $\displaystyle\lim_{x\rightarrow\infty}F_X(x)=1$.
+        \item $x_0<x_1\Leftrightarrow F_X(x_0)<F_X(x_1)$.
+        \item $F_X(x^+)=F_X(x)$.
+    \end{itemize}
+    
+    \titre{Fonction de masse}
+    \begin{boxedeq}
+        p_X(x)=\P{X=x}
+    \end{boxedeq}
+    \begin{itemize}[label={\tiny $\bullet$}]
+        \item $p_X(x_k)\geq 0$.
+        \item $\displaystyle\sum_{a<x_k\leq b}p_X(x_k)=\P{A<X\leq b}$.
+        \item $\displaystyle\sum_{k=1}^\infty p_X(x_k)=1$.
+    \end{itemize}
+    
+    \titre{Fonction de densité}
+    \begin{boxedeq}\hspace{-2pt}
+        f_X(x)=
+        \lim_{\epsilon\rightarrow 0}\frac{1}{\epsilon}
+        \P{x-\frac{\epsilon}{2}\leq X\leq x+\frac{\epsilon}{2}}
+    \end{boxedeq}
+    \begin{itemize}[label={\tiny $\bullet$}]
+        \item $f_X(x)\geq 0$.
+        \item $\displaystyle\int_{-\infty}^\infty f_X(x)\d{x}=1$.
+    \end{itemize}
+    
+    \titre{Règles de calcul}
+    \begin{itemize}[label={\tiny $\bullet$}]
+        \item $\P{a<X\leq B}=F_X(b)-F_X(a)$.
+        \item $\P{X=x}=F_X(x)-F_X(x^-)$.
+        \item $f_X(x)=\dfrac{\d{}}{\d{x}}F_X(x)$,\\si $X$ est continue.
+        \item $F_X(x)=\displaystyle\int_{-\infty}^xf_X(t)\d{t}$,\\si $X$ est continue.
+        \item $F_X(x)=\displaystyle\sum_{x_k<x}p_X(x_k)$,\\si $X$ est discrète.
+    \end{itemize}
+    
+    \titre{Fonction conditionnelle}
+    \begin{itemize}[label={\tiny $\bullet$}]
+        \item $F_X(x|A)=\dfrac{\P{\left\{X\leq x\right\}\cap A}}{\P{A}}$.
+        \item $f_X(x|A)=\dfrac{\d{}}{\d{x}}F_X(x|A)$,\\si $X$ est continue.
+        \item $P_X(x_k|A)=\left\{
+            \begin{matrix}
+                \dfrac{p_X(x_k)}{\P{A}},&x_k\in A\\
+                0,                      &x_k\notin A\\
+            \end{matrix}
+        \right.$,\\si $X$ est discrète.
+    \end{itemize}
+    
+    \titre{Indépendance}
+    \begin{boxedeq}
+        \Pg{A}{B}=\P{A}\Leftrightarrow \Pg{B}{A}=\P{B}
+    \end{boxedeq}
+    \begin{itemize}[label={\tiny $\bullet$}]
+        \item $\P{A\cap B}=\P{A}\P{B}$.
+        \item $\P{A\cap B^c}=\P{A}\P{B^c}$.
+    \end{itemize}
+    
+    \titre{Quantile}
+    \begin{boxedeq}
+        F_X(x_p)=p
+    \end{boxedeq}
+\end{minipage}
+\begin{minipage}[t]{0.33\linewidth}
+    \titre{Espérance}
+    \begin{mdframed}
+        \tikzmark{pointA1}
+        \begin{equation*}
+            \Esp{X}=\sum_{k=1}^\infty x_kp_X(x_k)
+        \end{equation*}
+    \end{mdframed}
+    \begin{itemize}[label={\tiny $\bullet$}]
+        \item $\Esp{g(X)}=\displaystyle\sum_{k=1}^\infty g(x_k)p_X(x_k)$.
+        \item $\Espg{X}{A}=\displaystyle\sum_{k=1}^\infty g(x_k)p_X(x_k|A)$.
+    \end{itemize}
+    \tikzmark{pointA2}
+    
+    \begin{mdframed}
+        \tikzmark{pointB1}
+        \begin{equation*}
+            \Esp{X}=\int_{-\infty}^\infty xf_X(x)\d{x}
+        \end{equation*}
+    \end{mdframed}
+    \begin{itemize}[label={\tiny $\bullet$}]
+        \item $\Esp{g(X)}=\displaystyle\int_{-\infty}^\infty g(x)f_X(x)\d{x}$.
+        \item $\Espg{X}{A}=\displaystyle\int_{-\infty}^\infty xf_X(x|A)\d{x}$.
+    \end{itemize}
+    \tikzmark{pointB2}
+    
+    \noindent\rule{\linewidth}{0.5pt}
+    
+    \begin{itemize}[label={\tiny $\bullet$}]
+        \item $\Esp{c}=c$.
+        \item $\Esp{aX+b}=a\Esp{X}+b$.
+        \item $\Esp{X}=\displaystyle\sum_{i=1}^n\Espg{X}{B_i}\P{B_i}$\\
+              si $B_1,B_2,\dots,B_n$ des partitions.
+    \end{itemize}
+    
+    \titre{Variance}
+    \begin{boxedeq}
+        \begin{split}
+            \Var{X}
+            &=\Esp{\left(X-\Esp{X}\right)^2}\\
+            &=\Esp{X^2}-\left(\Esp{X}\right)^2\\
+        \end{split}
+    \end{boxedeq}
+    \begin{itemize}[label={\tiny $\bullet$}]
+        \item $\Var{c}=c$.
+        \item $\Var{aX+b}=a^2\Var{X}$.
+        \item $\Varg{X}{A}=\Espg{X^2}{A}-\left(\Espg{X}{A}\right)^2$.
+        \item $\Std{X}=\sqrt{\Var{X}}$.
+    \end{itemize}
+    
+    \titre{Inégalité de Markov}
+    \begin{boxedeq}
+        \P{X\geq a}\leq\frac{\Esp{X}}{a},\forall a>0
+    \end{boxedeq}
+    
+    \titre{Inégalité de Bienaymé-Tchebychev}
+    \begin{boxedeq}
+        \P{\left|X-\mu\right|\geq a}\leq\frac{\sigma^2}{a^2},\forall a>0
+    \end{boxedeq}
+    
+    \titre{Fonction caractéristique}
+    \begin{boxedeq}
+        \phi_X(\omega)=\Esp{\e^{i\omega X}}
+    \end{boxedeq}
+    \begin{itemize}[label={\tiny $\bullet$}]
+        \item $\phi_X(\omega)=\displaystyle\sum_{k=1}^\infty
+              \e^{i\omega x_k}p_X(x_k)$,\\
+              si $X$ est discrète.
+        \item $\phi_X(\omega)=\displaystyle\int_{-\infty}^\infty
+              \e^{i\omega x}f_X(x)\d{x}$,\\
+              si $X$ est continue.
+        \item $\phi_X(0)=1$.
+        \item $\Esp{X^n}=(-i)^n\left[\dfrac{\d[n]{}}{\D[n]{\omega}}
+              \phi_X(\omega)\right]_{\omega=0}$.
+    \end{itemize}
+    
+    \tikzbrace{pointA1}{pointA2}{si $X$ est discrète}
+    \tikzbrace{pointB1}{pointB2}{si $X$ est continue}
+\end{minipage}
+\pagebreak
+
+\begin{landscape}
+% caractéristiques de la distribution de Bernoulli
+\def\noteBern{$X\sim\Bern{p}$}
+\def\SXBern{$\left\{0,1\right\}$}
+
+\def\FXBern{$%
+    \renewcommand{\arraystretch}{1}%
+    \setlength\arraycolsep{2pt}%
+    \left\{%
+        \begin{matrix}%
+            0               & \text{si} & k<0\\%
+            1-p & \text{si} & 0\leq k<1\\%
+            1               & \text{si} & 1\leq k\\%
+        \end{matrix}%
+    \right.%
+$}
+
+\def\pXBern{$%
+    \renewcommand{\arraystretch}{1}%
+    \setlength\arraycolsep{2pt}%
+    \left\{%
+        \begin{matrix}%
+            q & \text{si} & k=0\\%
+            p & \text{si} & k=1\\%
+        \end{matrix}%
+    \right.%
+$}
+
+\def\meanBern{$p$}
+\def\varBern{$pq$}
+\def\CFBern{$p\e^{i\omega}+q$}
+
+% caractéristiques de la distribution binomiale
+\def\noteBin{$X\sim\Bin{n}{p}$}
+\def\SXBin{$\left\{0,1,\dots,n\right\}$}
+
+\def\FXBin{$%
+    \displaystyle\sum_{i=0}^{\left\lfloor k\right\rfloor}%
+    \comb_n^ip^iq^{n-i}%
+$}
+
+\def\pXBin{$\comb_n^kp^kq^{n-k}$}
+\def\meanBin{$np$}
+\def\varBin{$npq$}
+\def\CFBin{$\left(p\e^{i\omega}+q\right)^n$}
+
+% caractéristiques de la distribution géométrique
+\def\noteGeo{$X\sim\Geo{p}$}
+\def\SXGeo{$\left\{1,2,\dots\right\}$}
+
+\def\FXPoi{$%
+    \e^{-\alpha}\displaystyle\sum_{i=0}^{\left\lfloor k\right\rfloor}%
+    \dfrac{\alpha^i}{i!}%
+$}
+
+\def\FXGeo{$1-q^k$}
+\def\pXGeo{$q^{k-1}p$}
+\def\meanGeo{$\dfrac{1}{p}$}
+\def\varGeo{$\dfrac{1-p}{p^2}$}
+\def\CFGeo{$\dfrac{p\e^{i\omega}}{1-q\e^{i\omega}}$}
+
+% caractéristiques de la distribution de Poisson
+\def\notePoi{$X\sim\Poi{\alpha}$}
+\def\SXPoi{$\left\{0,1,\dots\right\}$}
+\def\pXPoi{$\dfrac{\alpha^k}{k!}\e^{-\alpha}$}
+\def\meanPoi{$\lambda$}
+\def\varPoi{$\lambda$}
+\def\CFPoi{$\exp\left\{\lambda\left(\e^{i\omega}-1\right)\right\}$}
+
+% caractéristiques de la distribution uniforme
+\def\noteUni{$X\sim\Uni{a}{b}$}
+\def\SXUni{$\left[a,b\right]$}
+
+\def\FXUni{$%
+    \renewcommand{\arraystretch}{1}%
+    \setlength\arraycolsep{2pt}%
+    \left\{%
+        \begin{matrix}%
+            0                & \text{si} & x<a\\%
+            \dfrac{x-a}{b-a} & \text{si} & a\leq x<b\\%
+            1                & \text{si} & a\leq x\\%
+        \end{matrix}%
+    \right.%
+$}
+
+\def\fXUni{$%
+    \renewcommand{\arraystretch}{1}%
+    \setlength\arraycolsep{2pt}%
+    \left\{%
+        \begin{matrix}%
+            \dfrac{1}{b-a} & \text{si} & a\leq x<b\\%
+            1              & \multicolumn{2}{c}{\text{sinon}}\\%
+        \end{matrix}%
+    \right.%
+$}
+
+\def\meanUni{$\dfrac{1}{2}(a+b)$}
+\def\varUni{$\dfrac{1}{12}(b-a)^2$}
+
+\def\CFUni{$%
+    \dfrac{\e^{i\omega b}-\e^{i\omega a}}{i\omega(b-a)}%
+$}
+
+% caractéristiques de la distribution exponentielle
+\def\noteExp{$X\sim\Exp{\lambda}$}
+\def\SXExp{$\left[0,\infty\right[$}
+
+\def\FXExp{$%
+    \renewcommand{\arraystretch}{1}%
+    \setlength\arraycolsep{2pt}%
+    \left\{%
+        \begin{matrix}%
+            1-\e^{-\lambda x} & \text{si} & x\geq 0\\%
+            0                 & \text{si} & x<0\\%
+        \end{matrix}%
+    \right.%
+$}
+
+\def\fXExp{$%
+    \renewcommand{\arraystretch}{1}%
+    \setlength\arraycolsep{2pt}%
+    \left\{%
+        \begin{matrix}%
+            \lambda\e^{-\lambda x} & \text{si} & x\geq 0\\%
+            0                      & \text{si} & x<0\\%
+        \end{matrix}%
+    \right.%
+$}
+
+\def\meanExp{$\dfrac{1}{\lambda}$}
+\def\varExp{$\dfrac{1}{\lambda^2}$}
+
+\def\CFExp{$%
+    \dfrac{\lambda}{\lambda-i\omega}%
+$}
+
+% caractéristiques de la distribution gamma
+\def\noteGam{$X\sim\Gam{\alpha}{\lambda}$}
+\def\SXGam{$\left[0,\infty\right[$}
+
+\def\FXGam{%
+    \renewcommand{\arraystretch}{0}%
+    \begin{tabular}{c}%
+        $1-\displaystyle\sum_{k=0}^{n-1}%
+            \dfrac{\left(\lambda x\right)^k\e^{-\lambda x}}{k!}$\\%
+        si $\alpha=n=1,2,3,\dots$%
+    \end{tabular}%
+}
+
+\def\fXGam{$%
+    \dfrac{\left(\lambda x\right)^{\alpha-1}\lambda\e^{-\lambda x}}%
+        {\Gamma\left(\alpha\right)}%
+$}
+
+\def\meanGam{$\dfrac{\alpha}{\lambda}$}
+\def\varGam{$\dfrac{\alpha}{\lambda^2}$}
+
+\def\CFGam{$%
+    \left(1-\dfrac{i\omega}{\lambda}\right)^{-\alpha}%
+$}
+
+% caractéristiques de la distribution normale
+\def\noteNorm{$X\sim\Norm{\mu}{\sigma^2}$}
+\def\SXNorm{$\mathbb{R}$}
+
+\def\FXNorm{$%
+    \dfrac{1}{2}\left[1+\erf\left\{\dfrac{x-\mu}{\sigma\sqrt{2}}\right\}\right]%
+$}
+
+\def\fXNorm{$%
+    \dfrac{1}{\sqrt{2\pi\sigma^2}}\exp{\left\{-\dfrac{(x-\mu)^2}{2\sigma^2}\right\}}%
+$}
+
+\def\CFNorm{$%
+    \exp\left\{i\mu\omega-\dfrac{1}{2}\sigma^2\omega^2\right\}%
+$}
+
+\def\meanNorm{$\mu$}
+\def\varNorm{$\sigma^2$}
+
+% la table des caractéristiques
+\renewcommand{\arraystretch}{3}
+\begin{tabularx}{\columnwidth}{cCcccccccc}
+    \toprule
+    & Loi & Notation & $S_X$ & $F_X$ & $f_X$ & $p_X$ & $\Esp{X}$ & $\Var{X}$ & $\phi_X$\\
+    \midrule
+    \multirow{4}{*}{\rotatebox[origin=c]{90}{Distributions discrètes}}
+    & Bernoulli   & \noteBern & \SXBern & \FXBern & --- & \pXBern & \meanBern & \varBern & \CFBern\\
+    & Binomiale   & \noteBin  & \SXBin  & \FXBin  & --- & \pXBin  & \meanBin  & \varBin  & \CFBin\\
+    & Géométrique & \noteGeo  & \SXGeo  & \FXGeo  & --- & \pXGeo  & \meanGeo  & \varGeo  & \CFGeo\\
+    & Poisson     & \notePoi  & \SXPoi  & \FXPoi  & --- & \pXPoi  & \meanPoi  & \varPoi  & \CFPoi\\
+    \midrule
+    \multirow{4}{*}{\rotatebox[origin=c]{90}{Distributions continues\hspace{5mm}}}
+    & Uniforme      & \noteUni  & \SXUni  & \FXUni  & \fXUni  & --- & \meanUni  & \varUni  & \CFUni\\
+    & Exponentielle & \noteExp  & \SXExp  & \FXExp  & \fXExp  & --- & \meanExp  & \varExp  & \CFExp\\
+    & Gamma         & \noteGam  & \SXGam  & \FXGam  & \fXGam  & --- & \meanGam  & \varGam  & \CFGam\\
+    & Gaussienne    & \noteNorm & \SXNorm & \FXNorm & \fXNorm & --- & \meanNorm & \varNorm & \CFNorm\\
+    \bottomrule
+\end{tabularx}
+
+\begin{minipage}[t]{0.25\linewidth}
+    \titre{Fonction de fiabilité}
+    \begin{boxedeq}
+        R(t)=\P{T>t}=1-F_T(t)
+    \end{boxedeq}
+    
+    \titre{Taux de défaillance}
+    \begin{boxedeq}
+        \begin{split}
+            r(t)
+            &=\lim_{s\rightarrow t}f_T(s|T>t)\\
+            &=-\frac{R'(t)}{R(t)}
+            =\frac{f_T(t)}{1-F_T(t)}\\
+        \end{split}
+    \end{boxedeq}
+    \begin{itemize}[label={\tiny $\bullet$}]
+        \item $R(t)=\exp\left\{-\displaystyle\int_0^tr(s)\d{s}\right\}$.
+    \end{itemize}
+    
+    \titre{Durée de vie moyenne}
+    \begin{boxedeq}
+        \Esp{T}=\int_0^\infty R(t)\d{t}
+    \end{boxedeq}
+\end{minipage}
+\begin{minipage}[t]{0.25\linewidth}
+    \titre{Système en série}
+    \begin{boxedeq}
+        R(t)=\prod_{k=1}^nR_k(t)
+    \end{boxedeq}
+    
+    \titre{Système en parrallèle}
+    \begin{boxedeq}
+        R(t)=1-\prod_{k=1}^n\bigg[1-R_k(t)\bigg]
+    \end{boxedeq}
+    
+    \titre{Indépendance}
+    \begin{boxedeq}
+        \Pg{A}{B}=\P{A}\Leftrightarrow \Pg{B}{A}=\P{B}
+    \end{boxedeq}
+    \begin{itemize}[label={\tiny $\bullet$}]
+        \item $\P{A\cap B}=\P{A}\P{B}$.
+        \item $\P{A\cap B^c}=\P{A}\P{B^c}$.
+    \end{itemize}
+\end{minipage}
+\begin{minipage}[t]{0.25\linewidth}
+    \titre{Approximation par une loi de Poisson}
+    \begin{boxedeq}
+        X\sim\Bin{n}{p}\approx\Poi{np}\text{ si $n\geq 30$}
+    \end{boxedeq}
+    \begin{itemize}[label={\tiny $\bullet$}]
+        \item $\P{X=k}\approx\dfrac{(np)^k}{k!}\e^{-np}$ si $p\leq 0.05$.
+        \item $\P{X=k}\approx\dfrac{(nq)^k}{(n-k)!}\e^{-nq}$ si $p\rightarrow 1$.
+    \end{itemize}
+\end{minipage}
+\end{landscape}
+
+\begin{minipage}[t]{0.33\linewidth}
+	\titre{Fonction de masse conjointe}
+	\begin{boxedeq}
+		p_{X,Y}(j,k)=\P{\left\{X=j\right\}\cap\left\{Y=k\right\}}
+	\end{boxedeq}
+	\begin{itemize}[label={\tiny $\bullet$}]
+		\item $p_X(j)=\displaystyle\sum_{\forall k\in S_Y}p_{X,Y}(j,k)$.
+		\item $\displaystyle\sum_{\forall (j,k)\in S_{X,Y}}p_{X,Y}(j,k)=1$.
+	\end{itemize}
+
+	\titre{Fonction de masse conjointe}
+	\begin{boxedeq}
+		p_{X|Y}(k|j)=\Pg{X=k}{Y=j}
+	\end{boxedeq}
+	\begin{itemize}[label={\tiny $\bullet$}]
+		\item $p_{X|Y}(j|k)=\dfrac{p_{X,Y}(j,k)}{p_Y(k)}$.
+	\end{itemize}
+
+	\titre{Fonction de densité conjointe}
+	\begin{itemize}[label={\tiny $\bullet$}]
+		\item $f_X(x)=\displaystyle\int_{-\infty}^\infty f_{X,Y}\d{y}$
+		\item $\displaystyle\int_{-\infty}^\infty\int_{-\infty}^\infty
+		      f_{X,Y}\d{x}\d{y}=1$.
+	\end{itemize}
+
+	\titre{Fonction de masse conjointe}
+	\begin{itemize}[label={\tiny $\bullet$}]
+		\item $f_{X|Y}(x|y)=\dfrac{f_{X,Y}(x,y)}{f_Y(y)}$.
+	\end{itemize}
+
+	\titre{Fonction de répartition conjointe}
+	\begin{boxedeq}
+		F_{X,Y}(x,y)=\P{\left\{X\leq x\right\}\cap\left\{Y\leq y\right\}}
+	\end{boxedeq}
+	\begin{itemize}[label={\tiny $\bullet$}]
+		\item $F_{X,Y}(x,y)=\displaystyle\sum_{j\leq x}\sum_{k\leq y}
+		      p_{X,Y}(j,k)$\\ si $(X,Y)$ est discret.
+		\item $F_{X,Y}(x,y)=\displaystyle\int_{-\infty}^x\int_{-\infty}^y
+		      f_{X,Y}(s,t)\d{s}\d{t}$\\ si $(X,Y)$ est continu.
+		\item $f_{X,Y}(x,y)=\dfrac{\p[2]{}}{\p{x}\p{y}}F_{X,Y}(x,y)$\\
+		      si $(X,Y)$ est continu.
+		\item $F_X(x)=\displaystyle\lim_{y\rightarrow\infty}F_{X,Y}(x,y)$.
+	\end{itemize}
+
+	\titre{Indépendance}
+    \begin{mdframed}
+		\begin{enumerate}
+			\item $S_{X,Y}=S_X\times S_Y$
+			\item $F_{X,Y}(x,y)=F_X(x)F_Y(y)$
+			\begin{itemize}[label={$\Rightarrow$}]
+				\item $p_{X,Y}(x,y)=p_X(x)p_Y(y)$
+				\item $f_{X,Y}(x,y)=f_X(x)f_Y(y)$
+			\end{itemize}
+		\end{enumerate}
+    \end{mdframed}
+
+	\titre{Espérance et Variance}
+	\begin{itemize}[label={\tiny $\bullet$}]
+		\item $\Esp{X}=\Esp{\Espg{X}{Y}}$.
+		\item $\Varg{X}{Y}=\Espg{X^2}{Y}-\left(\Espg{X}{Y}\right)^2$.
+		\item $\Var{X}=\Esp{\Varg{X}{Y}}+\\\Var{\Esp{X}{Y}}$.
+		\item Si $X$ et $Y$ sont indépendantes et $g(x,y)=g(x)g(y)$, alors
+		      $\Esp{g(X,Y)}=\Esp{g_x(X)}\Esp{g_y(Y)}$.
+	\end{itemize}
+
+	\titre{Orthogonalité}
+	\begin{boxedeq}
+		\Esp{XY}=0
+	\end{boxedeq}
+\end{minipage}
+\begin{minipage}[t]{0.33\linewidth}
+	\titre{Covariance}
+	{\footnotesize%
+	\begin{boxedeq}
+		\Cov{X}{Y}=\Esp{\left(X-\Esp{X}\right)\left(Y-\Esp{Y}\right)}
+	\end{boxedeq}
+	}
+	\begin{itemize}[label={\tiny $\bullet$}]
+		\item $\Cov{X}{Y}=\Esp{XY}-\Esp{X}\Esp{Y}$.
+		\item $\Cov{X}{X}=\Var{X}$.
+	\end{itemize}
+
+	\titre{Coefficient de corrélation}
+	\begin{boxedeq}
+		\rho_{X,Y}=\frac{\Cov{X}{Y}}{\Std{X}\Std{Y}}
+	\end{boxedeq}
+	\begin{itemize}[label={\tiny $\bullet$}]
+		\item $\rho_{X,Y}= 1\Leftrightarrow Y=aX+b$ où $a>0$.
+		\item $\rho_{X,Y}=-1\Leftrightarrow Y=aX+b$ où $a<0$.
+		\item $\rho_{X,Y}=0$ si $X$ et $Y$ indépendantes.
+		\item Si $\rho_{X,Y}=0$, $X$ et $Y$ des normales, alors $X$ et $Y$
+		      sont indépendantes.
+	\end{itemize}
+
+	\titre{Loi binormale}
+	\begin{boxedeq}
+		(X,Y)\sim\mathcal{N}(\mu_x,\mu_y,\sigma_X^2,\sigma_Y^2,\rho)
+	\end{boxedeq}
+	\begin{itemize}[label={\tiny $\bullet$}]
+		\item $X|\left\{Y=y\right\}\sim\Norm{\mu}{\sigma^2}$, où
+		      $\mu=\mu_X+\rho\dfrac{\sigma_X}{\sigma_Y}(y-\mu_Y)$ et
+			  $\sigma^2=\sigma_X^2(1-\rho)^2$.
+		\item $X\sim\Norm{\mu_X}{\sigma_X^2}$ et
+		      $Y\sim\Norm{\mu_Y}{\sigma_Y^2}$
+	\end{itemize}
+
+	\titre{Estimateur}
+	\begin{boxedeq}
+		\mathrm{min}\,\Esp{(X-g(Y))^2}
+	\end{boxedeq}
+
+	\titre{Estimateur constant}
+	\begin{boxedeq}
+			g(Y)=\Esp{X}
+	\end{boxedeq}
+	\begin{itemize}[label={\tiny $\bullet$}]
+		\item $\Esp{\left(X-g(Y)\right)^2}$=\Var{X}.
+	\end{itemize}
+
+	\titre{Estimateur linéaire}
+	\begin{mdframed}
+		\begin{equation*}
+			g(Y)=\hat{a}Y+\hat{b}
+		\end{equation*}
+		où
+		\begin{equation*}
+			\hat{a}=\frac{\Std{X}}{\Std{Y}}\rho
+		\end{equation*}
+		et
+		\begin{equation*}
+			\hat{b}=\Esp{X}-\hat{a}\Esp{Y}
+		\end{equation*}
+	\end{mdframed}
+	\begin{itemize}[label={\tiny $\bullet$}]
+		\item $\Esp{\left(X-g(Y)\right)^2}=\Var{X}(1-\rho^2)$.
+	\end{itemize}
+
+	\titre{Estimateur non linéaire}
+	\begin{boxedeq}
+			g(Y)=\Espg{X}{Y}
+	\end{boxedeq}
+	\begin{itemize}[label={\tiny $\bullet$}]
+		\item Si $(X,Y)$ suit une binormale, alors le meilleur estimateur de
+		      $X$ en fonction de $Y$ est linéaire.
+	\end{itemize}
+\end{minipage}
+\begin{minipage}[t]{0.33\linewidth}
+	\titre{Combinaison linéaire}
+	\begin{boxedeq}
+		Z=a_0+\sum_{k=1}^na_kX_k
+	\end{boxedeq}
+	\begin{itemize}[label={\tiny $\bullet$}]
+		\item $\Esp{Z}=a_0+\displaystyle\sum_{k=1}^na_k\Esp{X_k}$.
+		\item $\Var{Z}=\displaystyle\sum_{i=1}^n\sum_{j=1}^n
+		      a_ia_j\Cov{X_i}{X_j}$.
+	\end{itemize}
+
+	\titre{Variables aléatoires indépendantes et identiquement distribuées}
+	\begin{boxedeq}
+		S_n=\sum_{k=1}^nX_k
+	\end{boxedeq}
+	\begin{itemize}[label={\tiny $\bullet$}]
+		\item $\Esp{S_n}=n\Esp{X}$.
+		\item $\Var{S_n}=n\Var{X}$.
+	\end{itemize}
+
+	\titre{Loi faible des grands nombres}
+	\begin{mdframed}
+		\begin{equation*}
+			\lim_{n\rightarrow\infty}\P{\left\rvert\frac{S_n}{n}-
+			\mu\right\rvert<c}=1,
+		\end{equation*}
+		pour tout $c>0$ avec $\mu$ connue.
+	\end{mdframed}
+
+	\titre{Loi faible des grands nombres}
+	\begin{mdframed}
+		\begin{equation*}
+			\P{\lim_{n\rightarrow\infty}\frac{S_n}{n}=\mu}=1,
+		\end{equation*}
+		avec $\mu$ et $\sigma^2$ connues.
+	\end{mdframed}
+
+	\titre{Théorème central limite}
+	\begin{mdframed}
+		\begin{equation*}
+			\!S_n\approx\Norm{n\mu}{n\sigma^2}\Leftrightarrow
+			\frac{S_n}{n}\approx\Norm{\mu}{\frac{\sigma^2}{n}}
+		\end{equation*}
+		lorsque $n$ est grand.
+	\end{mdframed}
+
+	\titre{Moyenne de l'échantillion}
+	\begin{boxedeq}
+		\bar{x}=frac{1}{n}\sum_{k=1}^nx_k
+	\end{boxedeq}
+
+	\titre{Médianne de l'échantillion}
+	\begin{boxedeq}
+		\arraycolsep=0.5pt%
+		\widetilde{x}=\left\{
+			\begin{array}{cl}
+				x_{(\nicefrac{n+1}{2})}&\text{si $n$ est impair},\\
+				\dfrac{x_{(n/2)}+x_{(n/2+1)}}{2}&\text{si $n$ est pair}\\
+			\end{array}
+		\right.
+	\end{boxedeq}
+
+	\titre{Variance de l'échantillion}
+	\begin{boxedeq}
+		s^2=\frac{1}{n-1}\left(\sum_{k=1}^nx_k^2-n\bar{x}^2\right)
+	\end{boxedeq}
+
+	\titre{Étendue de l'échantillion}
+	\begin{boxedeq}
+		R=x_{(n)}-x_{(1)}
+	\end{boxedeq}
+\end{minipage}
+
+\pagebreak
+\begin{minipage}[t]{0.33\linewidth}
+	\titre{Fonction de répartition d'ordre \boldmath  $n$}
+	\begin{boxedeq}
+		\begin{split}
+			&F(x_1,\dots,x_n;t_1,\dots,t_n)\\
+			=\,&\P{\bigcap_{k=1}^n\left\{X(t_k)\leq x_k\right\}}
+		\end{split}
+	\end{boxedeq}
+
+	\titre{Fonction de densité d'ordre \boldmath $n$}
+	\begin{boxedeq}
+		\begin{split}
+			&f(x_1,\dots,x_n;t_1,\dots,t_n)\\
+			=\,&\P{\bigcap_{k=1}^n\left\{X(t_k)=x_k\right\}}\\
+			=&\frac{\p{}^n}{\p{x_1}\cdots\p{x_n}}F(x_1,\dots,x_n;t_1,\dots,t_n)
+		\end{split}
+	\end{boxedeq}
+
+	\titre{Accroissement}
+	\begin{boxedeq}
+		X(t_1,t_2)=X(t_2)-X(t_1)
+	\end{boxedeq}
+
+	\titre{Moyenne d'un processus stochastique}
+	\begin{boxedeq}
+		m_x(t)=\Esp{X(t)}
+	\end{boxedeq}
+
+	\titre{Fonction d'autocorrélation}
+	\begin{boxedeq}
+		R_X(t,\tau)=\Esp{X(t)X(\tau)}
+	\end{boxedeq}
+
+	\titre{Fonction d'autocovariance}
+	\begin{boxedeq}
+		C_X(t,\tau)=\Cov{X(t)}{X(\tau)}
+	\end{boxedeq}
+	\begin{itemize}[label={\tiny $\bullet$}]
+		\item $C_X(t,\tau)=R_X(t,\tau)-m_X(t)m_X(\tau)$.
+	\end{itemize}
+
+	\titre{Processus stochastique SSL}
+	\begin{boxedeq}
+		m_X(t)=c\quad\text{et}\quad R_X(t_1,t_2)=h(t_2-t_1)
+	\end{boxedeq}
+
+	\titre{Chaîne de Markov}
+	\begin{boxedeq}
+		\left\{X_n:n=0,1,\dots\right\}
+	\end{boxedeq}
+	\begin{itemize}[label={\tiny $\bullet$}]
+		\item $p_{i,j}=\Pg{X_{n+1}=j}{X_n=i}$.
+		\item $p_{i,j}^n=\Pg{X_{m+n}=j}{X_m=i}$.
+	\end{itemize}
+
+	\titre{Processus de Poisson}
+	\begin{boxedeq}
+		\left\{N(t):t\geq 0\right\}
+	\end{boxedeq}
+	\begin{itemize}[label={\tiny $\bullet$}]
+		\item $N(0)=0$.
+		\item $N(t_1,t_2)$ et $N(t_3,t_4)$ indépendants\\ si
+		      $t_1<t_2\leq t_3<t_4$.
+		\item $N(\tau,\tau+t)\sim\Poi{\lambda t}$.
+	\end{itemize}
+
+	\titre{Différence entre deux événements}
+	\begin{boxedeq}
+		T_n\sim\Esp{\lambda}
+	\end{boxedeq}
+
+	\titre{Temps d'arrivé d'un événement}
+	\begin{boxedeq}
+		S_n\sim\Gam{n}{\lambda}
+	\end{boxedeq}
+\end{minipage}
+\begin{minipage}[t]{0.33\linewidth}
+	\titre{Processus de Wiener}
+	\begin{boxedeq}
+		\left\{W(t):t\geq 0\right\}
+	\end{boxedeq}
+	\begin{itemize}[label={\tiny $\bullet$}]
+		\item $W(0)=0$.
+		\item $W(t_1,t_2)$ et $W(t_3,t_4)$ indépendants\\ si
+		      $t_1<t_2\leq t_3<t_4$.
+		\item $W(t_1,t_2)$ et $W(t_1+\tau,t_2+\tau)$ suivent\\
+		      la même loi.
+		\item $W(t)\sim\Norm{0}{\sigma^2 t}$.
+		\item $C_W(t_1,t_2)=\sigma^2\mathrm{min}\left\{t_1,t_2\right\}$.
+	\end{itemize}
+
+	\titre{Mouvement Brownien}
+	\begin{boxedeq}
+		\sigma^2=0
+	\end{boxedeq}
+\end{minipage}
+
+
+\pagebreak
+\begin{table}[H]
+	\centering
+	\caption{Test d'une moyenne (variance connue)}
+	\begin{tabular}{cccc}
+		\toprule
+		\multicolumn{4}{c}{
+			\begin{tabular}{ccc}
+				  Hypothèse nulle
+				& Statistique du test
+				& Constante\\
+				  $H_0:\mu=\mu_0$
+				& $z_0=\dfrac{\bar{X}-\mu_0}{\sigma/\sqrt{n}}$
+				& $\delta=\mu-\mu_0$\\
+			\end{tabular}
+		}\\
+		\midrule
+		  Contre-hypothèse
+		& On rejette $H_0$ si
+		& Erreur de $2^e$ espèce
+		& Taille nécessaire\\
+		\midrule
+		  $H_1:\mu\neq\mu_0$ 
+		& $\left\rvert z_0\right\rvert>z_{\alpha/2}$
+		& $\beta=\Phi\left( z_{\alpha/2}-\dfrac{\delta\sqrt{n}}{\sigma}\right)
+				-\Phi\left(-z_{\alpha/2}-\dfrac{\delta\sqrt{n}}{\sigma}\right)$
+		& $n=\dfrac{\left(z_{\alpha/2}+z_\beta\right)^2\sigma^2}{\delta^2}$\\
+		  $H_1:\mu>\mu_0$ 
+		& $z_0>z_{\alpha}$
+		& $\beta=\Phi\left(z_{\alpha}-\dfrac{\delta\sqrt{n}}{\sigma}\right)$
+		& $n=\dfrac{\left(z_{\alpha}+z_\beta\right)^2\sigma^2}{\delta^2}$\\
+		  $H_1:\mu<\mu_0$ 
+		& $z_0<-z_{\alpha}$
+		& $\beta=\Phi\left(z_{\alpha}+\dfrac{\delta\sqrt{n}}{\sigma}\right)$
+		& $n=\dfrac{\left(z_{\alpha}+z_\beta\right)^2\sigma^2}{\delta^2}$\\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\caption{Test d'une moyenne (variance inconnue)}
+	\begin{tabular}{cc}
+		\toprule
+		\multicolumn{2}{c}{
+			\begin{tabular}{ccc}
+				  Hypothèse nulle
+				& Statistique du test\\
+				  $H_0:\mu=\mu_0$
+				& $t_0=\dfrac{\bar{X}-\mu_0}{\sigma/\sqrt{n}}$\\
+			\end{tabular}
+		}\\
+		\midrule
+		  Contre-hypothèse
+		& On rejette $H_0$ si\\
+		\midrule
+		  $H_1:\mu\neq\mu_0$ 
+		& $\left\rvert t_0\right\rvert>t_{\alpha/2,n-1}$\\
+		  $H_1:\mu>\mu_0$
+		& $t_0>t_{\alpha,n-1}$\\
+		  $H_1:\mu<\mu_0$ 
+		& $t_0<-t_{\alpha,n-1}$\\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\caption{Test d'une variance (moyenne inconnue)}
+	\begin{tabular}{cccc}
+		\toprule
+		\multicolumn{4}{c}{
+			\begin{tabular}{cccc}
+				  Hypothèse nulle
+				& Statistique du test
+				& Constante
+				& Distribution\\
+				  $H_0:\sigma^2=\sigma^2_0$
+				& $\chi_0^2=\dfrac{(n-1)S^2}{\sigma^2_0}$
+				& $\lambda=\dfrac{\sigma^2_0}{\sigma^2}$
+				& $\chi^2_n\approx\Norm{n}{2n}$\\
+			\end{tabular}
+		}\\
+		\midrule
+		  Contre-hypothèse
+		& On rejette $H_0$ si
+		& Erreur de $2^e$ espèce
+		& Taille nécessaire\\
+		\midrule
+		  $H_1:\sigma^2\neq\sigma^2_0$ 
+		& $\chi^2_0>\chi^2_{\alpha/2,n-1}$
+		& $\beta=\P{
+		  \lambda\chi^2_{1-\alpha/2,n-1}
+		  \leq\chi^2_{n-1}\leq
+		  \lambda\chi^2_{\alpha/2,n-1}}$
+		& $n=\dfrac{3}{2}+\dfrac{1}{2}\left[
+		  \dfrac{\sigma_0z_{\alpha/2}+\sigma z_{\beta}}{\sigma-\sigma_0}
+		  \right]^2$\\
+		  $H_1:\sigma^2>\sigma^2_0$ 
+		& $\chi^2_0>\chi^2_{\alpha,n-1}$
+		& $\beta=\P{\chi^2_{n-1}\leq\lambda\chi^2_{\alpha,n-1}}$
+		& $n=\dfrac{3}{2}+\dfrac{1}{2}\left[
+		  \dfrac{\sigma_0z_{\alpha}+\sigma z_{\beta}}{\sigma-\sigma_0}
+		  \right]^2$\\
+		  $H_1:\sigma^2<\sigma^2_0$ 
+		& $\chi^2_0<\chi^2_{1-\alpha,n-1}$
+		& $\beta=\P{\chi^2_{n-1}\geq\lambda\chi^2_{1-\alpha,n-1}}$
+		& $n=\dfrac{3}{2}+\dfrac{1}{2}\left[
+		  \dfrac{\sigma_0z_{\alpha}+\sigma z_{\beta}}{\sigma-\sigma_0}
+		  \right]^2$\\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\caption{Test de 2 moyennes (variances inconnues)}
+	\begin{tabular}{cccc}
+		\toprule
+		\multicolumn{4}{c}{
+			\begin{tabular}{ccc}
+				  Hypothèse nulle
+				& Statistique du test
+				& Constante\\
+				  $H_0:\mu_1=\mu_2$
+				& $z_0=\dfrac{\bar{X_1}-\bar{X_2}}{\sqrt{
+				  \dfrac{\sigma^2_1}{n_1}+\dfrac{\sigma^2_2}{n_2}}}$
+				& $\delta=\dfrac{\mu_1-\mu_2}{\sqrt{
+				  \dfrac{\sigma^2_1}{n_1}+\dfrac{\sigma^2_2}{n_2}}}$\\
+			\end{tabular}
+		}\\
+		\midrule
+		  Contre-hypothèses
+		& On rejette $H_0$ si
+		& Erreur de $2^e$ espèce
+		& Taille nécessaire\\
+		\midrule
+		  $H_1:\mu_1\neq\mu_2$ 
+		& $\left\rvert z_0\right\rvert>z_{\alpha/2}$
+		& $\beta=\Phi(z_{\alpha/2}-\delta)-\Phi(-z_{\alpha/2}-\delta)$
+		& $n=\dfrac{(z_{\alpha/2}+z_\beta)^2(\sigma^2_1+\sigma^2_2)}{
+		  (\mu_1-\mu_2)^2}$\\
+		  $H_1:\mu_1\neq\mu_2$ 
+		& $z_0>z_{\alpha}$
+		& $\beta=\Phi(z_{\alpha}-\delta)$
+		& $n=\dfrac{(z_{\alpha}+z_\beta)^2(\sigma^2_1+\sigma^2_2)}{
+		  (\mu_1-\mu_2)^2}$\\
+		  $H_1:\mu_1\neq\mu_2$ 
+		& $z_0<-z_{\alpha}$
+		& $\beta=\Phi(z_{\alpha}+\delta)$
+		& $n=\dfrac{(z_{\alpha}+z_\beta)^2(\sigma^2_1+\sigma^2_2)}{
+		  (\mu_1-\mu_2)^2}$\\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+
+
+\end{document}
+
+
