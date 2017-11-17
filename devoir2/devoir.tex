@@ -1,0 +1,1049 @@
+\documentclass[11pt]{article}
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{standalone}
+\usepackage{geometry}
+\usepackage{gphys}
+\usepackage{siunitx}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{titlesec}
+\usepackage{amsfonts}
+\usepackage{mathtools}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{relsize}
+\usepackage{nicefrac}
+\usepackage{multicol}
+
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{arrows}
+\usetikzlibrary{calc}
+\usetikzlibrary{babel}
+
+%%%%%%%%%%%%%%%%%%
+% Configurations %
+%%%%%%%%%%%%%%%%%%
+
+\geometry{
+	total={210mm,297mm},
+	left=34mm,
+	right=34mm,
+	top=30mm,
+	bottom=30mm,
+}
+
+\sisetup{locale = FR}
+
+\makeatletter
+\let\@afterindenttrue\@afterindentfalse
+\makeatother
+
+% on met les sous-sections dans la marge
+\titleformat{\subsection}[leftmargin]{\bfseries\filleft}{}{0pt}{}
+\titlespacing{\subsection}{4pc}{1.5ex plus .1ex minus .2ex}{1pc}
+
+%%%%%%%%%%
+% Macros %
+%%%%%%%%%%
+
+\newtheorem{theoreme}{Théorème}
+
+\newcommand\comb{%
+    \ensuremath{%
+        \mathcal{C}%
+    }%
+}
+
+\newcommand\perm{%
+    \ensuremath{%
+        \mathcal{P}%
+    }%
+}
+
+\renewcommand\P[1]{%
+	\ensuremath{%
+		\mathbb{P}\left[#1\right]%
+	}%
+}%
+
+\newcommand\Pg[2]{%
+	\ensuremath{%
+		\mathbb{P}\left[#1\middle\rvert#2\right]%
+	}%
+}%
+
+\newcommand\Esp[1]{%
+	\ensuremath{%
+		\mathrm{E}\left[#1\right]%
+	}%
+}%
+
+\newcommand\Var[1]{%
+	\ensuremath{%
+		\mathrm{Var}\left[#1\right]%
+	}%
+}%
+
+\newcommand\Espg[2]{%
+	\ensuremath{%
+		\mathrm{E}\left[#1\middle\rvert#2\right]%
+	}%
+}%
+
+\newcommand\Norm[2]{%
+	\ensuremath{%
+		\mathcal{N}\left(#1,#2\right)%
+	}%
+}%
+
+\newcommand\Bin[2]{%
+	\ensuremath{%
+		\mathcal{B}\left(#1,#2\right)%
+	}%
+}%
+
+\newcommand\Uni[2]{%
+	\ensuremath{%
+		\mathcal{U}\left(#1,#2\right)%
+	}%
+}%
+
+\newcommand\Geo[1]{%
+	\ensuremath{%
+		\mathcal{G}\left(#1\right)%
+	}%
+}%
+
+\newcommand\Poi[1]{%
+	\ensuremath{%
+		\mathrm{Poi}\left(#1\right)%
+	}%
+}%
+
+\newcommand\Max[2]{%
+	\ensuremath{%
+		\mathrm{max}\left(#1,#2\right)%
+	}%
+}%
+
+\newcommand\e{%
+    \ensuremath{%
+        \mathrm{e}%
+    }%
+}
+
+%%%%%%%%%%%%%
+% Documents %
+%%%%%%%%%%%%%
+
+\begin{document}
+\def\Sigle{MTH2302A}
+\def\Cours{Probabilités et Statistique}
+\def\Devoir{Devoir 2}
+\AjouterAuteur{Gabriel-Andrew}{Pollo-Guilbert}{1837776}
+\AjouterProfesseur{}{Simon}{Demontigny}
+\def\logoscale{1}
+\pagetitre
+
+\section*{Question 1}
+\subsection{a)}
+Soit $T$ la durée de vie d'un composant $k$ avec comme fonction de densité
+de probabilités
+\begin{equation*}
+    f_T(t)=\left\{
+        \begin{matrix}
+            A^2t\e^{-At} & \text{si} & t\geq 0,\\
+            0            & \text{sinon},
+        \end{matrix}
+    \right.
+\end{equation*}
+où $A$ est une constante positive.
+
+On obtient la fonction de répartition en intégrant. Pour $x\geq 0$, on
+obtient par intégration par partie :
+\begin{equation*}
+    F_T(t)
+    =\int_0^tf(s)\d{s}
+    =A^2\int_0^ts\e^{-As}\d{s}
+    =1-(At+1)\e^{-At},
+\end{equation*}
+de sorte à obtenir la fonction de fiabilité d'un composant, soit
+\begin{equation*}
+    R_k(t)
+    =1-F_T(t)
+    =\left\{
+        \begin{matrix}
+            (At+1)\e^{-At} & \text{si} & t\geq 0\\
+            1              & \text{sinon}
+        \end{matrix}
+    \right.,
+\end{equation*}
+car $F_T(t)=0$ pour $x<0$.
+
+La figure \ref{fig:sys_serie} montre un système contenant $m$ de
+ces composants en série.
+\begin{figure}[H]
+    \centering
+    \input{figure/system_serie}
+    \caption{système en série à $m$ composants}
+    \label{fig:sys_serie}
+\end{figure}
+
+Soit $X$ la durée de vie du système en entier dont la fonction de fiabilité
+est donnée par
+\begin{equation*}
+    R(x)
+    =\prod_{k=1}^mR_k(x)
+    =\bigg[R_k(x)\bigg]^m
+    =\bigg[(Ax+1)\e^{-Ax}\bigg]^m
+    =(Ax+1)^m\e^{-Amx},
+\end{equation*}
+pour $x\geq 0$, car les composants sont indépendant.
+
+La durée de vie moyenne de ce système est l'espérance de $X$, soit
+\begin{equation*}
+    \Esp{X}
+    =\int_{-\infty}^\infty R(t)\d{x}
+    =\int_0^\infty(Ax+1)^m\e^{-Amx}\d{x}
+\end{equation*}
+En posant $u=Ax+1\Leftrightarrow u-1=Ax$ et $\d{u}=A\d{x}$, on obtient
+\begin{equation*}
+    \Esp{X}
+    =\frac{1}{A}\int_0^\infty u^m\e^{-(u-1)m}\d{u}
+    =\frac{1}{A}\int_0^\infty u^m\e^{-um+m}\d{u}
+    =\frac{\e^{m}}{A}\int_0^\infty u^m\e^{-um}\d{u}
+\end{equation*}
+
+Hors, l'ingénieur estime que la durée de vie moyenne du système est $B$
+de sorte qu'on obtient
+\begin{equation*}
+    B=\frac{\e^{m}}{A}\cdot\frac{m!}{m^{m+1}}\Leftrightarrow
+    AB=\frac{m!}{m^{m+1}}\e^{m},
+\end{equation*}
+avec le théorème \ref{th:integrale} présenté en annexe.
+
+Dans notre situation, $A=0.710$ et $B=715$. Puisqu'on cherche une valeur
+$m$ entière et positive, il es possible de la déterminer en regardant
+simplement un graphique. La figure \ref{fig:graph_solve} montre l'équation.
+
+\begin{figure}[H]
+    \centering
+    \caption{Graphique de l'équation $AB=\dfrac{m!}{m^{m+1}}\e^{m}$}
+    \input{figure/graph_solve.pgf}
+    \label{fig:graph_solve}
+\end{figure}
+
+On remarque l'intersection entre les deux courbes est entre $m=24$ et
+$m=25$. L'intersection donnée par le calcul du graphique est d'environ
+$m\approx 24.54$. Par conséquent, on peut déduire que $m=25$ est le
+nombre de composants qui reflète le mieux l'estimation de l'ingénieur.
+
+\subsection{b)}
+Soit $T$ la durée de vie d'un composant $k$ avec le taux de défaillance 
+donnée par
+\begin{equation*}
+    r(t)=Ct,
+\end{equation*}
+où $C$ est une constante. On obtient la fonction de fiabilité avec
+\begin{equation*}
+    R_k(t)
+    =\exp\left\{-\int_0^t r(s)\d{s}\right\}
+    =\exp\left\{-C\int_0^t s\d{s}\right\}
+    =\e^{-Ct^2/2}.
+\end{equation*}
+
+La figure \ref{fig:sys_parallel} montre un système contenant $n$ de ces
+composants en parallèle.
+\begin{figure}[H]
+    \centering
+    \input{figure/system_parallel}
+    \caption{système en parallèle à $n$ composants}
+    \label{fig:sys_parallel}
+\end{figure}
+
+Soit $X$ la durée de vie du système en entier donc la fonction de
+fiabilité est donnée par
+\begin{equation*}
+    R(x)
+    =1-\prod_{k=1}^n\bigg[1-R_k(x)\bigg]
+    =1-\bigg[1-\e^{-Cx^2/2}\bigg]^n,
+\end{equation*}
+pour $x\geq 0$, car les composants sont indépendant.
+
+On obtient la fonction de répartition de $X$ avec
+\begin{equation*}
+    R(x)=1-F_X(x)\Leftrightarrow
+    F_X(x)=1-R(x)=\bigg[1-\e^{-Cx^2/2}\bigg]^n
+\end{equation*}
+de sorte que la médianne de $X$ est la valeur de $x$ tel que
+\begin{equation*}
+    \frac{1}{2}=\bigg[1-\e^{-Cx^2/2}\bigg]^n.
+\end{equation*}
+
+En prenant le logarithme naturel, on obtient
+\begin{equation*}
+    -\ln{2}=n\ln\bigg[1-\e^{-Cx^2/2}\bigg],
+\end{equation*}
+de sorte à isoler $n$, soit
+\begin{equation*}
+    n=-\frac{\ln{2}}{\ln\big[1-\e^{-Cx^2/2}\big]}.
+\end{equation*}
+
+L'ingénieur estime la médiane à $x=D$, donc
+\begin{equation*}
+    n
+    \approx-\frac{\ln{2}}{\ln\big[1-\e^{-CD^2/2}\big]}
+    \approx{28.511},
+\end{equation*}
+avec $C=2.950$ et $D=1.590$. Par conséquent, on peut déduire que
+$n=29$ est le nombre de composants qui reflète le mieux l'estimation
+de l'ingénieur.
+
+\pagebreak
+\section*{Question 2}
+Soit une expérience aléatoire dont le résultat est modélisé par
+la variable aléatoire
+\begin{equation*}
+    X\sim\Norm{E}{F^2},
+\end{equation*}
+où $E$ et $F$ sont des constantes.
+
+\subsection*{a)}
+On s'intérèsse au nombre d'essaies $M$ de l'expérience jusqu'à obtenir
+un premier résultat supérieur à une constante $G$. Par conséquent, $M$
+suit une loi géométrique tel que
+\begin{equation*}
+    M\sim\Geo{p},
+\end{equation*}
+où $p=\P{X>G}$, la probabilité que le résultat soit supérieur à $G$.
+
+La probabilité $m$ que $M$ soit une valeur impaire est donnée par
+\begin{equation*}
+    m
+    =\sum_{k=1}^\infty\P{M=2k-1}
+    =\sum_{k=1}^\infty q^{2k-1-1}p
+    =\sum_{k=1}^\infty q^{2(k-1)}p
+    =q^2\sum_{k=1}^\infty q^{k-1}p,
+\end{equation*}
+où $q=1-p$. On remarque que la somme est effectuée sur tout l'espace
+échantillion d'une distribution géométrique. Par conséquent,
+\begin{equation*}
+    m=q^2=(1-p)^2.
+\end{equation*}
+
+On calcule $p$ avec la distribution normale centrée réduite, c'est-à-dire
+\begin{equation*}
+    p
+    =1-\P{X\leq G}
+    =1-\Phi\left(\frac{G-E}{F^2}\right).
+\end{equation*}
+Avec $E=0.770$, $F=1.780$ et $G=1.535$, on obtient
+\begin{equation*}
+    p
+    \approx 1-\Phi\left(0.42978\right)
+    \approx 1-0.6628
+    =0.3372,
+\end{equation*}
+de sorte que la probabilité que $M$ prenne une valeur impaire est
+$m\approx 0.4393$.
+
+\subsection{b)}
+On répète l'expérience $H$ fois, où $H$ est une constante. Soit $N$ le
+nombre de fois où le carré du résultat est supérieur à une constante $I$.
+Par conséquent, $N$ suit une loi binomiale tel que
+\begin{equation*}
+    N\sim\Bin{H}{p},
+\end{equation*}
+où $p=\P{X^2>I}=\P{-\sqrt{I}<X<\sqrt{I}}$, la probabilité que le carré
+du résultat soit supérieur à $I$.
+
+On évalue à l'aide de la distribution normale centrée réduite, alors
+\begin{equation*}
+    p
+    =\Phi\bigg(\frac{ \sqrt{I}-E}{F^2}\bigg)
+    -\Phi\bigg(\frac{-\sqrt{I}-E}{F^2}\bigg)
+    =\Phi\bigg(\frac{ \sqrt{I}-E}{F^2}\bigg)
+    +\Phi\bigg(\frac{ \sqrt{I}+E}{F^2}\bigg)-1.
+\end{equation*}
+Avec $E=0.770$, $F=1.780$ et $I=1.160$, on obtient
+\begin{equation*}
+    p
+    \approx\Phi\left(0.0969\right)+\Phi\left(0.5830\right)-1
+    \approx 0.5359+0.7190-1
+    =0.2549.
+\end{equation*}
+
+La probabilité $n$ que $N$ soit une valeur paire est donnée par
+\begin{equation*}
+    n
+    =\sum_{k=0}^{\left\lfloor H/2\right\rfloor}\P{N=2k}
+    =\sum_{k=0}^{\left\lfloor H/2\right\rfloor}\binom{2k}{H}p^{2k}q^{H-2k}
+\end{equation*}
+Par évaluation numérique, avec $H=59$, on obtient $n\approx 0.500$.
+
+\pagebreak
+\section*{Question 3}
+Soit $(X,Y)$ un vecteur aléatoire continu dont la fonction de densité
+conjointe est donnée par
+\begin{equation*}
+    f_{X,Y}(x,y)=\left\{
+        \begin{matrix}
+            c\e^{-Jy} & \text{si} & K\leq x\leq L, y\geq 0,\\
+            0         & \text{sinon},
+        \end{matrix}
+    \right.
+\end{equation*}
+où $J$, $K$ et $L$ sont des constantes connues et $c$ une constante inconnue.
+
+\subsection{a)}
+On obtient la fonction de densité de $X$ en intégrant une première fois, soit
+\begin{equation*}
+    f_X(x)
+    =\int_{-\infty}^\infty f_{X,Y}(x,y)\d{y}
+    =c\int_0^\infty\e^{-Jy}\d{y}
+    =-\frac{c}{J}\e^{-Jy}\bigg\rvert_0^\infty
+    =\frac{c}{J},
+\end{equation*}
+et celle de répartition en intégrant une deuxième fois, soit
+\begin{equation*}
+    F_X(x)
+    =\int_{-\infty}^x f_X(t)\d{t}
+    =\frac{c}{J}\int_K^x\d{t}
+    =\frac{c}{J}(x-K),
+\end{equation*}
+car $K\leq x\leq L$.
+
+D'une manière similaire, on obtient la fonction de densité de $Y$ en intégrant
+une première fois, soit
+\begin{equation*}
+    f_Y(y)
+    =\int_{-\infty}^\infty f_{X,Y}(x,y)\d{x}
+    =c\e^{-Jy}\int_K^L\d{x}
+    =(L-K)c\e^{-Jy},
+\end{equation*}
+et celle de répartition en intégrant une deuxième fois, soit
+\begin{equation*}
+    F_Y(y)
+    =\int_{-\infty}^y f_Y(t)\d{t}
+    =(L-K)c\int_0^y\e^{-Jt}\d{t}
+    =-\frac{c}{J}(L-K)\e^{-Jt}\bigg\rvert_0^y
+    =\frac{c}{J}(L-K)(1-\e^{-Jy}),
+\end{equation*}
+car $y\geq 0$.
+
+Soit $T$ une variable aléatoire définie par $T=g(X)$, où $g(x)$ est une fonction
+quelconque. On cherche la fonction $g(X)$ tel que $T=Y$, c'est-à-dire
+\begin{equation*}
+    \P{T\leq t}
+    =\P{g(X)\leq t}
+    =\P{Y\leq t},
+\end{equation*}
+de sorte que les fonctions de répartition de $T$ et $Y$ soient identiques.
+
+Avec l'inverse de $g(x)$, on peut isoler $X$ de sorte à obtenir
+\begin{equation*}
+    \P{g^{-1}(g(X))\leq g^{-1}(t)}
+    =\P{X\leq g^{-1}(t)}
+    =\P{Y\leq t}.
+\end{equation*}
+Par conséquent, on a
+\begin{equation*}
+    F_X\left(g^{-1}(t)\right)
+    =F_Y(t)
+    \Leftrightarrow
+    \frac{c}{J}\left(g^{-1}(t)-K\right)
+    =\frac{c}{J}(L-K)(1-\e^{-Jt}),
+\end{equation*}
+et en isolant, on obtient
+\begin{equation*}
+    g^{-1}(t)
+    =(L-K)(1-\e^{-Jt})+K.
+\end{equation*}
+
+On a donc
+\begin{equation*}
+    \P{X\leq (K-L)(1-\e^{-Jt})+K}
+    =\P{\frac{X-K}{L-K}\leq 1-\e^{-Jt}}
+    =\P{1-\frac{X-K}{L-K}\geq \e^{-Jt}},
+\end{equation*}
+car $L-K>0$, de sorte qu'en appliquant le logarithme, on obtient
+\begin{equation*}
+    \P{1-\frac{X-K}{L-K}\geq \e^{-Jt}}
+    =\P{-\frac{1}{J}\ln\left(1-\frac{X-K}{L-K}\right)\leq t}.
+\end{equation*}
+Le terme à droite est la transformation pour obtenir $T$. Par conséquent,
+\begin{equation*}
+    g(x)=-\frac{1}{J}\ln\left(1-\frac{x-K}{L-K}\right).
+\end{equation*}
+
+\subsection{b)}
+Soit $Z$ la variable aléatoire définie par Z=\Max{X}{Y}. Cette fonction
+peut se définir par partie, soit
+\begin{equation*}
+    \Max{x}{y}=\left\{
+        \begin{matrix}
+            x & \text{si} & x\geq y,\\
+            y & \text{si} & x  <  y.\\
+        \end{matrix}
+    \right.
+\end{equation*}
+de sorte que la fonction de répartition de $Z$ est
+\begin{equation*}
+    F_Z(z)
+    =\P{Z\leq z}
+    =\P{\Max{X}{Y}\leq z}
+    =\P{\left\{X\leq z\right\}\cap\left\{Y\leq z\right\}}.
+\end{equation*}
+
+Hors, c'est la fonction de répartition du vecteur aléatoire $(X,Y)$ évaluée
+en $(z,z)$, soit
+\begin{equation*}
+    F_Z(z)
+    =\int_{-\infty}^z\int_{-\infty}^zf_{X,Y}(x,y)\d{y}\d{x}
+    =\int_K^z\int_0^zc\e^{-Jy}\d{y}\d{x}
+    =c\int_K^z\d{x}\int_0^z\e^{-Jy}\d{y},
+\end{equation*}
+de sorte à obtenir
+\begin{equation*}
+    F_Z(z)
+    =\frac{c}{J}(z-K)(1+\e^{-Jz}),
+\end{equation*}
+pour $K\leq z\leq L$, car $K\leq x\leq L$.
+
+Lorsque $z>L$, on a
+\begin{equation*}
+    F_Z(z)
+    =\int_{-\infty}^z\int_{-\infty}^zf_{X,Y}(x,y)\d{y}\d{x}
+    =\int_K^L\int_0^zc\e^{-Jy}\d{y}\d{x}
+    =c\int_K^L\d{x}\int_0^z\e^{-Jy}\d{y},
+\end{equation*}
+de sorte à obtenir
+\begin{equation*}
+    F_Z(z)
+    =\frac{c}{J}(L-K)(1-\e^{-Jz}).
+\end{equation*}
+
+Par conséquent, la fonction de répartition de $Z$ est
+\begin{equation*}
+    F_Z(z)=\left\{
+        \begin{matrix}
+            0                             & \text{si} &       z  <  K,\\[6pt]
+            \dfrac{c}{J}(z-K)(1+\e^{-Jz}) & \text{si} & K\leq z\leq L,\\[6pt]
+            \dfrac{c}{J}(L-K)(1-\e^{-Jz}) & \text{si} & L  <  z.      \\[6pt]
+        \end{matrix}
+    \right.
+\end{equation*}
+
+\pagebreak
+\section*{Question 4}
+Soit $(X,Y)$ un vecteur aléatoire discret dont la fonction de masse conjointe
+est donnée par
+\begin{equation*}
+    p_{X,Y}(j,k)=\left\{
+        \begin{matrix}
+            \e^{-M} & \text{si} & (j,k)=(0,0),\\
+            \dfrac{\e^{-M}M^j}{j!}\cdot\dfrac{\e^{-(Nj)}(Nj)^k}{k!}
+                & \text{si} & (j,k)\in\left\{1,2,\dots\right\}
+                \times \left\{0,1,\dots\right\},\\
+        \end{matrix}
+    \right.
+\end{equation*}
+où $M$ et $N$ sont des constantes connues.
+
+\subsection{a)}
+La fonction de masse de $Y$ est donnée par
+\begin{equation*}
+    p_Y(k)
+    =\sum_{j=0}^\infty p_{X,Y}(j,k).
+\end{equation*}
+
+\subsubsection*{Cas où \boldmath $k=0$}
+Il faut séparer la somme en deux, soit
+\begin{equation*}
+    p_Y(0)
+    =\e^{-M}+\sum_{j=1}^\infty\frac{\e^{-M}M^j}{j!}
+        \cdot\frac{\e^{-(Nj)}(Nj)^0}{0!}
+    =\e^{-M}+\e^{-M}\sum_{j=1}^\infty\frac{M^j}{j!}
+        \cdot\e^{-(Nj)},
+\end{equation*}
+car $p_{X,Y}(j,k)$ est définie par partie. On peut écrire la somme comme
+\begin{equation*}
+    \sum_{j=1}^\infty\frac{M^j}{j!}\cdot\e^{-(Nj)}
+    =\sum_{j=1}^\infty\frac{\left(M\e^{-N}\right)^j}{j!}
+    =\sum_{j=0}^\infty\frac{\left(M\e^{-N}\right)^j}{j!}
+        -\frac{\left(M\e^{-N}\right)^0}{0!}
+    =\sum_{j=0}^\infty\frac{\left(M\e^{-N}\right)^j}{j!}-1.
+\end{equation*}
+Hors, on remarque que la somme est la série de MacLaurin de la fonction
+exponentielle, alors
+\begin{equation*}
+    \sum_{j=0}^\infty\frac{\left(M\e^{-N}\right)^j}{j!}-1
+    =\e^{M\e^{-N}}-1,
+\end{equation*}
+de sorte à obtenir
+\begin{equation*}
+    p_Y(0)
+    =\e^{-M}+\e^{-M}\left(\e^{M\e^{-N}}-1\right)
+    =\e^{-M}\e^{M\e^{-N}}
+    =\e^{M\e^{-N}-M}.
+\end{equation*}
+
+\subsubsection*{Cas où \boldmath $k=1$}
+Puisque $(j,k)\neq (0,0)$, on a
+\begin{equation*}
+    p_Y(1)
+    =\sum_{j=0}^\infty\frac{\e^{-M}M^j}{j!}\cdot\frac{\e^{-(Nj)}(Nj)^1}{1!}
+    =N\e^{-M}\sum_{j=0}^\infty\frac{\left(M\e^{-N}\right)^j}{j!}j
+\end{equation*}
+Le terme de la somme à $j=0$ est nul, alors on peut écrire
+\begin{equation}\label{eq:part1}
+    \sum_{j=0}^\infty\frac{\left(M\e^{-N}\right)^j}{j!}j
+    =\sum_{j=1}^\infty\frac{\left(M\e^{-N}\right)^j}{j!}j
+    =\sum_{j=1}^\infty\frac{\left(M\e^{-N}\right)^j}{(j-1)!},
+\end{equation}
+de sorte qu'avec une translation de la série, on obtient
+\begin{equation}\label{eq:part2}
+    \sum_{j=1}^\infty\frac{\left(M\e^{-N}\right)^j}{(j-1)!}
+    =\sum_{j=0}^\infty\frac{\left(M\e^{-N}\right)^{j+1}}{j!}
+    =M\e^{-N}\sum_{j=0}^\infty\frac{\left(M\e^{-N}\right)^j}{j!}
+    =M\e^{-N}\e^{M\e^{-N}},
+\end{equation}
+car la somme est le développement en série de la fonction exponentielle. Par
+conséquent, on a
+\begin{equation*}
+    p_Y(1)
+    =N\e^{-M}M\e^{-N}\e^{M\e^{-N}}
+    =NM\e^{-N}\e^{M\e^{-N}-M}.
+\end{equation*}
+
+\subsubsection*{Cas où \boldmath $k=2$}
+Puisque $(j,k)\neq (0,0)$, on a
+\begin{equation*}
+    p_Y(2)
+    =\sum_{j=0}^\infty\frac{\e^{-M}M^j}{j!}\cdot\frac{\e^{-(Nj)}(Nj)^2}{2!}
+    =\frac{N^2}{2}\e^{-M}\sum_{j=0}^\infty\frac{\left(M\e^{-N}\right)^j}{j!}j^2.
+\end{equation*}
+Le terme de la somme à $j=0$ est nul, alors on peut écrire
+\begin{equation*}
+    \sum_{j=0}^\infty\frac{\left(M\e^{-N}\right)^j}{j!}j^2
+    =\sum_{j=1}^\infty\frac{\left(M\e^{-N}\right)^j}{j!}j^2
+    =\sum_{j=1}^\infty\frac{\left(M\e^{-N}\right)^j}{(j-1)!}j,
+\end{equation*}
+de sorte qu'avec une translation de la série, on obtient
+\begin{equation*}
+    \sum_{j=1}^\infty\frac{\left(M\e^{-N}\right)^j}{(j-1)!}j
+    =\sum_{j=0}^\infty\frac{\left(M\e^{-N}\right)^{j+1}}{j!}(j+1)
+    =M\e^{-N}\left[
+        \sum_{j=0}^\infty\frac{\left(M\e^{-N}\right)^j}{j!}j+
+        \sum_{j=0}^\infty\frac{\left(M\e^{-N}\right)^j}{j!}
+    \right]
+\end{equation*}
+
+On remarque que la première somme est celle développée dans le cas où $k=1$
+dans les équations \eqref{eq:part1} et \eqref{eq:part2}, et que la deuxième somme
+est le développement en série de la fonction exponentielle, comme dans le cas
+$k=0$. Par conséquent, la somme est
+\begin{equation*}
+    \sum_{j=0}^\infty\frac{\left(M\e^{-N}\right)^j}{j!}j^2
+    =M\e^{-N}\left[M\e^{-N}\e^{M\e^{-N}}+\e^{M\e^{-N}}\right]
+    =M\e^{-N}(M\e^{-N}+1)\e^{M\e^{-N}}
+\end{equation*}
+de sorte à obtenir
+\begin{equation*}
+    p_Y(2)
+    =\frac{N^2}{2}\e^{-M}M\e^{-N}(M\e^{-N}+1)\e^{M\e^{-N}}
+    =\frac{N^2}{2}M\e^{-N}(M\e^{-N}+1)\e^{M\e^{-N}-M}.
+\end{equation*}
+
+\subsubsection*{Cas où \boldmath $k>0$}
+Puisque $(j,k)\neq (0,0)$, on a
+\begin{equation}\label{eq:thisispoisson}
+    p_Y(k)
+    =\sum_{j=0}^\infty\frac{\e^{-M}M^j}{j!}\cdot\frac{\e^{-(Nj)}(Nj)^k}{k!}
+    =\frac{N^k}{k!}\e^{-M}\sum_{j=0}^\infty\frac{\left(M\e^{-N}\right)^j}{j!}j^k
+\end{equation}
+Hors, soit $T\sim\Poi{\alpha}$ une variable aléatoire suivant une loi de Poisson
+de paramètre $\alpha$. Le $k$-ième moment de $T$ est donné par
+\begin{equation*}
+    \Esp{T^k}
+    =\sum_{j=0}^\infty\frac{\alpha^j}{j!}\e^{-\alpha}j^k
+    =\e^{-\alpha}\sum_{j=0}^\infty\frac{\alpha^j}{j!}j^k.
+\end{equation*}
+On remarque que la somme dans l'équation \eqref{eq:thisispoisson} est le
+$k$-ième moment d'une distribution de poisson avec $\alpha=M\e^{-N}$. Par
+conséquent, on a
+\begin{equation*}
+    \sum_{j=0}^\infty\frac{\left(M\e^{-N}\right)^j}{j!}j^k
+    =\e^{M\e^{-N}}\Esp{T^k},
+\end{equation*}
+où $T\sim\Poi{M\e^{-N}}$, et
+\begin{equation*}
+    p_Y(k)
+    =\frac{N^k}{k!}\e^{M\e^{-N}-M}\Esp{T^k}.
+\end{equation*}
+On remarque que ce résultat est aussi valide avec $k=0$. La table \ref{tb:moment}
+montre les moments de $T$ ainsi que les $p_Y(k)$ reliées à ceux-ci.
+
+\begin{table}[H]
+    \centering
+    \caption{Liste des moments de $T$}
+    \vspace{5mm}
+    \begin{tabular}{ccc}
+        \toprule
+        $k$ & $\Esp{T^k}$ & $p_Y(k)$\\
+        \midrule
+        $0$ 
+            & $1$
+            & $\e^{M\e^{-N}-M}$\\
+        $1$ 
+            & $M\e^{-N}$
+            & $N\e^{M\e^{-N}-M}M\e^{-N}$\\
+        $2$ 
+            & $M\left(M\e^{-N}+1\right)\e^{-N}$
+            & $\dfrac{N^2}{2}\e^{M\e^{-N}-M}M
+              \left(M\e^{-N}+1\right)\e^{-N}$\\
+        $n$
+            & $\dfrac{\d[n]{}}{\D[n]{t}}\exp\left\{
+              {M\e^{-N}\left(\e^t-1\right)}\right\}
+              \bigg\rvert_{t=0}$
+            & $\cdots$\\
+        \bottomrule
+    \end{tabular}
+    \label{tb:moment}
+\end{table}
+
+\subsection{b)}
+Soit $W=g(X)$, où $g(X)$ est le meilleur estimateur de $Y$ en fonction de $X$.
+Par conséquent, on a
+\begin{equation}\label{eq:estimateur}
+    g(j)
+    =\Espg{Y}{X=j}
+    =\sum_{k=0}^\infty kp_{Y|X}(k|X=j)
+    =\sum_{k=0}^\infty k\frac{p_{X,Y}(j,k)}{p_X(j)}.
+\end{equation}
+
+\subsubsection*{Fonction de masse de \boldmath $X$}
+Par définition, on a
+\begin{equation*}
+    p_X(j)
+    =\sum_{k=0}^\infty p_{X,Y}(j,k).
+\end{equation*}
+
+Si $j\neq 0$, alors on a
+\begin{equation*}
+    p_X(j)
+    =\sum_{k=0}^\infty\frac{\e^{-M}M^j}{j!}
+        \cdot\frac{\e^{-(Nj)}(Nj)^k}{k!}
+    =\frac{M^j}{j!}\e^{-M}\e^{-(Nj)}\sum_{k=0}^\infty\frac{(Nj)^k}{k!}.
+\end{equation*}
+Hors, la somme est le développement en série de la fonction exponentielle,
+alors on a
+\begin{equation*}
+    p_X(j)
+    =\frac{M^j}{j!}\e^{-M}\e^{-(Nj)}\e^{(Nj)}
+    =\frac{M^j}{j!}\e^{-M}.
+\end{equation*}
+
+Dans le cas où $j=0$, on a
+\begin{equation*}
+    p_X(j)
+    =\e^{-M}+\underbrace{\sum_{k=1}^\infty\frac{\e^{-M}M^j}{j!}
+        \cdot\frac{\e^{-(Nj)}(Nj)^k}{k!}}_{0}
+    =\e^{-M}.
+\end{equation*}
+de sorte que
+\begin{equation*}
+    p_X(j)
+    =\frac{M^j}{j!}\e^{-M}
+\end{equation*}
+est valide pour tout $j\geq 0$. On remarque alors que $X\sim\Poi{M}$.
+
+\subsubsection*{Estimateur de \boldmath $Y$}
+En continuant l'équation \eqref{eq:estimateur} pour tout $j\geq 0$, on a
+\begin{equation*}
+    g(j)
+    =\sum_{k=0}^\infty k\frac{p_{X,Y}(j,k)}{p_X(j)}
+    =\sum_{k=1}^\infty k\frac{p_{X,Y}(j,k)}{p_X(j)}
+\end{equation*}
+et donc
+\begin{equation*}
+    g(j)
+    =\sum_{k=1}^\infty k\bigg[
+        \frac{\e^{-M}M^j}{j!}\cdot\frac{\e^{-(Nj)}(Nj)^k}{k!}
+    \bigg]\bigg[
+        \frac{M^j}{j!}\e^{-M}
+    \bigg]^{-1}
+    =\sum_{k=1}^\infty k
+        \frac{(Nj)^k}{k!}\e^{-(Nj)}
+    =Nj,
+\end{equation*}
+car on remarque que c'est l'espérance d'une loi de Poisson de paramètre
+$\alpha=Nj$.
+
+\subsubsection*{Fonction de masse de \boldmath $W$}
+Par définition, on a
+\begin{equation*}
+    p_W(k)
+    =\P{W=k}
+    =\P{g(X)=k}
+    =\P{NX=k}
+    =\P{X=\frac{k}{N}}.
+\end{equation*}
+Puisque $X\sim\Poi{M}$, alors
+\begin{equation*}
+    p_W(k)
+    =\frac{M^{K/N}}{(K/N)!}\e^{-M}.
+\end{equation*}
+
+\pagebreak
+\section*{Question 5}
+\subsection{a)}
+Soit $X$ une variable aléatoire discrète telle que
+\begin{equation}\label{eq:eq1}
+    \P{X=2}=O\Var{X}\P{X=1},
+\end{equation}
+où $O$ est une constante rationelle donnée par
+\begin{equation*}
+    O=2\frac{(9+a)}{(10+a)},\quad a=1,2,\dots,9,
+\end{equation*}
+et
+\begin{equation}\label{eq:eq2}
+    \phi_X(P\pi)=0,
+\end{equation}
+où $P$ une constante entière, positive et impaire.
+
+Puisque deux équations sont fournies, il est fort probable que la distribution
+de $X$ ait deux paramètres. Supposons que $X\sim\Bin{n}{p}$, où $n$ est un
+nombre entier positif et $p$ une probabilité telle que $0\leq p\leq 1$.
+
+Par conséquent, on a
+\begin{equation*}
+    \phi_X(\omega)
+    =\left(p\e^{i\omega}+q\right)^n
+    =\left(p\e^{i\omega}+1-p\right)^n
+    =\left[p\left(\e^{i\omega}-1\right)+1\right]^n,
+\end{equation*}
+où $q=1-p$, de sorte qu'avec l'équation \eqref{eq:eq2}, on a
+\begin{equation*}
+    \phi_X(P\pi)
+    =\left[p\left(\e^{iP\pi}-1\right)+1\right]^n
+    =0.
+\end{equation*}
+
+Hors, $\e^{iP\pi}=\cos{P\pi}+i\sin{P\pi}=-1$ pour tout $P$ impair de sorte que
+\begin{equation*}
+    -2p+1=0\Leftrightarrow
+    p=\frac{1}{2},
+\end{equation*}
+ce qui en accord avec l'hypothèse $0\leq p\leq 1$.
+
+De plus, la variance et la fonction de masse d'une loi Binomial sont
+\begin{equation*}
+    \Var{X}=np(1-p)\quad\text{et}\quad
+    p_X(k)=\binom{n}{k}p^kq^{n-k}
+\end{equation*}
+de sorte que l'équation \eqref{eq:eq1} devient
+\begin{equation*}
+    \binom{n}{2}p^2q^{n-2}
+    =O\cdot npq\cdot \binom{n}{1}p^1q^{n-1}.
+\end{equation*}
+
+En simplifiant et en appliquant la définition d'un binôme, on a
+\begin{equation*}
+    \frac{n!}{2!(n-2)!}q^{-2}
+    =O\cdot n\cdot\frac{n!}{1!(n-1)!}
+\end{equation*}
+et
+\begin{equation*}
+    n(n-1)\frac{1}{2q^2}=O\cdot n\cdot n
+    \Rightarrow
+    n-1=2q^2On
+\end{equation*}
+En isolant $n$, on obtient finalement
+\begin{equation*}
+    n
+    =\frac{1}{1-2q^2O}.
+\end{equation*}
+
+Au dénominateur, on a
+\begin{equation*}
+    1-2q^2O
+    =1-2\left(\frac{1}{2}\right)^2\left(2\frac{(9+a)}{(10+a)}\right)
+    =1-\frac{(9+a)}{(10+a)}
+    =\frac{(10+a)-(9+a)}{(10+a)}
+    =\frac{1}{10+a}
+\end{equation*}
+de sorte qu'on a
+\begin{equation*}
+    n=10+a,
+\end{equation*}
+ce qui est en accord avec l'hypothèse que $n$ est une nombre entier
+et positif. Avec $a=6$, ou $O=\nicefrac{15}{8}$, on a que
+\begin{equation*}
+    X\sim\Bin{\frac{1}{2}}{16}.
+\end{equation*}
+
+\subsection{b)}
+Soit $Y$ une variable aléatoire continue telle que
+\begin{equation}\label{eq:eq1b}
+    \Espg{Y}{Y\geq Q}=R,
+\end{equation}
+et
+\begin{equation}\label{eq:eq2b}
+    \Pg{Y\leq S}{Y\leq T}=U,\quad S<T,
+\end{equation}
+où $Q$, $R$, $S$, $T$ et $U$ sont des constantes.
+
+Puisque deux équations sont fournies, il est fort probable que la
+distribution de $Y$ ait deux paramètres. Supposons que $Y$ suit la
+distribution la plus simple à deux paramètres, soit $Y\sim\Uni{a}{b}$,
+où $a$ et $b$ sont des constantes telles que $a<b$.
+
+Par définition, on a que l'équation \eqref{eq:eq2b} devient
+\begin{equation*}
+    \Pg{Y\leq S}{Y\leq T}
+    =\frac{\P{\left\{Y\leq S\right\}\cap\left\{Y\leq T\right\}}}{\P{Y\leq T}}
+    =\frac{\P{Y\leq S}}{\P{Y\leq T}}
+    =\frac{F_Y(S)}{F_Y(T)}
+\end{equation*}
+car $S<T$. On suppose que $a\leq S<T\leq b$, alors
+\begin{equation*}
+    \Pg{Y\leq S}{Y\leq T}
+    =\frac{S-a}{b-a}\cdot\frac{b-a}{T-a}
+    =\frac{S-a}{T-a}=U
+\end{equation*}
+de sorte à obtenir
+\begin{equation*}
+    a
+    =\frac{UT-S}{U-1}
+    =1.640,
+\end{equation*}
+avec $S=1.870$, $T=2.640$ et $U=0.230$.
+
+Pour développer l'équation \eqref{eq:eq1b}, il faut déterminer la fonction de
+densité. Premièrement, on a que
+\begin{equation*}
+    F_Y(y|Y\geq Q)
+    =\frac{\P{\left\{Y\leq y\right\}\cap\left\{Y\geq Q\right\}}}{\P{Y\geq Q}}
+    =\frac{\P{Q\leq Y\leq y}}{1-\P{Y\leq Q}}
+    =\frac{F_Y(y)-F_Y(Q)}{1-F_Y(Q)},
+\end{equation*}
+si $Q\leq y$. Par conséquent, on a
+\begin{equation*}
+    f_Y(y|Y\geq Q)
+    =\frac{\d{}}{\d{y}}F_Y(y|Y\geq Q)
+    =\frac{f_Y(y)}{1-F_Y(Q)}.
+\end{equation*}
+Dans le cas où $y<Q$, on a $F_Y(y|Y\geq Q)=f_Y(y|Y\geq Q)=0$.
+
+À la lumière de ce résultat, l'équation \eqref{eq:eq1b} devient
+\begin{equation*}
+    \Espg{Y}{Y\geq Q}
+    =\int_{-\infty}^\infty yf_Y(y|Y\geq Q)\d{y}
+    =\frac{1}{1-F_Y(Q)}\int_Q^\infty yf_Y(y)\d{y}.
+\end{equation*}
+Puisque $1.640=a<Q=4.760$ et $a\leq y\leq b$, on a
+\begin{equation*}
+    \Espg{Y}{Y\geq Q}
+    =\frac{1}{1-F_Y(Q)}\int_Q^by\cdot\frac{1}{b-a}\d{y}
+    =\frac{1}{1-F_Y(Q)}\frac{1}{b-a}\int_Q^by\d{y}.
+\end{equation*}
+Le facteur en avant de l'intégrale est
+\begin{equation*}
+    \frac{1}{1-F_Y(Q)}\cdot\frac{1}{b-a}
+    =\frac{1}{1-\dfrac{Q-a}{b-a}}\cdot\frac{1}{b-a}
+    =\frac{1}{b-Q}
+\end{equation*}
+de sorte que
+\begin{equation*}
+    \Espg{Y}{Y\geq Q}
+    =\frac{1}{b-Q}\cdot\frac{y^2}{2}\bigg\rvert_Q^b
+    =\frac{b^2-Q^2}{2(b-Q)}
+    =\frac{(b-Q)(b+Q)}{2(b-Q)}
+    =\frac{b+Q}{2}
+    =R.
+\end{equation*}
+On obtient alors que
+\begin{equation*}
+    b
+    =2R-Q
+    =6.130,
+\end{equation*}
+ce qui est en accord avec l'hypothèse que $a<b$. Par conséquent,
+\begin{equation*}
+    Y\sim\Uni{1.640}{6.130}
+\end{equation*}
+
+
+\pagebreak
+\section*{Annexe}
+\begin{theoreme}\label{th:integrale}
+    $\displaystyle\int_0^\infty x^m\e^{-xm}\d{x}=\dfrac{m!}{m^{m+1}}$.
+\end{theoreme}
+
+\begin{proof}
+    Soit l'intégrale suivante :
+    \begin{equation*}
+        I=\int_0^\infty x^m\e^{-xm}\d{x},
+    \end{equation*}
+    où $m$ est un nombre entier positif. En posant
+    \begin{equation*}
+        u=x^m\Leftrightarrow\d{u}=mx^{m-1}\d{x}\quad\text{ et }\quad
+        \d{v}=\e^{-mx}\d{x}\Leftrightarrow v=-\frac{1}{m}\e^{-mx},
+    \end{equation*}
+    on obtient par intégration par partie :
+    \begin{equation*}
+        I
+        =-\frac{1}{m}x^m\e^{-mx}\bigg\rvert_0^\infty+
+            \frac{m}{m}\int_0^\infty x^{m-1}\e^{-xm}\d{x}
+        =\frac{m}{m}\int_0^\infty x^{m-1}\e^{-xm}\d{x}.
+    \end{equation*}
+    
+    En appliquant une intégration par partie à nouveau avec
+        \begin{equation*}
+        u=x^{m-1}\Leftrightarrow\d{u}=(m-1)x^{m-2}\d{x}\quad\text{ et }\quad
+        \d{v}=\e^{-mx}\d{x}\Leftrightarrow v=-\frac{1}{m}\e^{-mx},
+    \end{equation*}
+    on obtient
+    \begin{equation*}
+        I
+        =-\frac{1}{m}x^{m-1}\e^{-mx}\bigg\rvert_0^\infty+
+            \frac{m(m-1)}{m^2}\int_0^\infty x^{m-2}\e^{-xm}\d{x}
+        =\frac{m(m-1)}{m^2}\int_0^\infty x^{m-2}\e^{-xm}\d{x}.
+    \end{equation*}
+    
+    Après $n$ intégrations par partie, on remarque que
+    \begin{equation*}
+        I=\frac{m(m-1)\cdots(m-[n-1])}{m^n}\int_0^\infty x^{m-n}\e^{-xm}\d{x},
+    \end{equation*}
+    de sorte qu'en appliquant $n=m$ intégrations par partie, on obtient
+    \begin{equation*}
+        I=\frac{m(m-1)\cdots(2)(1)}{m^m}\int_0^\infty\e^{-xm}\d{x}.
+    \end{equation*}
+
+    Hors, le numérateur est la définition du factoriel de $m$ et l'intégrale
+    à droite est
+    \begin{equation*}
+        \int_0^\infty\e^{-xm}\d{x}
+        =-\frac{1}{m}\e^{-xm}\bigg\rvert_0^\infty
+        =-\frac{1}{m}\left[\lim_{x\rightarrow\infty}\e^{-mx}-\e^0\right]
+        =\frac{1}{m}.
+    \end{equation*}
+    de sorte que
+    \begin{equation*}
+        \int_0^\infty x^m\e^{-xm}\d{x}=\frac{m!}{m^{m+1}}.\qedhere
+    \end{equation*}
+\end{proof}
+
+\begin{table}[H]
+    \centering
+	\caption{table des valeurs}
+	\vspace{5mm}
+    \input{figure/map}
+\end{table}
+\end{document}
+
+

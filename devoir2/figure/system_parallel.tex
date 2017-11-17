@@ -1,0 +1,44 @@
+\documentclass[11pt]{article}
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{standalone}
+\usepackage{tikz}
+
+\usetikzlibrary{babel}
+\usetikzlibrary{calc}
+
+\begin{document}
+\begin{tikzpicture}[
+    every node/.style={
+        draw,
+        minimum width=2cm,
+        minimum height=1cm
+    }
+]
+
+\node            (C1) at (0,0) {$1$};
+\node            (C2) at (3,0) {$2$};
+\node[draw=none] (CD) at (6,0) {$\cdots$};
+\node            (CN) at (9,0) {$n$};
+
+\coordinate (T)  at (4.5, 1);
+\coordinate (B)  at (4.5,-1);
+
+\draw let
+    \p1 = (T),
+    \p2 = (B),
+    \p3 = (C2)
+in (C1.north) |- (T) -| (CN.north)
+   (C2.north) -- (\x3,\y1)
+   (C1.south) |- (B) -| (CN.south)
+   (C2.south) -- (\x3,\y2)
+   (T) -- (\x1,\y1+5mm)
+   (B) -- (\x1,\y2-5mm);
+
+
+\end{tikzpicture}
+\end{document}
+
+
+

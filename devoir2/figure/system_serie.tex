@@ -1,0 +1,30 @@
+\documentclass[11pt]{article}
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{standalone}
+\usepackage{tikz}
+
+\usetikzlibrary{babel}
+
+\begin{document}
+\begin{tikzpicture}[
+    every node/.style={
+        draw,
+        minimum width=2cm,
+        minimum height=1cm
+    }
+]
+
+\node            (C1) at (0,0) {$1$};
+\node            (C2) at (3,0) {$2$};
+\node[draw=none] (CD) at (6,0) {$\cdots$};
+\node            (CM) at (9,0) {$m$};
+
+\draw (-2,0) -- (C1) -- (C2) -- (CD) -- (CM) -- (11,0);
+
+\end{tikzpicture}
+\end{document}
+
+
+
